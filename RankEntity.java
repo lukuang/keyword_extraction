@@ -24,7 +24,7 @@ public class RankEntity {
     String dest_dir = args[1];
     File[] directories = new File(source_dir).listFiles(File::isDirectory);
     for(File path: directories){
-        System.out.print(getAbsolutePath() );
+        System.out.print(path.getAbsolutePath() );
         System.out.println();
     }
   }
