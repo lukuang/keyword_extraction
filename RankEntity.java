@@ -25,20 +25,14 @@ public class RankEntity {
         }
 
         public void show(){
-            Iterator it = hashX.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                String tag = pair.getKey();
-                Iterator inner_it = pair.getValue().entrySet().iterator();
+            for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
+                String tag = tagEntry.getKey();
                 System.out.println(tag+":");
-                while (inner_it.hasNext){
-                    Map.Entry inner_pair = (Map.Entry)inner_it.next();
-                    String phrase = inner_pair.getKey();
-                    Integer count = inner_pair.getValue();
+                for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
+                    String phrase = phraseEntry.getKey();
+                    Integer count = phraseEntry.getValue();
                     System.out.println("\t"+phrase+":"+count);
-                    inner_it.remove();
                 }
-                it.remove(); // avoids a ConcurrentModificationException
             }
         }
 
