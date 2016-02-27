@@ -7,6 +7,7 @@ import json
 import sys
 import re
 import argparse
+import codecs
 from Html_parser import Html_parser
 
 
@@ -45,7 +46,7 @@ def main():
     for f in files:
         dest_file = os.path.join(args.dest_dir,f)
         text = parser.get_text(os.path.join(args.source_dir,f))
-        with open(dest_file,"w") as of:
+        with codecs.open(dest_file,"w","utf-8") as of:
             of.write(text)
 
 
