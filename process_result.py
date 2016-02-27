@@ -19,7 +19,7 @@ def get_json(source):
             if m is not None:
                 tag = m.group(1)
                 data[tag] = {}
-            else:
+            elif:
                 m = re.search("^(\w+):(\d+)$")
                 if m is not None:
                     data[tag][m.group(1)] = int(m.group(2))
