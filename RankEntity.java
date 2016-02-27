@@ -15,10 +15,10 @@ public class RankEntity {
         // ...
         public void doublePut(String one, String two) {
             Integer value = 1;
-            if (hashX.get(one) == null) {
+            if (hashX.containsKey(one)) {
                 hashX.put(one, new HashMap<String, Integer>());
             }
-            if (hashX.get(one).get(two) != null){
+            if (!hashX.get(one).containsKey(two)){
                 value = hashX.get(one).get(two)+1;
             } 
             hashX.get(one).put(two, value);
