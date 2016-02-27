@@ -49,6 +49,7 @@ public class RankEntity {
                 }
                 System.out.print("},");
             }
+            System.out.print("\b");
             System.out.println("}");
         }
 
