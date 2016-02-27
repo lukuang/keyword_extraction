@@ -50,7 +50,7 @@ def main():
 
     parser = Html_parser(args.need_stem)
     sub_dirs = os.walk(args.source_dir).next()[1]
-    for a_dir = sub_dirs:
+    for a_dir in sub_dirs:
         dest_dir = os.path.join(args.dest_dir,a_dir)
         source_dir = os.path.join(args.source_dir,a_dir)
         if not os.path.exists(dest_dir):
