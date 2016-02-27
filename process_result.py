@@ -34,7 +34,7 @@ def main():
     parser.add_argument("source")
     parser.add_argument("dest")
     args=parser.parse_args()
-
+    get_json(args.source)
 
 if __name__=="__main__":
     main()
