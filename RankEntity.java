@@ -36,7 +36,7 @@ public class RankEntity {
             }
         }
 
-        public Map<String, Map<String, Integer>> get_hash(){
+        public Map<String, HashMap<String, Integer>> get_hash(){
             return hashX;
         }
     }
