@@ -41,7 +41,7 @@ def output_top(data,dest,top):
         sorted_sub = sorted(data[tag].items(),key = lambda x:x[1], reverse=True)
         f.write("%s:\n" %tag)
         for (k,v) in sorted_sub:
-            print k
+            print type(k)
             f.write("\t"+k+":"+str(v)+"\n")
         for p in data[tag]:
             if p not in all_phrases:
