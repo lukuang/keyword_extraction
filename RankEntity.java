@@ -11,8 +11,10 @@ import java.util.*;
 public class RankEntity {
   
   private static class MyWrapper {
+        private Map<String, HashMap<String, Integer>> hashX;
+    
         public MyWrapper(){
-            private Map<String, HashMap<String, Integer>> hashX;
+
         }
         // ...
         public void doublePut(String one, String two) {
