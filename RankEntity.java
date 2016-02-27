@@ -32,7 +32,11 @@ public class RankEntity {
         }
 
         public void show(){
-            System.out.println(hashX);
+            StringWriter out = new StringWriter();
+            JSONValue.writeJSONString(hashX, out);
+            String jsonText = out.toString();
+            System.out.print(jsonText);
+            //System.out.println(hashX);
             // for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
             //     String tag = tagEntry.getKey();
             //     System.out.println(tag+":");
