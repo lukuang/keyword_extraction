@@ -9,10 +9,8 @@ import java.io.File;
 import java.util.*;
 
 public class RankEntity {
-
-  public static void main(String[] args) throws Exception {
-
-    private class MyWrapper {
+  
+  private class MyWrapper {
         private Map<String, Map<String, Integer>> hashX;
         // ...
         public void doublePut(String one, String two) {
@@ -48,6 +46,10 @@ public class RankEntity {
             return hashX;
         }
     }
+
+  public static void main(String[] args) throws Exception {
+
+    
 
     String serializedClassifier = "/home/1546/source/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
 
