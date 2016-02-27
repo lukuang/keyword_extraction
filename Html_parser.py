@@ -1,7 +1,7 @@
 from goose import Goose, Configuration
 from myStemmer import pstem as stem
 import lxml
-
+import re
 
 class Html_parser(object):
     """
