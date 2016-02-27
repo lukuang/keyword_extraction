@@ -45,7 +45,7 @@ public class RankEntity {
                 for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
                     String phrase = phraseEntry.getKey();
                     Integer count = phraseEntry.getValue();
-                    System.out.println("\""+phrase+"\":"+count+",");
+                    System.out.print("\""+phrase+"\":"+count+",");
                 }
                 System.out.print("},");
             }
