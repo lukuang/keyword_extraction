@@ -12,7 +12,7 @@ public class RankEntity {
 
   public static void main(String[] args) throws Exception {
 
-    public class MyWrapper {
+    private class MyWrapper {
         private Map<String, Map<String, Integer>> hashX;
         // ...
         public void doublePut(String one, String two) {
