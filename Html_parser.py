@@ -28,7 +28,7 @@ class Html_parser(object):
 
         text = article.title + "\n" + article.cleaned_text 
         if self._need_stem:
-            words = re.findall("\w+",text.lower(),re.MULTILINE)
+            words = re.findall("\w+",text,re.MULTILINE)
             w = map(stem,words)
             text = " ".join(w)
         return text
