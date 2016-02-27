@@ -6,11 +6,48 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.sequences.DocumentReaderAndWriter;
 import edu.stanford.nlp.util.Triple;
 import java.io.File;
-import java.util.List;
+import java.util.*;
 
 public class RankEntity {
 
   public static void main(String[] args) throws Exception {
+
+    public class MyWrapper {
+        private Map<String, Map<String, Integer>> hashX;
+        // ...
+        public void doublePut(String one, String two) {
+            Integer value = 1;
+            if (hashX.get(one) == null) {
+                hashX.put(one, new HashMap<String, Integer>());
+            }
+            if (hashX.get(one).get(two) != null){
+                value = hashX.get(one).get(two)+1;
+            } 
+            hashX.get(one).put(two, value);
+        }
+
+        public void show(){
+            Iterator it = hashX.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
+                String tag = pair.getKey();
+                Iterator inner_it = pair.getValue().entrySet().iterator();
+                System.out.println(tag+":");
+                while (inner_it.hasNext){
+                    Map.Entry inner_pair = (Map.Entry)inner_it.next();
+                    String phrase = inner_pair.getKey();
+                    Integer count = inner_pair.getValue();
+                    System.out.println("\t"+phrase+":"+count);
+                    inner_it.remove();
+                }
+                it.remove(); // avoids a ConcurrentModificationException
+            }
+        }
+
+        public Map<String, Map<String, Integer>> get_hash(){
+            return hashX;
+        }
+    }
 
     String serializedClassifier = "/home/1546/source/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
 
@@ -22,6 +59,7 @@ public class RankEntity {
     */
     String source_dir = args[0];
     String dest_dir = args[1];
+    MyWrapper counts = new MyWrapper();
     File[] directories = new File(source_dir).listFiles(File::isDirectory);
     for(File path: directories){
         System.out.println(path.getAbsolutePath() );
@@ -34,12 +72,16 @@ public class RankEntity {
 
             List<Triple<String, Integer, Integer>> list = classifier.classifyToCharacterOffsets(fileContents);
             for (Triple<String, Integer, Integer> item : list) {
-                System.out.println(item.first() + ": " + fileContents.substring(item.second(), item.third()));
+                String tag = item.first();
+                String phrase = fileContents.substring(item.second(), item.third());
+                System.out.println(tag+ ": " + phrase);
+                counts.doublePut(tag,phrase);
             }
             System.out.println("---");
             break;
         }
         System.out.println("---");
     }
+    counts.show();
   }
 }  
