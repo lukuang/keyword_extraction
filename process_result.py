@@ -58,8 +58,8 @@ def output_top(data,dest,top):
         k = unicode(k, "utf-8")
         f.write("\t"+k+":"+str(v)+"\n")
         i+=1
-            if i>= top:
-                break
+        if i>= top:
+            break
     f.close()
 
 
