@@ -69,7 +69,7 @@ public class RankEntity {
         File[] files = path.listFiles(File::isFile);
         for (File file_path: files){
             String abspath = file_path.getAbsolutePath();
-            System.out.println("\t"+ abspath);
+            //System.out.println("\t"+ abspath);
             
             String fileContents = IOUtils.slurpFile(abspath);
 
@@ -77,13 +77,13 @@ public class RankEntity {
             for (Triple<String, Integer, Integer> item : list) {
                 String tag = item.first();
                 String phrase = fileContents.substring(item.second(), item.third());
-                System.out.println(tag+ ": " + phrase);
+                //System.out.println(tag+ ": " + phrase);
                 counts.doublePut(tag,phrase);
             }
-            System.out.println("---");
-            break;
+            //System.out.println("---");
+            //break;
         }
-        System.out.println("---");
+        //System.out.println("---");
     }
     counts.show();
   }
