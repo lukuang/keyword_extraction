@@ -25,6 +25,9 @@ public class RankEntity {
             if (hashX.containsKey(one)) {
                 hashX.put(one, new HashMap<String, Integer>());
             }
+            if (hashX.get(one)==null){
+                System.out.println("NULL!!!");
+            }
             if (!hashX.get(one).containsKey(two)){
                 value = hashX.get(one).get(two)+1;
             } 
