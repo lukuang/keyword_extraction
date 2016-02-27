@@ -5,7 +5,7 @@
 // import edu.stanford.nlp.ling.CoreAnnotations;
 // import edu.stanford.nlp.sequences.DocumentReaderAndWriter;
 // import edu.stanford.nlp.util.Triple;
-import java.nio.file;
+import java.io.File;
 import java.util.List;
 
 public class RankEntity {
