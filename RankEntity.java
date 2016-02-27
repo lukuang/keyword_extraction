@@ -37,19 +37,19 @@ public class RankEntity {
             //String jsonText = out.toString();
             //System.out.print(jsonText);
             //System.out.println(hashX);
-            System.out.print("{")
+            System.out.print("{");
             for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
                 String tag = tagEntry.getKey();
                 System.out.print("\""+tag+"\":");
-                System.out.print("{")
+                System.out.print("{");
                 for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
                     String phrase = phraseEntry.getKey();
                     Integer count = phraseEntry.getValue();
                     System.out.println("\""+phrase+"\":"+count+",");
                 }
-                System.out.print("},")
+                System.out.print("},");
             }
-            System.out.println("}")
+            System.out.println("}");
         }
 
         public Map<String, HashMap<String, Integer>> get_hash(){
