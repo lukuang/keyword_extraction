@@ -25,7 +25,11 @@ public class RankEntity {
     File[] directories = new File(source_dir).listFiles(File::isDirectory);
     for(File path: directories){
         System.out.print(path.getAbsolutePath() );
-        System.out.println();
+        File[] files = path.listFiles(File::isFile);
+        for (File file_path: files){
+            System.out.print("\t"+file_path.getAbsolutePath() );
+        }
+        System.out.println("---");
     }
   }
 }  
