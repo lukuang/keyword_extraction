@@ -22,10 +22,10 @@ public class RankEntity {
             if (hashX == null){
                 System.out.println("NULL!!!");
             }
-            if (!hashX.containsKey(one)) {
+            if (hashX.get(one) == null ) {
                 hashX.put(one, new HashMap<String, Integer>());
             }
-            if (!hashX.get(one).containsKey(two)){
+            if (hashX.get(one).get(two)!= null){
                 value = hashX.get(one).get(two)+1;
             } 
             hashX.get(one).put(two, value);
