@@ -20,7 +20,7 @@ def get_json(source):
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^\s+(\w+):(\d+)$",line)
+                m = re.search("^\t(.+?):(\d+)$",line)
                 if m is not None:
                     data[tag][m.group(1)] = int(m.group(2))
                 else:
