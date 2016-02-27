@@ -27,7 +27,7 @@ public class RankEntity {
         System.out.println(path.getAbsolutePath() );
         File[] files = path.listFiles(File::isFile);
         for (File file_path: files){
-            String abspath = file_path.getAbsolutePath()
+            String abspath = file_path.getAbsolutePath();
             System.out.print("\t"+ abspath);
             
             String fileContents = IOUtils.slurpFile(abspath);
