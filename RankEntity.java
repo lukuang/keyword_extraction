@@ -1,10 +1,10 @@
-// import edu.stanford.nlp.ie.AbstractSequenceClassifier;
-// import edu.stanford.nlp.ie.crf.*;
-// import edu.stanford.nlp.io.IOUtils;
-// import edu.stanford.nlp.ling.CoreLabel;
-// import edu.stanford.nlp.ling.CoreAnnotations;
-// import edu.stanford.nlp.sequences.DocumentReaderAndWriter;
-// import edu.stanford.nlp.util.Triple;
+import edu.stanford.nlp.ie.AbstractSequenceClassifier;
+import edu.stanford.nlp.ie.crf.*;
+import edu.stanford.nlp.io.IOUtils;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.sequences.DocumentReaderAndWriter;
+import edu.stanford.nlp.util.Triple;
 import java.io.File;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class RankEntity {
     String serializedClassifier = "/home/1546/source/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
 
 
-    //AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
+    AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
 
     /* For either a file to annotate or for the hardcoded text example, this
        demo file shows several ways to process the input, for teaching purposes.
@@ -28,6 +28,7 @@ public class RankEntity {
         File[] files = path.listFiles(File::isFile);
         for (File file_path: files){
             System.out.print("\t"+file_path.getAbsolutePath() );
+            break;
         }
         System.out.println("---");
     }
