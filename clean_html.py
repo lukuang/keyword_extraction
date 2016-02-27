@@ -13,7 +13,7 @@ from Html_parser import Html_parser
 
 
 def check_top(file_name, top):
-    m=re.match("^(\d+)_\d+$",file_name)
+    m=re.match("^(\d+)-\d+$",file_name)
     if m is not None:
         page = int(m.group(1))
         if page <= top:
