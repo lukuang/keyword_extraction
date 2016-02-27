@@ -39,7 +39,7 @@ public class RankEntity {
             //System.out.println(hashX);
             for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
                 String tag = tagEntry.getKey();
-                System.out.println(tag+"\":");
+                System.out.println(tag+":");
                 for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
                     String phrase = phraseEntry.getKey();
                     Integer count = phraseEntry.getValue();
@@ -70,7 +70,7 @@ public class RankEntity {
     MyWrapper counts = new MyWrapper();
     File[] directories = new File(source_dir).listFiles(File::isDirectory);
     for(File path: directories){
-        System.out.println(path.getAbsolutePath() );
+        //System.out.println(path.getAbsolutePath() );
         File[] files = path.listFiles(File::isFile);
         for (File file_path: files){
             String abspath = file_path.getAbsolutePath();
