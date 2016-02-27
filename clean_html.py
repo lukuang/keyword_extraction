@@ -49,7 +49,13 @@ def main():
     args=parser.parse_args()
 
     parser = Html_parser(args.need_stem)
-    gene_text_single_dir(parser,args.source_dir,args.dest_dir,args.top)
+    sub_dirs = os.walk(args.source_dir).next()[1]
+    for a_dir = sub_dirs:
+        dest_dir = os.path.join(args.dest_dir,a_dir)
+        source_dir = os.path.join(args.source_dir,a_dir)
+        if not os.path.exists(dest_dir):
+            os.mkdir(dest_dir)
+        gene_text_single_dir(parser,source_dir,dest_dir,args.top)
     
 
 
