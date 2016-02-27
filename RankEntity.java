@@ -7,7 +7,6 @@ import edu.stanford.nlp.sequences.DocumentReaderAndWriter;
 import edu.stanford.nlp.util.Triple;
 import java.io.File;
 import java.util.*;
-import org.json.simple.JSONValue;
 
 public class RankEntity {
   
@@ -33,20 +32,24 @@ public class RankEntity {
         }
 
         public void show(){
-            StringWriter out = new StringWriter();
-            JSONValue.writeJSONString(hashX, out);
-            String jsonText = out.toString();
-            System.out.print(jsonText);
+            //StringWriter out = new StringWriter();
+            //JSONValue.writeJSONString(hashX, out);
+            //String jsonText = out.toString();
+            //System.out.print(jsonText);
             //System.out.println(hashX);
-            // for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
-            //     String tag = tagEntry.getKey();
-            //     System.out.println(tag+":");
-            //     for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
-            //         String phrase = phraseEntry.getKey();
-            //         Integer count = phraseEntry.getValue();
-            //         System.out.println("\t"+phrase+":"+count);
-            //     }
-            // }
+            System.out.print("{")
+            for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
+                String tag = tagEntry.getKey();
+                System.out.print("\""+tag+"\":");
+                System.out.print("{")
+                for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
+                    String phrase = phraseEntry.getKey();
+                    Integer count = phraseEntry.getValue();
+                    System.out.println("\""+phrase+"\":"+count+",");
+                }
+                System.out.print("},")
+            }
+            System.out.println("}")
         }
 
         public Map<String, HashMap<String, Integer>> get_hash(){
