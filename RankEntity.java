@@ -10,7 +10,7 @@ import java.util.*;
 
 public class RankEntity {
   
-  private class MyWrapper {
+  private static class MyWrapper {
         private Map<String, Map<String, Integer>> hashX;
         // ...
         public void doublePut(String one, String two) {
