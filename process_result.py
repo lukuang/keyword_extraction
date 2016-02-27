@@ -7,7 +7,7 @@ import json
 import sys
 import re
 import argparse
-
+import codecs
 
 def get_json(source):
     data = {}
@@ -28,13 +28,38 @@ def get_json(source):
                     print line
     with open(source+".json","w") as f:
         f.write(json.dumps(data))
+    return data
+
+
+def output_top(data,dest,top):
+    all_phrases = {}
+    f = codecs.open(dest,"w","utf-8")
+    for tag in data:
+        sorted_sub = sorted(data[tag].items(),key = lambda x:x[1], reverse=True)
+        f.write("%s:\n" %tag)
+        for (k,v) in sorted_sub:
+            f.write("\t%s:%d\n" %(k,v))
+        for p in data[tag]:
+            if p not in all_phrases:
+                all_phrases[p] = 0
+            all_phrases[p] += 1
+    sorted_all = sorted(all_phrases.items(),key = lambda x:x[1], reverse=True)
+    f.write("ALL:\n")
+    for (k,v) in sorted_all:
+        f.write("\t%s:%d\n" %(k,v))
+    f.close()
+
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source")
     parser.add_argument("dest")
+    parser.add_argument("--top",'-t',type=int,default=10)
+
     args=parser.parse_args()
-    get_json(args.source)
+    data = get_json(args.source)
+    output_top(data,args.dest,args.top)
 
 if __name__=="__main__":
     main()
