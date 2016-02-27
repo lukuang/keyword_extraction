@@ -8,6 +8,9 @@ import sys
 import re
 import argparse
 import codecs
+reload(sys)
+sys.setdefaultencoding('UTF8')
+
 
 def get_json(source):
     data = {}
