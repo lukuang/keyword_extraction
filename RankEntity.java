@@ -28,17 +28,9 @@ public class RankEntity {
         File[] files = path.listFiles(File::isFile);
         for (File file_path: files){
             String abspath = file_path.getAbsolutePath();
-            System.out.print("\t"+ abspath);
+            System.out.println("\t"+ abspath);
             
             String fileContents = IOUtils.slurpFile(abspath);
-            List<List<CoreLabel>> out = classifier.classify(fileContents);
-            for (List<CoreLabel> sentence : out) {
-                for (CoreLabel word : sentence) {
-                  System.out.print(word.word() + '/' + word.get(CoreAnnotations.AnswerAnnotation.class) + ' ');
-                }
-                System.out.println();
-            }
-            System.out.println("---");
 
             List<Triple<String, Integer, Integer>> list = classifier.classifyToCharacterOffsets(fileContents);
             for (Triple<String, Integer, Integer> item : list) {
