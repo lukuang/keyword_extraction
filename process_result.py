@@ -15,12 +15,12 @@ def get_json(source):
     with open(source,"r") as f:
         for line in f:
             line = line.rstrip()
-            m = re.search("^(\w+):$")
+            m = re.search("^(\w+):$",line)
             if m is not None:
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^(\w+):(\d+)$")
+                m = re.search("^(\w+):(\d+)$",line)
                 if m is not None:
                     data[tag][m.group(1)] = int(m.group(2))
                 else:
