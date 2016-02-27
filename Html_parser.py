@@ -3,6 +3,10 @@ from myStemmer import pstem as stem
 import lxml
 import re
 
+
+def do_stem(matchobj):
+    return stem(matchobj.group(0))
+
 class Html_parser(object):
     """
     use goose to parse raw html and
@@ -28,7 +32,8 @@ class Html_parser(object):
 
         text = article.title + "\n" + article.cleaned_text 
         if self._need_stem:
-            words = re.findall("\w+",text,re.MULTILINE)
-            w = map(stem,words)
-            text = " ".join(w)
+            text = re.sub("\w+",do_stem,text)
+            #words = re.findall("\w+",text,re.MULTILINE)
+            #w = map(stem,words)
+            #text = " ".join(w)
         return text
