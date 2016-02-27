@@ -19,6 +19,9 @@ public class RankEntity {
         // ...
         public void doublePut(String one, String two) {
             Integer value = 1;
+            if (hashX == null){
+                System.out.println("NULL!!!");
+            }
             if (hashX.containsKey(one)) {
                 hashX.put(one, new HashMap<String, Integer>());
             }
