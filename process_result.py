@@ -40,18 +40,26 @@ def output_top(data,dest,top):
     for tag in data:
         sorted_sub = sorted(data[tag].items(),key = lambda x:x[1], reverse=True)
         f.write("%s:\n" %tag)
+        i = 0
         for (k,v) in sorted_sub:
             k = unicode(k, "utf-8")
             f.write("\t"+k+":"+str(v)+"\n")
+            i+=1
+            if i>= top:
+                break
         for p in data[tag]:
             if p not in all_phrases:
                 all_phrases[p] = 0
             all_phrases[p] += 1
     sorted_all = sorted(all_phrases.items(),key = lambda x:x[1], reverse=True)
     f.write("ALL:\n")
+    i=0
     for (k,v) in sorted_all:
         k = unicode(k, "utf-8")
         f.write("\t"+k+":"+str(v)+"\n")
+        i+=1
+            if i>= top:
+                break
     f.close()
 
 
