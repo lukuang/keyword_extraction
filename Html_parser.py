@@ -30,7 +30,7 @@ class Html_parser(object):
         except lxml.etree.ParserError as e:
             return None
 
-        text = article.title + "\n" + article.cleaned_text 
+        text = article.title + ".\n" + article.cleaned_text 
         if self._need_stem:
             text = re.sub("\w+",do_stem,text)
             #words = re.findall("\w+",text,re.MULTILINE)

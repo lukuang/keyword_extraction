@@ -33,15 +33,15 @@ public class RankEntity {
 
         public void show(){
             System.out.println(hashX);
-            for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
-                String tag = tagEntry.getKey();
-                System.out.println(tag+":");
-                for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
-                    String phrase = phraseEntry.getKey();
-                    Integer count = phraseEntry.getValue();
-                    System.out.println("\t"+phrase+":"+count);
-                }
-            }
+            // for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
+            //     String tag = tagEntry.getKey();
+            //     System.out.println(tag+":");
+            //     for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
+            //         String phrase = phraseEntry.getKey();
+            //         Integer count = phraseEntry.getValue();
+            //         System.out.println("\t"+phrase+":"+count);
+            //     }
+            // }
         }
 
         public Map<String, HashMap<String, Integer>> get_hash(){
