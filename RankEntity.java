@@ -32,6 +32,8 @@ public class RankEntity {
         }
 
         public void show(){
+            System.out.println(hashX);
+            return;
             for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
                 String tag = tagEntry.getKey();
                 System.out.println(tag+":");
