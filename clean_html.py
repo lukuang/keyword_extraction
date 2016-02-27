@@ -30,6 +30,14 @@ def get_files(a_dir,top):
             files.append(f)
     return files
 
+def gene_text_single_dir(parser,source_dir,dest_dir,top):
+    files = get_files(source_dir,top)
+    for f in files:
+        dest_file = os.path.join(dest_dir,f)
+        text = parser.get_text(os.path.join(source_dir,f))
+        with codecs.open(dest_file,"w","utf-8") as of:
+            of.write(text)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -41,13 +49,8 @@ def main():
     args=parser.parse_args()
 
     parser = Html_parser(args.need_stem)
-
-    files = get_files(args.source_dir,args.top)
-    for f in files:
-        dest_file = os.path.join(args.dest_dir,f)
-        text = parser.get_text(os.path.join(args.source_dir,f))
-        with codecs.open(dest_file,"w","utf-8") as of:
-            of.write(text)
+    gene_text_single_dir(parser,args.source_dir,args.dest_dir,args.top)
+    
 
 
 
