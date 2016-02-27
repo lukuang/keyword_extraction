@@ -20,8 +20,8 @@ public class RankEntity {
     /* For either a file to annotate or for the hardcoded text example, this
        demo file shows several ways to process the input, for teaching purposes.
     */
-    source_dir = args[0]
-    dest_dir = args[1]
+    source_dir = args[0];
+    dest_dir = args[1];
     File[] directories = new File(source_dir).listFiles(File::isDirectory);
     for(File path: directories){
         System.out.print(getAbsolutePath() );
