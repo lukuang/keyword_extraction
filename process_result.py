@@ -50,7 +50,8 @@ def output_top(data,dest,top):
     sorted_all = sorted(all_phrases.items(),key = lambda x:x[1], reverse=True)
     f.write("ALL:\n")
     for (k,v) in sorted_all:
-        f.write("\t%s:%d\n" %(k,v))
+        k = unicode(k, "utf-8")
+        f.write("\t"+k+":"+str(v)+"\n")
     f.close()
 
 
