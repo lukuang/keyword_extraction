@@ -24,10 +24,27 @@ public class RankEntity {
     String dest_dir = args[1];
     File[] directories = new File(source_dir).listFiles(File::isDirectory);
     for(File path: directories){
-        System.out.print(path.getAbsolutePath() );
+        System.out.println(path.getAbsolutePath() );
         File[] files = path.listFiles(File::isFile);
         for (File file_path: files){
-            System.out.print("\t"+file_path.getAbsolutePath() );
+            String abspath = file_path.getAbsolutePath()
+            System.out.print("\t"+ abspath);
+            
+            String fileContents = IOUtils.slurpFile(abspath);
+            List<List<CoreLabel>> out = classifier.classify(fileContents);
+            for (List<CoreLabel> sentence : out) {
+                for (CoreLabel word : sentence) {
+                  System.out.print(word.word() + '/' + word.get(CoreAnnotations.AnswerAnnotation.class) + ' ');
+                }
+                System.out.println();
+            }
+            System.out.println("---");
+
+            List<Triple<String, Integer, Integer>> list = classifier.classifyToCharacterOffsets(fileContents);
+            for (Triple<String, Integer, Integer> item : list) {
+                System.out.println(item.first() + ": " + fileContents.substring(item.second(), item.third()));
+            }
+            System.out.println("---");
             break;
         }
         System.out.println("---");
