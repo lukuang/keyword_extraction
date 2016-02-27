@@ -19,13 +19,13 @@ def get_json(source):
             if m is not None:
                 tag = m.group(1)
                 data[tag] = {}
-            elif:
+            else:
                 m = re.search("^(\w+):(\d+)$")
                 if m is not None:
                     data[tag][m.group(1)] = int(m.group(2))
-            else:
-                print "line did not match:"
-                print line
+                else:
+                    print "line did not match:"
+                    print line
     with open(source+".json","w") as f:
         f.write(json.dumps(data))
 
