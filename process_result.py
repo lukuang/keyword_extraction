@@ -50,7 +50,7 @@ def output_top(data,dest,top):
         for p in data[tag]:
             if p not in all_phrases:
                 all_phrases[p] = 0
-            all_phrases[p] += 1
+            all_phrases[p] += data[tag][p]
     sorted_all = sorted(all_phrases.items(),key = lambda x:x[1], reverse=True)
     f.write("ALL:\n")
     i=0
