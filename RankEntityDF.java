@@ -8,7 +8,7 @@ import edu.stanford.nlp.util.Triple;
 import java.io.File;
 import java.util.*;
 
-public class RankEntity {
+public class RankEntityDF {
   
   private static class MyWrapper {
         private HashMap<String, HashMap<String, Integer>> hashX;
