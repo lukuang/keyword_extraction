@@ -75,7 +75,7 @@ public class RankEntity {
         for (File file_path: files){
             String abspath = file_path.getAbsolutePath();
             //System.out.println("\t"+ abspath);
-            file_hash = new HashMap <String, Integer>();
+            HashMap <String, Integer> file_hash = new HashMap <String, Integer>();
             String fileContents = IOUtils.slurpFile(abspath);
 
             List<Triple<String, Integer, Integer>> list = classifier.classifyToCharacterOffsets(fileContents);
