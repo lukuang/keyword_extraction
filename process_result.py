@@ -23,9 +23,9 @@ def get_json(source):
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^\t(.+?):(\d+)$",line)
+                m = re.search("^\t(.+?):(.+)$",line)
                 if m is not None:
-                    data[tag][m.group(1)] = int(m.group(2))
+                    data[tag][m.group(1)] = float(m.group(2))
                 else:
                     print "line did not match:"
                     print line
