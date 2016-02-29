@@ -84,7 +84,7 @@ public class RankEntityDFDiscounted {
             Matcher m = r.matcher(name);
             Float value = 0.0;
             if (m.find( )) {
-                value = 1.0/(Math.log(Float(m.group(1)))/Math.log(2.0));
+                value = 1.0/(Math.log(Float.parseFloat(m.group(1)))/Math.log(2.0));
             }
             else{
                 continue;
