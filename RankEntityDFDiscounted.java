@@ -81,10 +81,10 @@ public class RankEntityDFDiscounted {
             String name = file_path.getName();
             String pattern = "(\\d+)-\\d+";
             Pattern r = Pattern.compile(pattern);
-            Matcher m = r.matcher(line);
+            Matcher m = r.matcher(name);
             Float value = 0.0;
             if (m.find( )) {
-                value = 1.0/(log(Double(m.group(1)))/log(2.0));
+                value = 1.0/(Math.log(Float(m.group(1)))/Math.log(2.0));
             }
             else{
                 continue;
