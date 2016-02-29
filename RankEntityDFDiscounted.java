@@ -14,18 +14,18 @@ import java.lang.Math;
 public class RankEntityDFDiscounted {
   
   private static class MyWrapper {
-        private HashMap<String, HashMap<String, Float>> hashX;
+        private HashMap<String, HashMap<String, Double>> hashX;
 
         public MyWrapper(){
-            hashX = new HashMap<String, HashMap<String, Float>>();
+            hashX = new HashMap<String, HashMap<String, Double>>();
         }
         // ...
-        public void doublePut(String one, String two, Float value) {
+        public void doublePut(String one, String two, Double value) {
             if (hashX == null){
                 System.out.println("NULL!!!");
             }
             if (hashX.get(one) == null ) {
-                hashX.put(one, new HashMap<String, Float>());
+                hashX.put(one, new HashMap<String, Double>());
             }
             if (hashX.get(one).get(two)!= null){
                 value += hashX.get(one).get(two);
@@ -39,18 +39,18 @@ public class RankEntityDFDiscounted {
             //String jsonText = out.toString();
             //System.out.print(jsonText);
             //System.out.println(hashX);
-            for (Map.Entry<String, HashMap<String, Float>> tagEntry : hashX.entrySet()) {
+            for (Map.Entry<String, HashMap<String, Double>> tagEntry : hashX.entrySet()) {
                 String tag = tagEntry.getKey();
                 System.out.println(tag+":");
-                for (Map.Entry<String, Float> phraseEntry : tagEntry.getValue().entrySet()) {
+                for (Map.Entry<String, Double> phraseEntry : tagEntry.getValue().entrySet()) {
                     String phrase = phraseEntry.getKey();
-                    Float count = phraseEntry.getValue();
+                    Double count = phraseEntry.getValue();
                     System.out.println("\t"+phrase+":"+count);
                 }
             }
         }
 
-        public Map<String, HashMap<String, Float>> get_hash(){
+        public Map<String, HashMap<String, Double>> get_hash(){
             return hashX;
         }
     }
@@ -82,9 +82,9 @@ public class RankEntityDFDiscounted {
             String pattern = "(\\d+)-\\d+";
             Pattern r = Pattern.compile(pattern);
             Matcher m = r.matcher(name);
-            Float value = 0.0f;
+            Double value = 0;
             if (m.find( )) {
-                value = 1.0f/(Math.log(Float.parseFloat(m.group(1)))/Math.log(2.0));
+                value = 1/(Math.log(Double.parseDouble(m.group(1)))/Math.log(2.0));
             }
             else{
                 continue;
