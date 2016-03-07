@@ -58,8 +58,8 @@ def main():
         args_run_java[3] = java_file
         p = subprocess.Popen(args_run_java, stdout=subprocess.PIPE)
         output = p.communicate()[0]
-        file_name = os.path.join(args.entity_dir,java_files[java_file]+"all_entity")
-        with open(file_name) as f:
+        file_name = os.path.join(args.entity_dir,java_files[java_file]+"_all_entity")
+        with open(file_name,'w') as f:
             f.write(output)
         args_process_result[2] = file_name
         args_process_result[3] = os.path.join(args.entity_dir,java_files[java_file])
