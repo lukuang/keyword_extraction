@@ -38,6 +38,7 @@ def main():
     }
 
     os.chdir(args.src_dir)
+    print os.getcwd()
     args_run_java = [
         'java',
         '-cp',
