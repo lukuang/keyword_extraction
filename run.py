@@ -73,9 +73,9 @@ def main():
     os.chdir(args.src_dir)
     for instance in instance_names:
         print "for %s" %instance
-        source_dir = os.path.join(args.top_dir,"raw",args.disaster_name,instace)
-        dest_dir = os.path.join(args.top_dir,"clean_text",args.disaster_name,instace)
-        entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name,instace)
+        source_dir = os.path.join(args.top_dir,"raw",args.disaster_name,instance)
+        dest_dir = os.path.join(args.top_dir,"clean_text",args.disaster_name,instance)
+        entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name,instance)
 
         call_clean_html(source_dir, dest_dir, args.top)
 
