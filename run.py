@@ -38,7 +38,6 @@ def main():
     }
 
     os.chdir(args.src_dir)
-    print os.getcwd() 
     args_run_java = [
         'java',
         '-cp',
@@ -56,7 +55,7 @@ def main():
 
     for java_file in java_files:
         args_run_java[3] = java_file
-        print args_run_java
+        print " ".args_run_java
         p = subprocess.Popen(args_run_java, stdout=subprocess.PIPE)
         output = p.communicate()[0]
         file_name = os.path.join(args.entity_dir,java_files[java_file]+"_all_entity")
