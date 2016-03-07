@@ -19,7 +19,7 @@ def check(file_name, top,first_only):
         page = int(m.group(1))
         if page <= top:
             if first_only:
-                if int(m.group(2)) == 0:
+                if int(m.group(2)) == 1:
                     return True
             else:    
                 return True
