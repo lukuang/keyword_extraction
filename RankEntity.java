@@ -66,7 +66,6 @@ public class RankEntity {
        demo file shows several ways to process the input, for teaching purposes.
     */
     String source_dir = args[0];
-    String dest_dir = args[1];
     MyWrapper counts = new MyWrapper();
     File[] directories = new File(source_dir).listFiles(File::isDirectory);
     for(File path: directories){
