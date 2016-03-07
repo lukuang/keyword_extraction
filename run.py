@@ -37,7 +37,7 @@ def main():
         "RankEntityDFDiscounted" : "dfd"
     }
 
-    os.chdir(src_dir)
+    os.chdir(args.src_dir)
 
     args_run_java = [
         'java',
