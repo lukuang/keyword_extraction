@@ -43,7 +43,7 @@ def output_top(data,dest,top):
         i = 0
         for (k,v) in sorted_sub:
             k = unicode(k, "utf-8")
-            f.write("\t"+k+":"+str(v)+"\n")
+            f.write("\t" + k + ":"+str(v)+"\n")
             i+=1
             if i>= top:
                 break

@@ -13,7 +13,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source_dir")
     parser.add_argument("dest_dir")
-    parseradd_argument("entity_dir")
+    parser.add_argument("entity_dir")
     parser.add_argument("--src_dir","-s", default="/lustre/scratch/lukuang/keyphrase_extraction/src")
     parser.add_argument("--top",'-t',type=int,default=10)
     args=parser.parse_args()
