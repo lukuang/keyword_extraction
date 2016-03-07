@@ -61,17 +61,26 @@ def gene_entities(dest_dir,entity_dir):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("source_dir")
-    parser.add_argument("dest_dir")
-    parser.add_argument("entity_dir")
+    parser.add_argument("disaster_name")
+    parser.add_argument("top_dir")
     parser.add_argument("--src_dir","-s", default="/lustre/scratch/lukuang/keyphrase_extraction/src")
     parser.add_argument("--top",'-t',type=int,default=10)
     args=parser.parse_args()
     
-    call_clean_html(args.source_dir, args.dest_dir, args.top)
-
+    args.top_dir = os.path.abspath(args.top_dir)
+    raw_dir = os.path.join(args.top_dir, "raw",args.disaster_name)
+    instance_names = os.walk(raw_dir).next()[1]
     os.chdir(args.src_dir)
-    gene_entities(args.dest_dir,args.entity_dir)
+    for instance in instance_names:
+        print "for %s" %instance
+        source_dir = os.path.join(args.top_dir,"raw",args.disaster_name,instace)
+        dest_dir = os.path.join(args.top_dir,"clean_text",args.disaster_name,instace)
+        entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name,instace)
+
+        call_clean_html(source_dir, dest_dir, args.top)
+
+    
+        gene_entities(dest_dir,entity_dir)
     
 
 
