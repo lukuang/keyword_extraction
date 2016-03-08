@@ -12,7 +12,7 @@ from myUtility.wikiapi import *
 
 
 
-def get_top_ranked_entities(entity_profiles, top):
+def get_top_ranked_entities(entity_profiles):
     #wikipedia_caller = Wikipedia()
     #wikidata_caller = Wikidata()
     top_ranked_entities = {}
