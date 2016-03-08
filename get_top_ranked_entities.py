@@ -36,8 +36,8 @@ def get_top_ranked_entities(entity_profiles):
                 top_ranked_entities["if"][entity_type] = {}
             for entity in entity_profiles["df"][instance][entity_type]:
                 if entity not in top_ranked_entities["if"][entity_type]:
-                    top_ranked_entities[metric][entity_type][entity] = 0
-                top_ranked_entities[metric][entity_type][entity] += 1
+                    top_ranked_entities["if"][entity_type][entity] = 0
+                top_ranked_entities["if"][entity_type][entity] += 1
 
     return top_ranked_entities
 
