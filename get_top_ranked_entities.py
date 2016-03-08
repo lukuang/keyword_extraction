@@ -77,8 +77,8 @@ def write_to_file(entity_types,output_file):
                 sorted_cates = sorted(entity_types[metric][entity_type].items(),key = lambda x:x[1], reverse=True)
                 for (k,v) in sorted_cates:
                     f.write('\t\t\t"%s": %f,\n' %(k,v) ) 
-                f.write('\t\t}\n')
-            f.write('\t}\n')
+                f.write('\t\t},\n')
+            f.write('\t},\n')
 
         f.write("}")
 
