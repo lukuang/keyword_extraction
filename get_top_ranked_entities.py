@@ -100,9 +100,9 @@ def main():
 
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
     top_ranked_entities = get_top_ranked_entities(entity_profiles)
-    #with open('tmp',"w") as f:
-    #    f.write(json.dumps(top_ranked_entities) )
-    #return
+    with open('tmp',"w") as f:
+        f.write(json.dumps(top_ranked_entities) )
+    return
     entity_types = get_top_ranked_entity_types(top_ranked_entities)
     write_to_file(entity_types,args.output_file)
 
