@@ -58,6 +58,7 @@ def main():
     ]
 
     entity_sub_dirs = get_dirs(args.entity_dir,args.disaster_name)
+    print entity_sub_dirs
     entity_profiles = get_profiles(entity_sub_dirs, name_patterns)
     show(entity_profiles)
 
