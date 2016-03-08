@@ -15,7 +15,7 @@ def get_entity_cate(entity):
     wikidata_caller = Wikidata()
     entity_name = wikipedia_caller.get_entity_name(entity)
     entity_info = wikidata_caller.get_entity_info_by_name(entity_name)
-    return {entiy: entity_info['class_info']}
+    return {entity: entity_info['class_info']}
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
