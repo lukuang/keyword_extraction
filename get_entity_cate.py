@@ -11,8 +11,11 @@ from myUtility.wikiapi import *
 
 
 def get_entity_cate(entity,wikipedia_caller,wikidata_caller):
-    
-    entity_name = wikipedia_caller.get_entity_name(entity)
+    try:
+        entity_name = wikipedia_caller.get_entity_name(entity)
+    except wikiexceptions.ResultErrorException:
+        print "cannot find an entity for name %s" entity
+        return None
     try:
         entity_info = wikidata_caller.get_entity_info_by_name(entity_name)
     except wikiexceptions.NoClassException:
