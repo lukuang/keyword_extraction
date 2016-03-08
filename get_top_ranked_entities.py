@@ -47,8 +47,9 @@ def get_top_ranked_entity_types(top_ranked_entities):
                     for cid in entity_cate:
                         cate = entity_cate[cid]
                         if cate not in top_ranked_entity_types[metric][entity_type]:
-                            pass
-
+                            top_ranked_entity_types[metric][entity_type][cate] = 0
+                        top_ranked_entity_types[metric][entity_type][cate] +=  top_ranked_entities[metric][instance][entity_type][entity]
+    return top_ranked_entity_types
 
 
 
@@ -68,8 +69,8 @@ def main():
 
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
     top_ranked_entities = get_top_ranked_entities(entity_profiles)
-    #entity_types = get_top_ranked_entity_types(top_ranked_entities)
-    show(top_ranked_entities)
+    entity_types = get_top_ranked_entity_types(top_ranked_entities)
+    show(entity_types)
 
 if __name__=="__main__":
     main()
