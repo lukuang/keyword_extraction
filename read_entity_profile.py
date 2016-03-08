@@ -48,8 +48,17 @@ def get_dirs(entity_dir,disaster_name):
 
 
 def show(entity_profiles):
+    """
+    debug porpuse
+    """
     print json.dumps(entity_profiles,sort_keys=True, indent=4)
 
+
+def read_entity_profile(entity_dir,disaster_name, name_patterns,required_entity_types):
+    entity_sub_dirs = get_dirs(args.entity_dir,args.disaster_name)
+    #print entity_sub_dirs
+    entity_profiles = get_profiles(entity_sub_dirs, args.name_patterns, args.required_entity_types)
+    return entity_profiles
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -64,10 +73,8 @@ def main():
 
     args=parser.parse_args()
 
-
-    entity_sub_dirs = get_dirs(args.entity_dir,args.disaster_name)
-    print entity_sub_dirs
-    entity_profiles = get_profiles(entity_sub_dirs, args.name_patterns, args.required_entity_types)
+    entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
+    
     show(entity_profiles)
 
 
