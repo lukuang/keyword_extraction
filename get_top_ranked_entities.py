@@ -47,6 +47,7 @@ def get_top_ranked_entity_types(top_ranked_entities):
                     for cid in entity_cate:
                         cate = entity_cate[cid]
                         if cate not in top_ranked_entity_types[metric][entity_type]:
+                            pass
 
 
 
