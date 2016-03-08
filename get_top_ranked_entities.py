@@ -27,9 +27,29 @@ def get_top_ranked_entities(entity_profiles):
                     if entity not in top_ranked_entities[metric][entity_type]:
                         #top_ranked_entities[metric][entity_type][entity] = entity_profiles[metric][instance][entity_type][entity]
                         top_ranked_entities[metric][entity_type][entity] = 0
-                        top_ranked_entities[metric][entity_type][entity] += 1
+                    top_ranked_entities[metric][entity_type][entity] += 1
 
     return top_ranked_entities
+
+def get_top_ranked_entity_types(top_ranked_entities):
+    wikipedia_caller = Wikipedia()
+    wikidata_caller = Wikidata()
+    top_ranked_entity_types = {}
+    for metric in top_ranked_entities:
+        if metric not in top_ranked_entity_types:
+            top_ranked_entity_types[metric] = {}
+        for instance in top_ranked_entities[metric]:
+            for entity_type in top_ranked_entities[metric][instance]:
+                if entity_type not in top_ranked_entity_types[metric]:
+                    top_ranked_entity_types[metric][entity_type] = {}
+                for entity in top_ranked_entities[metric][instance][entity_type]:
+                    entity_cate = get_entity_cate(entity,wikipedia_caller,wikidata_caller)
+                    for cid in entity_cate:
+                        cate = entity_cate[cid]
+                        if cate not in top_ranked_entity_types[metric][entity_type]:
+
+
+
 
 
 
@@ -47,6 +67,7 @@ def main():
 
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
     top_ranked_entities = get_top_ranked_entities(entity_profiles)
+    #entity_types = get_top_ranked_entity_types(top_ranked_entities)
     show(top_ranked_entities)
 
 if __name__=="__main__":
