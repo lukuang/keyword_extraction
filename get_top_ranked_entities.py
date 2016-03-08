@@ -8,6 +8,7 @@ import sys
 import re
 import argparse
 from read_entity_profile import read_entity_profile, show
+from get_entity_cate import get_entity_cate
 from myUtility.wikiapi import *
 
 
