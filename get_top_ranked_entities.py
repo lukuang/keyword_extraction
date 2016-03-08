@@ -69,7 +69,20 @@ def get_top_ranked_entity_types(top_ranked_entities):
 
 def write_to_file(entity_types,output_file):
     with codecs.open(output_file,"w",'utf-8') as f:
-        f.write(json.dumps(entity_types,sort_keys=True))
+        f.write("{\n")
+        for metric in entity_types:
+            f.write('\t"%s" :{\n' %metric)
+            for entity_type in entity_types[metric]:
+                f.write('\t\t"%s" :{\n' %entity_type)
+                sorted_cates = sorted(entity_types[metric][entity_type].items(),key = lambda x:x[1], reverse=True)
+                for (k,v) in sorted_cates:
+                    f.write('\t\t\t"%s": %f,\n',%k,v) 
+                f.write('\t\t}\n')
+            f.write('\t}\n')
+
+        f.write("}")
+
+        #f.write(json.dumps(entity_types,sort_keys=True))
 
 
 def main():
