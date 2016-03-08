@@ -27,9 +27,9 @@ def get_top_ranked_entities(entity_profiles):
                     top_ranked_entities[metric][entity_type] = {}
                 for entity in entity_profiles[metric][instance][entity_type]:
                     if entity not in top_ranked_entities[metric][entity_type]:
-                        top_ranked_entities[metric][entity_type][entity] = entity_profiles[metric][instance][entity_type][entity]
-                        #top_ranked_entities[metric][entity_type][entity] = 0
-                    #top_ranked_entities[metric][entity_type][entity] += 1
+                        #top_ranked_entities[metric][entity_type][entity] = entity_profiles[metric][instance][entity_type][entity]
+                        top_ranked_entities[metric][entity_type][entity] = 0
+                    top_ranked_entities[metric][entity_type][entity] += entity_profiles[metric][instance][entity_type][entity]
     for instance in  entity_profiles["df"]:
         for entity_type in entity_profiles["df"][instance]:
             if entity_type not in top_ranked_entities["if"]:
@@ -100,9 +100,9 @@ def main():
 
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
     top_ranked_entities = get_top_ranked_entities(entity_profiles)
-    with open('tmp',"w") as f:
-        f.write(json.dumps(top_ranked_entities) )
-    return
+    #with open('tmp',"w") as f:
+    #    f.write(json.dumps(top_ranked_entities) )
+    #return
     entity_types = get_top_ranked_entity_types(top_ranked_entities)
     write_to_file(entity_types,args.output_file)
 
