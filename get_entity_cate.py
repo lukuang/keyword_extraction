@@ -13,8 +13,14 @@ from myUtility.wikiapi import *
 def get_entity_cate(entity,wikipedia_caller,wikidata_caller):
     
     entity_name = wikipedia_caller.get_entity_name(entity)
-    entity_info = wikidata_caller.get_entity_info_by_name(entity_name)
-    return entity_info['class_info']
+    try:
+        entity_info = wikidata_caller.get_entity_info_by_name(entity_name)
+    except wikiexceptions.NoClassException:
+        print "entity %s has no class info" %entity_name
+        return None
+
+    else:
+        return entity_info['class_info']
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
