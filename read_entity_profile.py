@@ -34,6 +34,7 @@ def get_profiles(entity_sub_dirs, name_patterns):
         for sub_dir in entity_sub_dirs:
             file_path = os.path.join(sub_dir,name)
             entity_profiles[name][sub_dir] = read_single_file(file_path)
+    return entity_profiles
 
 
 def get_dirs(entity_dir,disaster_name):
@@ -41,8 +42,10 @@ def get_dirs(entity_dir,disaster_name):
     print dir_location
     return [ os.path.join(dir_location,f) for f in os.walk(dir_location).next()[1]]
 
+
 def show(entity_profiles):
     print json.dumps(entity_profiles,sort_keys=True, indent=4)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
