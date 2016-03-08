@@ -55,9 +55,9 @@ def show(entity_profiles):
 
 
 def read_entity_profile(entity_dir,disaster_name, name_patterns,required_entity_types):
-    entity_sub_dirs = get_dirs(args.entity_dir,args.disaster_name)
+    entity_sub_dirs = get_dirs(entity_dir,disaster_name)
     #print entity_sub_dirs
-    entity_profiles = get_profiles(entity_sub_dirs, args.name_patterns, args.required_entity_types)
+    entity_profiles = get_profiles(entity_sub_dirs, name_patterns, required_entity_types)
     return entity_profiles
 
 def main():
