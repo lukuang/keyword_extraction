@@ -25,7 +25,7 @@ def read_single_file(file_path, required_entity_types = None):
                     print "line did not match:"
                     print line
     if required_entity_types is not None:
-        for tag in data
+        for tag in data:
             if tag not in required_entity_types:
                 data.pop(tag,None)
     return data
