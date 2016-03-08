@@ -17,6 +17,7 @@ def get_top_ranked_entities(entity_profiles):
     #wikipedia_caller = Wikipedia()
     #wikidata_caller = Wikidata()
     top_ranked_entities = {}
+    top_ranked_entities["if"] = {}
     for metric in entity_profiles:
         if metric not in top_ranked_entities:
             top_ranked_entities[metric] = {}
@@ -29,6 +30,14 @@ def get_top_ranked_entities(entity_profiles):
                         top_ranked_entities[metric][entity_type][entity] = entity_profiles[metric][instance][entity_type][entity]
                         #top_ranked_entities[metric][entity_type][entity] = 0
                     #top_ranked_entities[metric][entity_type][entity] += 1
+    for instance in  entity_profiles["df"]:
+        for entity_type in entity_profiles["df"][instance]:
+            if entity_type not in top_ranked_entities["if"]:
+                top_ranked_entities["if"][entity_type] = {}
+            for entity in entity_profiles["df"][instance][entity_type]:
+                if entity not in top_ranked_entities["if"][entity_type]:
+                    top_ranked_entities[metric][entity_type][entity] = 0
+                top_ranked_entities[metric][entity_type][entity] += 1
 
     return top_ranked_entities
 
@@ -62,6 +71,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("entity_dir")
+    parser.add_argument("")
     parser.add_argument("--required_entity_types", "-r",nargs='+',default=["ORGANIZATION"])
     parser.add_argument("--name_patterns", "-n",nargs='+', default=[
         'df',
@@ -73,7 +83,7 @@ def main():
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
     top_ranked_entities = get_top_ranked_entities(entity_profiles)
     entity_types = get_top_ranked_entity_types(top_ranked_entities)
-    show(entity_types)
+    write_to_file(entity_types)
 
 if __name__=="__main__":
     main()
