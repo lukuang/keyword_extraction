@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 
-def read_single_file(file_path, required_entity_types = None):
+def read_single_file(file_path, required_entity_types):
     data = {}
     with open(file_path,"r") as f:
         for line in f:
@@ -55,7 +55,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("entity_dir")
-    parser.add_argument("--required_entity_types", "-r",nargs='+', default=None)
+    parser.add_argument("--required_entity_types", "-r",nargs='+', const=["ORGANIZATION"],default=None)
     parser.add_argument("--name_patterns", "-n",nargs='+', default=[
         'df',
         'dfd',
