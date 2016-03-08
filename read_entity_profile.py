@@ -38,7 +38,7 @@ def get_profiles(entity_sub_dirs, name_patterns):
 
 def get_dirs(entity_dir,disaster_name):
     dir_location = os.path.join(entity_dir,disaster_name)
-    return [ os.path.join(dir_location,f) for f in os.walk(dir_locations).next()[1]]
+    return [ os.path.join(dir_location,f) for f in os.walk(dir_location).next()[1]]
 
 def show(entity_profiles):
     print json.dumps(entity_profiles,sort_keys=True, indent=4)
