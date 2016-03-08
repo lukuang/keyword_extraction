@@ -17,7 +17,7 @@ def get_top_ranked_entities(entity_profiles):
     #wikidata_caller = Wikidata()
     top_ranked_entities = {}
     for metric in entity_profiles:
-        if metric is not in top_ranked_entities:
+        if metric not in top_ranked_entities:
             top_ranked_entities[metric] = {}
         for instance in entity_profiles[metric]:
             for entity_type in entity_profiles[metric][instance]:
@@ -41,7 +41,6 @@ def main():
         'dfd',
         'tf'
     ])
-    args=parser.parse_args()
     args=parser.parse_args()
 
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
