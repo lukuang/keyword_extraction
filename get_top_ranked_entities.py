@@ -10,7 +10,7 @@ import argparse
 from read_entity_profile import read_entity_profile, show
 from get_entity_cate import get_entity_cate
 from myUtility.wikiapi import *
-
+import codecs
 
 
 def get_top_ranked_entities(entity_profiles):
@@ -65,13 +65,16 @@ def get_top_ranked_entity_types(top_ranked_entities):
 
 
 
+def write_to_file(entity_types,output_file):
+    with codecs.open(output_file,"w",'utf-8') as f:
+        f.write(json.dumps(entity_types))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("entity_dir")
-    #parser.add_argument("")
+    parser.add_argument("output_file")
     parser.add_argument("--required_entity_types", "-r",nargs='+',default=["ORGANIZATION"])
     parser.add_argument("--name_patterns", "-n",nargs='+', default=[
         'df',
@@ -83,7 +86,7 @@ def main():
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
     top_ranked_entities = get_top_ranked_entities(entity_profiles)
     entity_types = get_top_ranked_entity_types(top_ranked_entities)
-    write_to_file(entity_types)
+    write_to_file(entity_types,output_file)
 
 if __name__=="__main__":
     main()
