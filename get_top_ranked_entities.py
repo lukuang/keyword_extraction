@@ -21,7 +21,7 @@ def get_top_ranked_entities(entity_profiles):
             top_ranked_entities[metric] = {}
         for instance in entity_profiles[metric]:
             for entity_type in entity_profiles[metric][instance]:
-                if entity_type is not in top_ranked_entities[metric]:
+                if entity_type not in top_ranked_entities[metric]:
                     top_ranked_entities[metric][entity_type] = {}
                 for entity in entity_profiles[metric][instance][entity_type]:
                     if entity not in top_ranked_entities[metric][entity_type]:
