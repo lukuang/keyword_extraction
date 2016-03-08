@@ -38,17 +38,16 @@ def get_top_ranked_entity_types(top_ranked_entities):
     for metric in top_ranked_entities:
         if metric not in top_ranked_entity_types:
             top_ranked_entity_types[metric] = {}
-        for instance in top_ranked_entities[metric]:
-            for entity_type in top_ranked_entities[metric][instance]:
-                if entity_type not in top_ranked_entity_types[metric]:
-                    top_ranked_entity_types[metric][entity_type] = {}
-                for entity in top_ranked_entities[metric][instance][entity_type]:
-                    entity_cate = get_entity_cate(entity,wikipedia_caller,wikidata_caller)
-                    for cid in entity_cate:
-                        cate = entity_cate[cid]
-                        if cate not in top_ranked_entity_types[metric][entity_type]:
-                            top_ranked_entity_types[metric][entity_type][cate] = 0
-                        top_ranked_entity_types[metric][entity_type][cate] +=  top_ranked_entities[metric][instance][entity_type][entity]
+        for entity_type in top_ranked_entities[metric]:
+            if entity_type not in top_ranked_entity_types[metric]:
+                top_ranked_entity_types[metric][entity_type] = {}
+            for entity in top_ranked_entities[metric][entity_type]:
+                entity_cate = get_entity_cate(entity,wikipedia_caller,wikidata_caller)
+                for cid in entity_cate:
+                    cate = entity_cate[cid]
+                    if cate not in top_ranked_entity_types[metric][entity_type]:
+                        top_ranked_entity_types[metric][entity_type][cate] = 0
+                    top_ranked_entity_types[metric][entity_type][cate] +=  top_ranked_entities[metric][entity_type][entity]
     return top_ranked_entity_types
 
 
