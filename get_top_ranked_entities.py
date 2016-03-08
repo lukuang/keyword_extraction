@@ -12,7 +12,7 @@ from myUtility.wikiapi import *
 
 
 
-def get_top_ranked_entities(entity_profiles):
+def get_top_ranked_entities(entity_profiles, top):
     #wikipedia_caller = Wikipedia()
     #wikidata_caller = Wikidata()
     top_ranked_entities = {}
@@ -25,7 +25,9 @@ def get_top_ranked_entities(entity_profiles):
                     top_ranked_entities[metric][entity_type] = {}
                 for entity in entity_profiles[metric][instance][entity_type]:
                     if entity not in top_ranked_entities[metric][entity_type]:
-                        top_ranked_entities[metric][entity_type][entity] = entity_profiles[metric][instance][entity_type][entity]
+                        #top_ranked_entities[metric][entity_type][entity] = entity_profiles[metric][instance][entity_type][entity]
+                        top_ranked_entities[metric][entity_type][entity] = 0
+                        top_ranked_entities[metric][entity_type][entity] += 1
 
     return top_ranked_entities
 
