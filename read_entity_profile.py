@@ -50,7 +50,7 @@ def main():
 
     args=parser.parse_args()
 
-    name patterns = [
+    name_patterns = [
         'df',
         'dfd',
         'tf'
