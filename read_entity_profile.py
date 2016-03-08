@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 
-def read_single_file(file_path):
+def read_single_file(file_path, required_entity_types = None):
     data = {}
     with open(file_path,"r") as f:
         for line in f:
@@ -24,16 +24,20 @@ def read_single_file(file_path):
                 else:
                     print "line did not match:"
                     print line
+    if required_entity_types is not None:
+        for tag in data
+            if tag not in required_entity_types:
+                data.pop(tag,None)
     return data
 
 
-def get_profiles(entity_sub_dirs, name_patterns):
+def get_profiles(entity_sub_dirs, name_patterns,required_entity_types):
     entity_profiles = {}
     for name in name_patterns:
         entity_profiles[name] = {}
         for sub_dir in entity_sub_dirs:
             file_path = os.path.join(sub_dir,name)
-            entity_profiles[name][sub_dir] = read_single_file(file_path)
+            entity_profiles[name][sub_dir] = read_single_file(file_path,required_entity_types)
     return entity_profiles
 
 
@@ -51,18 +55,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("entity_dir")
-
-    args=parser.parse_args()
-
-    name_patterns = [
+    parser.add_argument("required_entity_types", nargs='+', default=None)
+    parser.add_argument("name_patterns", nargs='+', default=[
         'df',
         'dfd',
         'tf'
-    ]
+    ])
+
+    args=parser.parse_args()
+
 
     entity_sub_dirs = get_dirs(args.entity_dir,args.disaster_name)
     print entity_sub_dirs
-    entity_profiles = get_profiles(entity_sub_dirs, name_patterns)
+    entity_profiles = get_profiles(entity_sub_dirs, args.name_patterns, args.required_entity_types)
     show(entity_profiles)
 
 
