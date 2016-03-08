@@ -88,7 +88,6 @@ def main():
     entity_profiles = read_entity_profile(args.entity_dir,args.disaster_name, args.name_patterns,args.required_entity_types)
     top_ranked_entities = get_top_ranked_entities(entity_profiles)
     entity_types = get_top_ranked_entity_types(top_ranked_entities)
-    rank_result(entity_types)
     write_to_file(entity_types,args.output_file)
 
 if __name__=="__main__":
