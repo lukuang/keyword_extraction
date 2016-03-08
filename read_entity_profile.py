@@ -55,7 +55,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("entity_dir")
-    parser.add_argument("--required_entity_types", "-r",nargs='*', const=["ORGANIZATION"],default=None)
+    parser.add_argument("--required_entity_types", "-r",nargs='+',default=["ORGANIZATION"])
     parser.add_argument("--name_patterns", "-n",nargs='+', default=[
         'df',
         'dfd',
