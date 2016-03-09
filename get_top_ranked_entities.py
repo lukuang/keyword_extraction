@@ -45,9 +45,11 @@ def get_top_ranked_entity_types(top_ranked_entities):
     wikipedia_caller = Wikipedia()
     wikidata_caller = Wikidata()
     top_ranked_entity_types = {}
+    cate_entity_map = {}
     for metric in top_ranked_entities:
         if metric not in top_ranked_entity_types:
             top_ranked_entity_types[metric] = {}
+            cate_entity_map[metric] = {}
         for entity_type in top_ranked_entities[metric]:
             if entity_type not in top_ranked_entity_types[metric]:
                 top_ranked_entity_types[metric][entity_type] = {}
@@ -58,13 +60,18 @@ def get_top_ranked_entity_types(top_ranked_entities):
                 else:
                     for cid in entity_cate:
                         cate = entity_cate[cid]
+                        if cate not in cate_entity_map[metric]:
+                            cate_entity_map[metric][cate] = set()
+                        cate_entity_map[metric][cate].add(entity)
                         if cate not in top_ranked_entity_types[metric][entity_type]:
                             top_ranked_entity_types[metric][entity_type][cate] = 0
                         top_ranked_entity_types[metric][entity_type][cate] +=  top_ranked_entities[metric][entity_type][entity]
-    return top_ranked_entity_types
+    return top_ranked_entity_types, cate_entity_map
 
 
-
+def write_cate_entity_map(cate_entity_map):
+    with codecs.open("cate_entity_map.json","w",'utf-8') as f:
+        f.write(json.dumps(cate_entity_map,indent=4))
 
 
 def write_to_file(entity_types,output_file):
@@ -103,7 +110,8 @@ def main():
     #with open('tmp',"w") as f:
     #    f.write(json.dumps(top_ranked_entities) )
     #return
-    entity_types = get_top_ranked_entity_types(top_ranked_entities)
+    entity_types, cate_entity_map = get_top_ranked_entity_types(top_ranked_entities)
+    write_cate_entity_map(cate_entity_map)
     write_to_file(entity_types,args.output_file)
 
 if __name__=="__main__":
