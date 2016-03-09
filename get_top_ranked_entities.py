@@ -61,8 +61,9 @@ def get_top_ranked_entity_types(top_ranked_entities):
                     for cid in entity_cate:
                         cate = entity_cate[cid]
                         if cate not in cate_entity_map[metric]:
-                            cate_entity_map[metric][cate] = set()
-                        cate_entity_map[metric][cate].add(entity)
+                            cate_entity_map[metric][cate] = []
+                        if entity not in cate_entity_map[metric][cate]:
+                            cate_entity_map[metric][cate].append(entity)
                         if cate not in top_ranked_entity_types[metric][entity_type]:
                             top_ranked_entity_types[metric][entity_type][cate] = 0
                         top_ranked_entity_types[metric][entity_type][cate] +=  top_ranked_entities[metric][entity_type][entity]
