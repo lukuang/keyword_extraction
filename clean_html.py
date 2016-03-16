@@ -9,6 +9,7 @@ import re
 import argparse
 import codecs
 from Html_parser import Html_parser
+import langid
 
 
 
@@ -39,6 +40,10 @@ def gene_text_single_dir(parser,source_dir,dest_dir,top,first_only):
     for f in files:
         dest_file = os.path.join(dest_dir,f)
         text = parser.get_text(os.path.join(source_dir,f))
+        lan = langid.classify(text)[0]
+        if lan != 'en':
+            print "Skip non-english doc %s" %(dest_file)
+            continue
         with codecs.open(dest_file,"w","utf-8") as of:
             of.write(text)
 
