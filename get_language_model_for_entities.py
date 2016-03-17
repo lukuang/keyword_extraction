@@ -96,8 +96,9 @@ def main():
         sub_dirs = os.walk(source_dir).next()[1]
         documents[instance] = []
         for a_dir in sub_dirs:
-            for single_file in get_files(os.path.join(source_dir,a_dir)):
-                documents[instance][single_file] = Document(single_file,file_path = os.path.join(a_dir,f))
+            date_dir = os.path.join(source_dir,a_dir)
+            for single_file in get_files():
+                documents[instance][single_file] = Document(single_file,file_path = os.path.join(date_dir,f))
 
     show_documents(documents)#debug purpose
     #print json.documents(files,indent=4)
