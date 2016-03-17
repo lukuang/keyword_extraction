@@ -132,8 +132,9 @@ def main():
     #show_documents(documents)#debug purpose
     #print json.documents(files,indent=4)
     windows = get_all_sentence_windows(documents,entities_judgement)
-    for w in windows:
-        windows[w] = windows[w].model
+    for entity_type in windows:
+        for w in windows[entity_type]:
+            windows[entity_type][w] = windows[entity_type][w].model
     print json.dumps(windows,indent=4)
 
 if __name__=="__main__":
