@@ -15,11 +15,14 @@ def get_sentence_window(words,sentence,windows):
     Use the whole sentence as the context
     """
     for w in words:
-        if w not in windows:
-            windows[w] = []
+        
         if sentence.find(w) != -1:
             sentence.replace(w,"")
-        windows[w].append(Sentence(sentence,remove_stopwords=True).stemmed_text)
+            if w not in windows:
+                windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model.model
+            else:.model
+                windows[w] += Sentence(sentence,remove_stopwords=True).stemmed_model.model
+
 
 
 
