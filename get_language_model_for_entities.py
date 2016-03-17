@@ -91,6 +91,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("top_dir")
+    parser.add_argument("run_id",type=int)
     parser.add_argument("--entity_judgement_file","-e",default="entities_judgement.json")
     args=parser.parse_args()
     
@@ -100,10 +101,14 @@ def main():
 
     entities_judgement_data = json.loads(data)
     entities_judgement = {}
-    for single in entities_judgement_data:
-        q = single["query_string"]
-        single.pop("query_string",None)
-        entities_judgement[q] = single
+    single = entities_judgement_data[run_id-1]
+    q = single["query_string"]
+    single.pop("query_string",None)
+    entities_judgement[q] = single
+    #for single in entities_judgement_data:
+    #    q = single["query_string"]
+    #    single.pop("query_string",None)
+    #    entities_judgement[q] = single
 
     args.top_dir = os.path.abspath(args.top_dir)
     instance_names = entities_judgement.keys()
@@ -124,7 +129,7 @@ def main():
     #show_documents(documents)#debug purpose
     #print json.documents(files,indent=4)
     windows = get_all_sentence_windows(documents,entities_judgement)
-    print json.documents(windows,indent=4)
+    print json.dumps(windows,indent=4)
 
 if __name__=="__main__":
     main()
