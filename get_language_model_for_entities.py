@@ -76,7 +76,10 @@ def main():
     parser.add_argument("--entity_judgement_file","-e",default="entities_judgement.json")
     args=parser.parse_args()
     
-    entities_judgement_data = json.load(open(args.entity_judgement_file))
+    with open(args.entity_judgement_file) as f:
+        data = f.read()
+
+    entities_judgement_data = json.loads(data)
     entities_judgement = {}
     for single in entities_judgement_data:
         q = single["query_string"]
