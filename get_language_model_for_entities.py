@@ -97,7 +97,7 @@ def main():
         documents[instance] = []
         for a_dir in sub_dirs:
             date_dir = os.path.join(source_dir,a_dir)
-            for single_file in get_files():
+            for single_file in get_files(date_dir):
                 documents[instance][single_file] = Document(single_file,file_path = os.path.join(date_dir,f))
 
     show_documents(documents)#debug purpose
