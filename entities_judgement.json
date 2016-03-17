@@ -15,7 +15,7 @@
         "query_string": "2012_hurricane_isaac_tornado", 
         "LOCATION": ["Louisiana","Mississippi","New Orleans","St. Tammany Parish","LaPlace","Lake Pontchartrain","Mandeville","Slidell","Plaquemines","Pearl River","Alabama"], 
         "ORGANIZATION": ["Entergy"], 
-        "FACILITY": ["Lakeshore Drive","Cousin Street",]
+        "FACILITY": ["Lakeshore Drive","Cousin Street"]
     },
     {
         "query_string": "2012_leap_day_tornado", 
