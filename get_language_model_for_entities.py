@@ -7,6 +7,7 @@ import json
 import sys
 import re
 import argparse
+import codecs
 from myUtility.corpus import Document, Sentence
 
 
@@ -94,8 +95,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("top_dir")
+    parser.add_argument("dest_dir")
     parser.add_argument("run_id",type=int)
-    parser.add_argument("--entity_judgement_file","-e",default="entities_judgement.json")
+    parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
     args=parser.parse_args()
     
     data = ""
@@ -135,7 +137,9 @@ def main():
     for entity_type in windows:
         for w in windows[entity_type]:
             windows[entity_type][w] = windows[entity_type][w].model
-    print json.dumps(windows,indent=4)
+    with codecs.open(os.path.join(dest_dir,q),"w","utf-8") as f:
+        f.write(json.dumps(windows))
+    #print json.dumps(windows,indent=4)
 
 if __name__=="__main__":
     main()
