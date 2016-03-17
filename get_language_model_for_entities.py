@@ -62,8 +62,8 @@ def show_documents(documents):
     for instance in documents:
         print "%s:" %instance
         for single_file in documents[instance]:
-            for sentence in single_file.sentences:
-                print sentence
+            for sentence in documents[instance][single_file].sentences:
+                print "%s:%s" %single_file, sentence
             print "-"*20
         break
 
