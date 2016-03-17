@@ -43,7 +43,7 @@ def get_text_window(words,document,windows,window_size):
                 w_end = min(len(spaces)-1,window_size+w_size-1)
                 #window_string = document[0:spaces[w_end]]
                 window_string = document[m.end()+1:spaces[w_end]]
-            windows[w].append(Sentence(window_string,remove_stopwords=True))
+            windows[w].append(Sentence(window_string,remove_stopwords=True).stemmed_text)
 
 
 
