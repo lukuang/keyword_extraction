@@ -101,7 +101,7 @@ def main():
 
     entities_judgement_data = json.loads(data)
     entities_judgement = {}
-    single = entities_judgement_data[run_id-1]
+    single = entities_judgement_data[args.run_id-1]
     q = single["query_string"]
     single.pop("query_string",None)
     entities_judgement[q] = single
