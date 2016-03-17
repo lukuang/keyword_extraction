@@ -20,7 +20,7 @@ def get_sentence_window(words,sentence,windows):
             sentence.replace(w,"")
             if w not in windows:
                 windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model.model
-            else:.model
+            else:
                 windows[w] += Sentence(sentence,remove_stopwords=True).stemmed_model.model
 
 
