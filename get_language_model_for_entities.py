@@ -94,7 +94,7 @@ def main():
         print "for %s" %instance
         source_dir = os.path.join(args.top_dir,"clean_text",args.disaster_name,instance)
         sub_dirs = os.walk(source_dir).next()[1]
-        documents[instance] = []
+        documents[instance] = {}
         for a_dir in sub_dirs:
             date_dir = os.path.join(source_dir,a_dir)
             print date_dir
