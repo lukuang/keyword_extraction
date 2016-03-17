@@ -76,6 +76,7 @@ def main():
     parser.add_argument("--entity_judgement_file","-e",default="entities_judgement.json")
     args=parser.parse_args()
     
+    data = ""
     with open(args.entity_judgement_file) as f:
         data = f.read()
 
