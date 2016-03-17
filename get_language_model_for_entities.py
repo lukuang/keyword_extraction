@@ -68,14 +68,21 @@ def get_all_sentence_windows(documents,entities_judgement):
     windows = {}
     for instance in documents:
         print "%s:" %instance
+        words = []
         for entity_type in entities_judgement[instance]:
+            words += entities_judgement[instance][entity_type]
             if entity_type not in windows:
                 windows[entity_type] = {}
-            for single_file in documents[instance]:
-                print "process file %s" %single_file
-                for sentence in documents[instance][single_file].sentences:
-                    words = entities_judgement[instance][entity_type]
-                    get_sentence_window(words,sentence.text,windows[entity_type])
+        temp_windows = {}
+        for single_file in documents[instance]:
+            print "process file %s" %single_file
+            for sentence in documents[instance][single_file].sentences:
+                get_sentence_window(words,sentence.text,temp_windows)
+        for w in temp_windows:
+            for entity_type in entities_judgement[instance]:
+                if w in entities_judgement[instance][entity_type]:
+                    windows[entity_type][w] = temp_windows[w]
+                    break
         break
     return windows
 
@@ -111,7 +118,8 @@ def main():
             print date_dir
             for single_file in get_files(date_dir):
                 #print "open file %s" %os.path.join(date_dir,single_file)
-                documents[instance][single_file] = Document(single_file,file_path = os.path.join(date_dir,single_file))
+                single_file = os.path.join(date_dir,single_file)
+                documents[instance][single_file] = Document(single_file,file_path = single_file)
 
     #show_documents(documents)#debug purpose
     #print json.documents(files,indent=4)
