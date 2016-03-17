@@ -19,9 +19,9 @@ def get_sentence_window(words,sentence,windows):
         if sentence.find(w) != -1:
             sentence.replace(w,"")
             if w not in windows:
-                windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model.model
+                windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model
             else:
-                windows[w] += Sentence(sentence,remove_stopwords=True).stemmed_model.model
+                windows[w] += Sentence(sentence,remove_stopwords=True).stemmed_model
 
 
 
@@ -132,6 +132,8 @@ def main():
     #show_documents(documents)#debug purpose
     #print json.documents(files,indent=4)
     windows = get_all_sentence_windows(documents,entities_judgement)
+    for w in windows:
+        windows[w] = windows[w].model
     print json.dumps(windows,indent=4)
 
 if __name__=="__main__":
