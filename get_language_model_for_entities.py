@@ -19,7 +19,7 @@ def get_sentence_window(words,sentence,windows):
             windows[w] = []
         if sentence.find(w) != -1:
             sentence.replace(w,"")
-        windows[w].append(Sentence(sentence,remove_stopwords=True))
+        windows[w].append(Sentence(sentence,remove_stopwords=True).stemmed_text)
 
 
 
