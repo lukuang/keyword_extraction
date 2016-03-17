@@ -72,6 +72,7 @@ def get_all_sentence_windows(documents,entities_judgement):
             if entity_type not in windows:
                 windows[entity_type] = {}
             for single_file in documents[instance]:
+                print "process file %s" %single_file
                 for sentence in documents[instance][single_file].sentences:
                     words = entities_judgement[instance][entity_type]
                     get_sentence_window(words,sentence.text,windows[entity_type])
