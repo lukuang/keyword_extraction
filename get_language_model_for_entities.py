@@ -7,32 +7,31 @@ import json
 import sys
 import re
 import argparse
-from myUtility.corpus import Document
+from myUtility.corpus import Document, Sentence
 
 
-def get_sentence_window(words,sentence):
+def get_sentence_window(words,sentence,windows):
     """
     Use the whole sentence as the context
     """
-    windows = {}
     for w in words:
-        windows[w] = []
+        if w not in windows:
+            windows[w] = []
         if sentence.find(w) != -1:
             window_string.replace(w,"")
-        windows[w].append(Sentence(window_string))
-    return windows
+        windows[w].append(Sentence(window_string,remove_stopwords=True))
 
 
 
-def get_text_window(words,document,window_size):
+def get_text_window(words,document,windows,window_size):
     """
     Use a window as the context
     """
-    windows = {}
     spaces = [m.start() for m in re.finditer(' ', document)]
     for w in words:
-        w_size = w.count(" ")+1 
-        windows[w] = []
+        w_size = w.count(" ")+1
+        if w not in windows: 
+            windows[w] = []
         for m in re.finditer(w,document):
             start = m.start()-1
             if start in spaces:
@@ -44,10 +43,8 @@ def get_text_window(words,document,window_size):
                 w_end = min(len(spaces)-1,window_size+w_size-1)
                 #window_string = document[0:spaces[w_end]]
                 window_string = document[m.end()+1:spaces[w_end]]
-            windows[w].append(Sentence(window_string))
+            windows[w].append(Sentence(window_string,remove_stopwords=True))
 
-
-    return windows
 
 
 
@@ -67,6 +64,19 @@ def show_documents(documents):
             print "-"*20
         break
 
+def get_all_sentence_windows(documents,entities_judgement):
+    windows = {}
+    for instance in documents:
+        print "%s:" %instance
+        for entity_type in entities_judgement[instance]:
+            if entity_type not in windows:
+                windows[entity_type] = {}
+            for single_file in documents[instance]:
+                for sentence in documents[instance][single_file].sentences:
+                    words = entities_judgement[instance][entity_type]
+                    get_sentence_window(words,sentence.text,windows[entity_type])
+        break
+    return windows
 
 
 def main():
@@ -101,8 +111,10 @@ def main():
             for single_file in get_files(date_dir):
                 documents[instance][single_file] = Document(single_file,file_path = os.path.join(date_dir,single_file))
 
-    show_documents(documents)#debug purpose
+    #show_documents(documents)#debug purpose
     #print json.documents(files,indent=4)
+    windows = get_all_sentence_windows(documents,entities_judgement)
+    print json.documents(windows,indent=4)
 
 if __name__=="__main__":
     main()
