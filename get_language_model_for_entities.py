@@ -142,6 +142,7 @@ def main():
     with codecs.open(os.path.join(args.dest_dir,q),"w","utf-8") as f:
         f.write(json.dumps(windows))
     #print json.dumps(windows,indent=4)
+    print "finished"
 
 if __name__=="__main__":
     main()
