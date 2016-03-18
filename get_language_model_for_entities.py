@@ -18,7 +18,9 @@ def get_sentence_window(words,sentence,windows):
     for w in words:
         
         if sentence.find(w) != -1:
-            sentence.replace(w,"")
+            for t in words:
+                if sentence.find(t) != -1:
+                    sentence.replace(t,"")
             if w not in windows:
                 windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model
             else:
