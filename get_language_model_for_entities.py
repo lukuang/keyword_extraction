@@ -18,11 +18,11 @@ def get_sentence_window(words,sentence,windows):
     for w in words:
         
         if sentence.find(w) != -1:
-            print "found sentence %s" %sentence
+            #print "found sentence %s" %sentence
             for t in words:
                 if sentence.find(t) != -1:
                     sentence = sentence.replace(t,"")
-            print "after process %s" %sentence
+            #print "after process %s" %sentence
             if w not in windows:
                 windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model
             else:
