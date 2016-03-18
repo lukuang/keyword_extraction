@@ -17,9 +17,13 @@ def get_model_for_entities(source_dir):
         data = json.load(open(os.path.join(source_dir,instance)))
         for entity_type in data:
             if entity_type not in models:
-                models[entity_type] = Model(True,need_stem = True)
+                temp = Model(True,need_stem = True)
+                temp.normalize()
+                models[entity_type] = temp
             for entity in data[entity_type]:
-                models[entity_type] += Model(True,text_dict=data[entity_type][entity],need_stem=True,input_stemmed=True)
+                temp = Model(True,text_dict=data[entity_type][entity],need_stem=True,input_stemmed=True)
+                temp.normalize()
+                models[entity_type] += temp 
     return models
 
 def main():
