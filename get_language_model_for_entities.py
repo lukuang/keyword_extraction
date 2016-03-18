@@ -137,7 +137,7 @@ def main():
     for entity_type in windows:
         for w in windows[entity_type]:
             windows[entity_type][w] = windows[entity_type][w].model
-    with codecs.open(os.path.join(dest_dir,q),"w","utf-8") as f:
+    with codecs.open(os.path.join(args.dest_dir,q),"w","utf-8") as f:
         f.write(json.dumps(windows))
     #print json.dumps(windows,indent=4)
 
