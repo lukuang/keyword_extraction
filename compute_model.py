@@ -33,7 +33,7 @@ def main():
 
     models = get_model_for_entities(args.source_dir)
     for entity_type in models:
-        # print "%s:" %entity_type
+        print "%s:" %entity_type
         if args.normalize:
             models[entity_type].normalize()
         # print json.dumps(models[entity_type].model,indent=True)
