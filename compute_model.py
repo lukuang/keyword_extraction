@@ -39,7 +39,7 @@ def main():
         # print json.dumps(models[entity_type].model,indent=True)
         sorted_model = sorted(models[entity_type].model.items(),key=lambda x: x[1], reverse=True)
         for (w,c) in sorted_model:
-            print "\t%s:%d" %(w,c)
+            print "\t%s:%f" %(w,c)
         print '-'*20
 
 
