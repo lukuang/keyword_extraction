@@ -259,6 +259,8 @@ def main():
     candidate_models2 = get_candidate_models(entity_candidates2,args.article_dir)
 
     for t in candidate_models1:
+        print t
+        print candidate_models1[t]
         dict_check(candidate_models1[t],candidate_models2[t])
     
     
