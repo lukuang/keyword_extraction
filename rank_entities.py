@@ -92,7 +92,8 @@ def get_all_sentence_windows(documents,entity_candidates):
             if w in entity_candidates[entity_type]:
                 windows[entity_type][w] = temp_windows[w]
                 break
-    print "there are %d words" %(len(words))
+    for t in windows:
+        print "there are %d words" %(len(windows[t]))
     return windows
 
 
