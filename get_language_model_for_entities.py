@@ -70,7 +70,7 @@ def show_documents(documents):
             for sentence in documents[instance][single_file].sentences:
                 print "%s:%s" %(single_file,sentence.text)
             print "-"*20
-        break
+    
 
 def get_all_sentence_windows(documents,entities_judgement):
     windows = {}
@@ -91,7 +91,6 @@ def get_all_sentence_windows(documents,entities_judgement):
                 if w in entities_judgement[instance][entity_type]:
                     windows[entity_type][w] = temp_windows[w]
                     break
-        break
     return windows
 
 
