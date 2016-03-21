@@ -89,7 +89,7 @@ def get_all_sentence_windows(documents,entity_candidates):
         for entity_type in entity_candidates:
             if w in entity_candidates[entity_type]:
                 windows[entity_type][w] = temp_windows[w]
-                    break
+                break
 
     return windows
 
