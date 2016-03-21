@@ -136,10 +136,12 @@ def get_candidates(candiate_file,candiate_top):
         if k not in TYPES:
             data.pop(k,None)
         else:
+            print "for type %s" %k
             sorted_sub = sorted(data[k].items(),key = lambda x:x[1], reverse=True)
             data[k] = {}
             i = 0
             for (key,value) in sorted_sub:
+                print "add %s with value %f" %(key,value)
                 data[k][key] = value
                 i += 1
                 if i>=candiate_top:
