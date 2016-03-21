@@ -184,7 +184,6 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("candiate_file")
     parser.add_argument("article_dir")
-    parser.add_argument("dest")
     parser.add_argument("type_model_file")
     parser.add_argument("--candiate_top",'-ct',type=int,default=20)
     parser.add_argument("--output_top",'-ot',type=int,default=20)
