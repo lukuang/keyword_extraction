@@ -23,14 +23,15 @@ def get_sentence_window(words,sentence,windows):
     """
     Use the whole sentence as the context
     """
+    #print sentence
     for w in words:
         
         if sentence.find(w) != -1:
-            #print "found sentence %s" %sentence
+            print "found sentence %s" %sentence
             for t in words:
                 if sentence.find(t) != -1:
                     sentence = sentence.replace(t,"")
-            #print "after process %s" %sentence
+            print "after process %s" %sentence
             if w not in windows:
                 windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model
             else:
@@ -84,8 +85,11 @@ def get_all_sentence_windows(documents,entity_candidates):
     print "there are %d words" %(len(words))
     temp_windows = {}
     for single_file in documents:
+        if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
+            continue
         print "process file %s" %single_file
         for sentence in documents[single_file].sentences:
+
             get_sentence_window(words,sentence.text,temp_windows)
     print "there are %d words in temp_windows" %(len(temp_windows))
     for w in temp_windows:
