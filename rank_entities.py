@@ -155,7 +155,7 @@ def rank_entities(candidate_models,type_models,output_top):
         for annotated_type in TYPES[entity_type]:
             output[annotated_type] = {}
             temp = {}
-            for entity in candidate_models[entity_type]
+            for entity in candidate_models[entity_type]:
                 sim = type_models[annotated_type].cosine_sim(candidate_models[entity_type][entity])
                 temp[entity] = sim
             sorted_candidates = sorted(temp.items(), key = lambda x:x[1],reverse=True)
