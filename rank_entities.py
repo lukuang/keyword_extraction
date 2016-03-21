@@ -85,7 +85,7 @@ def get_all_sentence_windows(documents,entity_candidates):
     print "there are %d words" %(len(words))
     temp_windows = {}
     for single_file in documents:
-        if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
+        if single_file!='clean_text/Oklahoma/2013-05-21/46-0':
             continue
         print "process file %s" %single_file
         for sentence in documents[single_file].sentences:
