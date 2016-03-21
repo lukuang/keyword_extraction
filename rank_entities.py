@@ -128,7 +128,7 @@ def get_candidates(candiate_file,candiate_top):
                 if m is not None:
                     data[tag][m.group(1)] = float(m.group(2))
                     if m.group(1) == 'Oklahoma City':
-                        print "the value for Oklahoma City is %f", float(m.group(2))
+                        print "the value for Oklahoma City is %f", %float(m.group(2))
                 else:
                     print "line did not match:"
                     print line
