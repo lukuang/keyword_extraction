@@ -135,8 +135,7 @@ def get_candidates(candiate_file,candiate_top):
                 m = re.search("^\t(.+?):(.+)$",line)
                 if m is not None:
                     data[tag][m.group(1)] = float(m.group(2))
-                    if m.group(1) == 'Oklahoma City':
-                        print "the value for Oklahoma City is %f" %float(m.group(2))
+                    
                 else:
                     print "line did not match:"
                     print line
@@ -144,12 +143,12 @@ def get_candidates(candiate_file,candiate_top):
         if k not in TYPES:
             data.pop(k,None)
         else:
-            print "for type %s" %k
+            #print "for type %s" %k
             sorted_sub = sorted(data[k].items(),key = lambda x:x[1], reverse=True)
             data[k] = {}
             i = 0
             for (key,value) in sorted_sub:
-                print "add %s with value %f" %(key,value)
+                #print "add %s with value %f" %(key,value)
                 data[k][key] = value
                 i += 1
                 if i>=candiate_top:
