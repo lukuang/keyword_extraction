@@ -27,15 +27,16 @@ def get_sentence_window(words,sentence,windows):
     for w in words:
         
         if sentence.find(w) != -1:
-            print "found sentence %s" %sentence
+            temp_sentence = sentence
+            print "found sentence %s" %temp_sentence
             for t in words:
-                if sentence.find(t) != -1:
-                    sentence = sentence.replace(t,"")
-            print "after process %s" %sentence
+                if temp_sentence.find(t) != -1:
+                    temp_sentence = temp_sentence.replace(t,"")
+            print "after process %s" %temp_sentence
             if w not in windows:
-                windows[w] = Sentence(sentence,remove_stopwords=True).stemmed_model
+                windows[w] = Sentence(temp_sentence,remove_stopwords=True).stemmed_model
             else:
-                windows[w] += Sentence(sentence,remove_stopwords=True).stemmed_model
+                windows[w] += Sentence(temp_sentence,remove_stopwords=True).stemmed_model
 
 
 def get_type_model(type_model_file):
@@ -85,7 +86,7 @@ def get_all_sentence_windows(documents,entity_candidates):
     print "there are %d words" %(len(words))
     temp_windows = {}
     for single_file in documents:
-        if single_file!='clean_text/Oklahoma/2013-05-21/46-0':
+        if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
             continue
         print "process file %s" %single_file
         for sentence in documents[single_file].sentences:
