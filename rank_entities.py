@@ -9,6 +9,8 @@ import re
 import argparse
 from myUtility.corpus import *
 
+
+
 TYPES = {
     'LOCATION':[
         "LOCATION",
@@ -181,6 +183,8 @@ def rank_entities(candidate_models,type_models,output_top):
     return output
 
 def main():
+    reload(sys)
+    sys.setdefaultencoding('UTF8')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("candiate_file")
     parser.add_argument("article_dir")
