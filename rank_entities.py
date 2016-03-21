@@ -162,9 +162,22 @@ def get_candidates(candiate_file,candiate_top):
 
     return data
 
+def dict_check(original, type_models):
+    for w in original:
+        if w not in type_models:
+            print "MISSING %s" %w
+            sys.exit(-1)
+        else:
+            if original[w] != type_models[w]:
+                print "value difference!"
+                print "for %s: %f and %f" %(w,original[w],type_models[w])
+                sys.exit(-1)
 
 def rank_entities(candidate_models,type_models,output_top):
     output = {}
+    for tag in type_models:
+        type_models[tag].normalize()
+    original = type_models.deepcopy()
     for entity_type in candidate_models:
         for annotated_type in TYPES[entity_type]:
             print "for %s:" %annotated_type
@@ -173,6 +186,7 @@ def rank_entities(candidate_models,type_models,output_top):
             for entity in candidate_models[entity_type]:
                 sim = type_models[annotated_type].cosine_sim(candidate_models[entity_type][entity])
                 temp[entity] = sim
+                dict_check(original[annotated_type], type_models[annotated_type])
             sorted_candidates = sorted(temp.items(), key = lambda x:x[1],reverse=True)
             i = 0
             for (k,v) in sorted_candidates:
