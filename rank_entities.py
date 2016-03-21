@@ -136,7 +136,11 @@ def get_candidates(candiate_file,candiate_top):
             else:
                 m = re.search("^\t(.+?):(.+)$",line)
                 if m is not None:
-                    data[tag][m.group(1)] = float(m.group(2))
+                    frequency = float(m.group(2))
+                    if frequency <= 1.0:
+                        continue
+                    else:
+                        data[tag][m.group(1)] = frequency
                     
                 else:
                     print "line did not match:"
