@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 from myUtility.corpus import *
-
+import copy
 
 
 TYPES = {
@@ -177,7 +177,7 @@ def rank_entities(candidate_models,type_models,output_top):
     output = {}
     for tag in type_models:
         type_models[tag].normalize()
-    original = type_models.deepcopy()
+    original = copy.deepcopy(type_models)
     for entity_type in candidate_models:
         for annotated_type in TYPES[entity_type]:
             print "for %s:" %annotated_type
