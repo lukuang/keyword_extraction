@@ -149,6 +149,7 @@ def rank_entities(candidate_models,type_models,output_top):
     output = {}
     for entity_type in candidate_models:
         for annotated_type in TYPES[entity_type]:
+            print "for %s:" %annotated_type
             output[annotated_type] = {}
             temp = {}
             for entity in candidate_models[entity_type]:
@@ -157,10 +158,13 @@ def rank_entities(candidate_models,type_models,output_top):
             sorted_candidates = sorted(temp.items(), key = lambda x:x[1],reverse=True)
             i = 0
             for (k,v) in sorted_candidates:
+                print "\t%s %f" %(k,v)
                 output[annotated_type][k] = v
                 i+=1
                 if i >= output_top:
                     break
+            print "-"*20
+
 
     return output
 
@@ -181,7 +185,7 @@ def main():
     type_models = get_type_model(args.type_model_file)
 
     output = rank_entities(candidate_models,type_models,args.output_top)
-    print json.dumps(output,indent=4)
+    #print json.dumps(output,indent=4)
 
 
 
