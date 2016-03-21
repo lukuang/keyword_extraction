@@ -95,10 +95,6 @@ def get_all_sentence_windows(documents,entity_candidates):
 
 
 def get_candidate_models(entity_candidates,article_dir):
-    all_entities = []
-    for tag in entity_candidates:
-        for entity in entity_candidates[tag]:
-            all_entities.append(entity)
 
 
     all_files = get_files(article_dir)
@@ -107,7 +103,7 @@ def get_candidate_models(entity_candidates,article_dir):
         documents[single_file] = Document(single_file,file_path = single_file)
     
     windows = get_all_sentence_windows(documents,entity_candidates)
-
+    return windows
 
 
 
