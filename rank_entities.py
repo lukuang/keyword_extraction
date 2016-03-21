@@ -87,6 +87,7 @@ def get_all_sentence_windows(documents,entity_candidates):
         print "process file %s" %single_file
         for sentence in documents[single_file].sentences:
             get_sentence_window(words,sentence.text,temp_windows)
+    print "there are %d words in temp_windows" %(len(temp_windows))
     for w in temp_windows:
         for entity_type in entity_candidates:
             if w in entity_candidates[entity_type]:
