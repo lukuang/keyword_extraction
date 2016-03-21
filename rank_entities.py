@@ -81,6 +81,7 @@ def get_all_sentence_windows(documents,entity_candidates):
         words += entity_candidates[entity_type]
         if entity_type not in windows:
             windows[entity_type] = {}
+    print "there are %d words" %(len(words))
     temp_windows = {}
     for single_file in documents:
         print "process file %s" %single_file
