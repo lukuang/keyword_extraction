@@ -162,7 +162,7 @@ def rank_entities(candidate_models,type_models,output_top):
                 if i >= output_top:
                     break
 
-    return output_top
+    return output
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
