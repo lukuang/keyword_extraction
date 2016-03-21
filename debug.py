@@ -203,15 +203,17 @@ def get_candidates2(candiate_file,candiate_top):
 
     return data
 
-def dict_check(original, type_model):
-    for w in original.model:
-        if w not in type_model.model:
+def dict_check(original, candidate_model):
+    for w in original:
+        if w not in candidate_model:
             continue
         else:
-            if original.model[w] != type_model.model[w]:
-                print "value difference!"
-                print "for %s: %f and %f" %(w,original.model[w],type_model.model[w])
-                sys.exit(-1)
+            for word in original[w].model:
+                if original[w].model[word] != candidate_model.model[w]:
+                    print "value difference!"
+                    print "model",w
+                    print "for %s: %f and %f" %(word,original[w].model[word],candidate_model[w].model[word])
+                    sys.exit(-1)
 
 def rank_entities(candidate_models,type_models,output_top):
     output = {}
