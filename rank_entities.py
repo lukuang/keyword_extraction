@@ -79,6 +79,7 @@ def get_files(article_dir):
 
 def get_entity_map(words):
     entity_map = {}
+    multiple = []
     for w in words:
         entity_map[w] = None
         for e in words:
@@ -90,11 +91,15 @@ def get_entity_map(words):
                         elif  e.find(entity_map[w]) != -1:
                             entity_map[w] = e
                         else:
-                            print "For %s, there are two none substring candidates: %s %s" %(w, e,entity_map[w] )
-                            sys.exit(-1)
+                            multiple.append(w)
+                            #print "For %s, there are two none substring candidates: %s %s" %(w, e,entity_map[w] )
+                            #sys.exit(-1)
                     else:
                         entity_map[w] = e
-
+    # delete the ones that have multiple possibilities
+    for w in multiple:
+        entity_map.pop(w, None)
+        
     print json.dumps(entity_map)
     sys.exit(-1)
     return entity_map                        
