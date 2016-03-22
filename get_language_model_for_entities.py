@@ -11,24 +11,56 @@ import codecs
 from myUtility.corpus import Document, Sentence
 
 
-def get_sentence_window(words,sentence,windows):
+def get_sentence_window(entity_map,sentence,windows):
     """
     Use the whole sentence as the context
     """
-    for w in words:
+    #print sentence
+    for w in entity_map:
         
         if sentence.find(w) != -1:
             temp_sentence = sentence
-            #print "found sentence %s" %sentence
-            for t in words:
-                if temp_sentence.find(t) != -1:
+            #print "found sentence %s" %temp_sentence
+            for t in entity_map:
+                if entity_map[t]:
+                    temp_sentence = temp_sentence.replace(entity_map[t],"")
+                elif temp_sentence.find(t) != -1:
                     temp_sentence = temp_sentence.replace(t,"")
-            #print "after process %s" %sentence
+            #print "after process %s" %temp_sentence
+            if entity_map[w]:
+                w = entity_map[w]
             if w not in windows:
                 windows[w] = Sentence(temp_sentence,remove_stopwords=True).stemmed_model
             else:
                 windows[w] += Sentence(temp_sentence,remove_stopwords=True).stemmed_model
 
+
+def get_entity_map(words):
+    entity_map = {}
+    multiple = []
+    for w in words:
+        entity_map[w] = None
+        for e in words:
+            if w != e:
+                if e.find(w)!=-1:
+                    if entity_map[w] != None:
+                        if entity_map[w].find(e) != -1:
+                            pass
+                        elif  e.find(entity_map[w]) != -1:
+                            entity_map[w] = e
+                        else:
+                            multiple.append(w)
+                            #print "For %s, there are two none substring candidates: %s %s" %(w, e,entity_map[w] )
+                            #sys.exit(-1)
+                    else:
+                        entity_map[w] = e
+    # delete the ones that have multiple possibilities
+    for w in multiple:
+        entity_map.pop(w, None)
+
+    #print json.dumps(entity_map)
+    #sys.exit(-1)
+    return entity_map  
 
 
 
@@ -82,11 +114,12 @@ def get_all_sentence_windows(documents,entities_judgement):
             words += entities_judgement[instance][entity_type]
             if entity_type not in windows:
                 windows[entity_type] = {}
+        entity_map = get_entity_map(words)
         temp_windows = {}
         for single_file in documents[instance]:
             print "process file %s" %single_file
             for sentence in documents[instance][single_file].sentences:
-                get_sentence_window(words,sentence.text,temp_windows)
+                get_sentence_window(entity_map,sentence.text,temp_windows)
         for w in temp_windows:
             for entity_type in entities_judgement[instance]:
                 if w in entities_judgement[instance][entity_type]:
