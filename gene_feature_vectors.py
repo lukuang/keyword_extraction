@@ -278,8 +278,10 @@ def main():
         f.write(json.dumps(judgement_vector))
     with codecs.open(os.path.join(args.dest_dir,"all_entities"),"w","utf-8") as f:
         f.write(json.dumps(all_entities))
-    with codecs.open(os.path.join(args.dest_dir,"all_features"),"w","utf-8") as f:
-        f.write(json.dumps(all_features))
+    with codecs.open(os.path.join(args.dest_dir,"all_words"),"w","utf-8") as f:
+        f.write(json.dumps(all_words))
+    with codecs.open(os.path.join(args.dest_dir,"all_cates"),"w","utf-8") as f:
+        f.write(json.dumps(all_cates))
     print "finished"
 
 if __name__=="__main__":
