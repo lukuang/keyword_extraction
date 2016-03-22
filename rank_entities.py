@@ -153,6 +153,30 @@ def get_candidate_models(entity_candidates,article_dir):
     return windows
 
 
+def get_json(source,required_type):
+    data = {}
+    tag = ""
+    with open(source,"r") as f:
+        for line in f:
+            line = line.rstrip()
+            m = re.search("^(\w+):$",line)
+            if m is not None:
+                tag = m.group(1)
+                data[tag] = {}
+            else:
+                m = re.search("^\t(.+?):(.+)$",line)
+                if m is not None:
+                    data[tag][m.group(1)] = float(m.group(2))
+                else:
+                    print "line did not match:"
+                    print line
+    for tag in data:
+        if tag != required_type:
+            data.pop(tag,None)
+    
+    return data
+
+
 
 def get_candidates(candiate_file,candiate_top):
     """
