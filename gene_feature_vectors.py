@@ -9,7 +9,7 @@ import re
 import argparse
 import codecs
 from myUtility.corpus import Document, Sentence
-
+from get_entity_cate import get_cate_for_entity_list
 
 def get_sentence_window(words,sentence,windows):
     """
@@ -195,13 +195,27 @@ def main():
   
     all_entities = []
     all_words = {}
+    pure_entities = set()
     for instance in windows:
         for entity in windows[instance]:
+            pure_entities.add(entity)
             for word in windows[instance][entity].model:
                 if word not in all_words:
                     all_words[word] = 0
 
+    all_words = all_words.keys()
     all_features = all_words.keys()
+
+    cate_info = get_cate_for_entity_list(list(pure_entities) )
+    all_cates = []
+    for entity in cate_info:
+        if cate_info[entity]:
+            for cate in cate_info[entity]:
+                if cate not in all_cates:
+                    all_cates.append(cate)
+
+    all_features += all_cates
+   
 
     judgement_vector = []
     feature_vector = []
@@ -214,11 +228,20 @@ def main():
             judgement_vector.append(-1)
             single_feature_vectore = []
             windows[instance][entity].normalize()
-            for w in all_features:
+            for w in all_words:
                 if w in windows[instance][entity].model:
                     single_feature_vectore.append(windows[instance][entity].model[w])
                 else:
                     single_feature_vectore.append(0)
+
+            if cate_info[entity]:
+                for cate in all_cates:
+                    if cate not in cate_info[entity]:
+                        single_feature_vectore.append(0)
+                    else:
+                        single_feature_vectore.append(1)
+            else:
+                single_feature_vectore += [0]*len(all_cates)
             feature_vector.append(single_feature_vectore)
 
 
@@ -227,13 +250,24 @@ def main():
             judgement_vector.append(1)
             single_feature_vectore = []
             windows[instance][entity].normalize()
-            for w in all_features:
+            for w in all_words:
 
                 if w in windows[instance][entity].model:
                     single_feature_vectore.append(windows[instance][entity].model[w])
                 else:
                     single_feature_vectore.append(0)
+
+            if cate_info[entity]:
+                for cate in all_cates:
+                    if cate not in cate_info[entity]:
+                        single_feature_vectore.append(0)
+                    else:
+                        single_feature_vectore.append(1)
+            else:
+                single_feature_vectore += [0]*len(all_cates)
             feature_vector.append(single_feature_vectore)
+
+     
 
 
 
