@@ -10,7 +10,7 @@ import argparse
 from myUtility.corpus import *
 import copy
 from get_entity_cate import get_cate_for_entity_list
-
+import codecs
 
 TYPES = {
     'LOCATION':[
@@ -241,7 +241,10 @@ def main():
         feature_vector = get_feature_vector(all_words,all_cates,candidate_models[entity].model,cate_info[entity])
         test_vector.append(feature_vector)
 
-    
+    with codecs.open(os.path.join(args.dest_dir,"test_vector"),"w",'utf-8') as f:
+        f.write(json.dumps(test_vector))
+    with codecs.open(os.path.join(args.dest_dir,"test_candidates"),"w",'utf-8') as f:
+        f.write(json.dumps(test_candidates))
 
     #print json.dumps(output,indent=4)
 
