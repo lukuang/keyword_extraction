@@ -213,6 +213,7 @@ def main():
             all_entities.append(instance+"/"+entity)
             judgement_vector.append(-1)
             single_feature_vectore = []
+            windows[instance][entity].model.normalize()
             for w in all_features:
                 if w in windows[instance][entity].model:
                     single_feature_vectore.append(windows[instance][entity].model[w])
@@ -225,7 +226,9 @@ def main():
             all_entities.append(instance+"/"+entity)
             judgement_vector.append(1)
             single_feature_vectore = []
+            windows[instance][entity].model.normalize()
             for w in all_features:
+
                 if w in windows[instance][entity].model:
                     single_feature_vectore.append(windows[instance][entity].model[w])
                 else:
