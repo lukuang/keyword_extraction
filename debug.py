@@ -209,7 +209,9 @@ def dict_check(original, candidate_model):
             continue
         else:
             for word in original[w].model:
-                if original[w].model[word] != candidate_model[w].model[word]:
+                if word not in candidate_model[w].model:
+                    print "word %s does not in %s" %(word,w)
+                elif original[w].model[word] != candidate_model[w].model[word]:
                     print "value difference!"
                     print "model",w
                     print "for %s: %f and %f" %(word,original[w].model[word],candidate_model[w].model[word])
