@@ -21,20 +21,24 @@ TYPES = {
     ]
 }
 
-def get_sentence_window(words,sentence,windows):
+def get_sentence_window(entity_map,sentence,windows):
     """
     Use the whole sentence as the context
     """
     #print sentence
-    for w in words:
+    for w in entity_map:
         
         if sentence.find(w) != -1:
             temp_sentence = sentence
             #print "found sentence %s" %temp_sentence
-            for t in words:
-                if temp_sentence.find(t) != -1:
+            for t in entity_map:
+                if entity_map[t]:
+                    temp_sentence = temp_sentence.replace(entity_map[t],"")
+                elif temp_sentence.find(t) != -1:
                     temp_sentence = temp_sentence.replace(t,"")
             #print "after process %s" %temp_sentence
+            if entity_map[w]:
+                w = entity_map[w]
             if w not in windows:
                 windows[w] = Sentence(temp_sentence,remove_stopwords=True).stemmed_model
             else:
@@ -99,9 +103,9 @@ def get_entity_map(words):
     # delete the ones that have multiple possibilities
     for w in multiple:
         entity_map.pop(w, None)
-        
-    print json.dumps(entity_map)
-    sys.exit(-1)
+
+    #print json.dumps(entity_map)
+    #sys.exit(-1)
     return entity_map                        
 
 
@@ -114,7 +118,7 @@ def get_all_sentence_windows(documents,entity_candidates):
         words += entity_candidates[entity_type]
         if entity_type not in windows:
             windows[entity_type] = {}
-    #print "there are %d words" %(len(words))
+    print "there are %d words" %(len(words))
 
 
     entity_map = get_entity_map(words)
@@ -125,8 +129,8 @@ def get_all_sentence_windows(documents,entity_candidates):
         print "process file %s" %single_file
         for sentence in documents[single_file].sentences:
 
-            get_sentence_window(words,sentence.text,temp_windows)
-    #print "there are %d words in temp_windows" %(len(temp_windows))
+            get_sentence_window(entity_map,sentence.text,temp_windows,entity_map)
+    print "there are %d words in temp_windows" %(len(temp_windows))
     for w in temp_windows:
         for entity_type in entity_candidates:
             if w in entity_candidates[entity_type]:
