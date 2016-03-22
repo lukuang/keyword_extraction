@@ -109,12 +109,11 @@ def get_documents(instance_names,top_dir,disaster_name):
     for instance in instance_names:
         print "for %s" %instance
         source_dir = os.path.join(top_dir,"clean_text",disaster_name,instance)
-        print source_dir
+        
         sub_dirs = os.walk(source_dir).next()[1]
         documents[instance] = {}
         for a_dir in sub_dirs:
             date_dir = os.path.join(source_dir,a_dir)
-            print date_dir
             for single_file in get_files(date_dir):
                 #print "open file %s" %os.path.join(date_dir,single_file)
                 single_file = os.path.join(date_dir,single_file)
@@ -148,6 +147,7 @@ def get_json(source,required_type):
 def get_negative_candidates(instance_names,entity_dir,required_type):
     negative_candidates = {}
     for instance in instance_names:
+        negative_candidates[instance] = {}
         entity_file = os.path.join(entity_dir,instance,"df")
         negative_candidates[instance][required_type] = get_json(entity_file,required_type)
     return negative_candidates
