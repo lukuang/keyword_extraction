@@ -109,6 +109,7 @@ def get_documents(instance_names,top_dir,disaster_name):
     for instance in instance_names:
         print "for %s" %instance
         source_dir = os.path.join(top_dir,"clean_text",disaster_name,instance)
+        print source_dir
         sub_dirs = os.walk(source_dir).next()[1]
         documents[instance] = {}
         for a_dir in sub_dirs:
@@ -171,7 +172,7 @@ def get_entities_judgement(entity_judgement_file,required_type):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
-    parser.add_argument("top_dir")
+    parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data')
     parser.add_argument("dest_dir")
     parser.add_argument("--type",'-t',default="ORGANIZATION")
     parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
