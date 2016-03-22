@@ -204,7 +204,7 @@ def main():
                     all_words[word] = 0
 
     all_words = all_words.keys()
-    all_features = all_words.keys()
+    all_features = all_words
 
     cate_info = get_cate_for_entity_list(list(pure_entities) )
     all_cates = []
