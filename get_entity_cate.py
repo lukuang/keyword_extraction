@@ -25,6 +25,20 @@ def get_entity_cate(entity,wikipedia_caller,wikidata_caller):
     else:
         return entity_info['class_info']
 
+def get_cate_for_entity_list(entity_list):
+    wikipedia_caller = Wikipedia()
+    wikidata_caller = Wikidata()
+    cate_info = {}
+    for entity in entity_list:
+        result =  get_entity_cate(args.entity,wikipedia_caller,wikidata_caller)
+        if not result:
+            cate_info[entity] = None
+        else:
+            cate_info[entity] = []
+            for cid in result:
+                cate_info[entity].append(result[cid])
+    return cate_info
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("entity")
