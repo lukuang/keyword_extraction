@@ -77,6 +77,30 @@ def get_files(article_dir):
     return all_files
 
 
+def get_entity_map(words):
+    entity_map = {}
+    for w in words:
+        entity_map[w] = None
+        for e in words:
+            if w != e:
+                if e.find(w)!=-1:
+                    if entity_map[w] != None:
+                        if entity_map[w].find(e) != -1:
+                            pass
+                        elif  e.find(entity_map[w]) != -1:
+                            entity_map[w] = e
+                        else:
+                            print "For %s, there are two none substring candidates: %s %s" %(w, e,entity_map[w] )
+                            sys.exit(-1)
+                    else:
+                        entity_map[w] = e
+
+    print json.dumps(entity_map)
+    sys.exit(-1)
+    return entity_map                        
+
+
+
 def get_all_sentence_windows(documents,entity_candidates):
     windows = {}
     
@@ -86,6 +110,9 @@ def get_all_sentence_windows(documents,entity_candidates):
         if entity_type not in windows:
             windows[entity_type] = {}
     #print "there are %d words" %(len(words))
+
+
+    entity_map = get_entity_map(words)
     temp_windows = {}
     for single_file in documents:
         #if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
@@ -137,10 +164,10 @@ def get_candidates(candiate_file,candiate_top):
                 m = re.search("^\t(.+?):(.+)$",line)
                 if m is not None:
                     frequency = float(m.group(2))
-                    if frequency <= 1.0:
-                        continue
-                    else:
-                        data[tag][m.group(1)] = frequency
+                    #if frequency <= 1.0:
+                    #    continue
+                    #else:
+                    data[tag][m.group(1)] = frequency
                     
                 else:
                     print "line did not match:"
@@ -186,7 +213,7 @@ def rank_entities(candidate_models,type_models,output_top):
             for entity in candidate_models[entity_type]:
                 sim = type_models[annotated_type].cosine_sim(candidate_models[entity_type][entity])
                 temp[entity] = sim
-                dict_check(original[annotated_type], type_models[annotated_type])
+                #dict_check(original[annotated_type], type_models[annotated_type])
             sorted_candidates = sorted(temp.items(), key = lambda x:x[1],reverse=True)
             i = 0
             for (k,v) in sorted_candidates:
