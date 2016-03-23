@@ -20,7 +20,7 @@ def load_training_set(training_dir):
 
 def load_test_set(test_dir):
     entities = json.load(open(os.path.join(test_dir,"test_candidates")))
-    test = json.load(open(os.path.join(test_dir,"test_vector")))
+    test_set = json.load(open(os.path.join(test_dir,"test_vector")))
 
     return entities,test
 
@@ -53,7 +53,7 @@ def main():
     X,y = load_training_set(args.training_dir)
     entities,test_set = load_test_set(args.test_dir) 
     classifier = get_classifier(args.method,X,y)
-    prediction = classifier.predict(test)
+    prediction = classifier.predict(test_set)
     print "prediction:"
     for i in range(len(entity)):
         print "\t%s: %f" %(entity[i],prediction[i])
