@@ -53,7 +53,7 @@ def main():
     X,y = load_training_set(args.training_dir)
     entities,test_set = load_test_set(args.test_dir) 
     classifier = get_classifier(args.method,X,y)
-    prediction = classifier,predict(test)
+    prediction = classifier.predict(test)
     print "prediction:"
     for i in range(len(entity)):
         print "\t%s: %f" %(entity[i],prediction[i])
