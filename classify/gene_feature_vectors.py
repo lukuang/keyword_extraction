@@ -157,7 +157,7 @@ def get_negative_candidates(instance_names,entity_dir,required_type,entities_jud
 
 
 
-def get_entities_judgement(entity_judgement_file,required_type):
+def get_entities_judgement(entity_judgement_file,required_type,small):
     data = ""
     with open(entity_judgement_file) as f:
         data = f.read()
@@ -165,7 +165,8 @@ def get_entities_judgement(entity_judgement_file,required_type):
     entities_judgement_data = json.loads(data)
     entities_judgement = {}
     for single in entities_judgement_data:
-        #if len(single[required_type]) != 0:    
+        if small and len(single[required_type]) == 0:
+            continue    
         q = single["query_string"]
         entities_judgement[q] = {required_type:single[required_type]}
     return entities_judgement
@@ -179,12 +180,13 @@ def main():
     parser.add_argument("dest_dir")
     parser.add_argument("--type",'-t',default="ORGANIZATION")
     parser.add_argument("--normalize",'-n',action="store_true")
+    parser.add_argument("--small",'-s',action="store_true")
     parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
     args=parser.parse_args()
     
     
 
-    entities_judgement = get_entities_judgement(args.entity_judgement_file,args.type)
+    entities_judgement = get_entities_judgement(args.entity_judgement_file,args.type,args.small)
 
     args.top_dir = os.path.abspath(args.top_dir)
     instance_names = entities_judgement.keys()
