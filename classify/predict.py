@@ -22,7 +22,7 @@ def load_test_set(test_dir):
     entities = json.load(open(os.path.join(test_dir,"test_candidates")))
     test_set = json.load(open(os.path.join(test_dir,"test_vector")))
 
-    return entities,test
+    return entities,test_set
 
 
 def get_classifier(method,X,y):
