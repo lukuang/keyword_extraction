@@ -175,6 +175,7 @@ def main():
     parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data')
     parser.add_argument("dest_dir")
     parser.add_argument("--type",'-t',default="ORGANIZATION")
+    parser.add_argument("--normalize",'-n',action="store_true")
     parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
     args=parser.parse_args()
     
@@ -227,7 +228,8 @@ def main():
             all_entities.append(instance+"/"+entity)
             judgement_vector.append(-1)
             single_feature_vectore = []
-            windows[instance][entity].normalize()
+            if args.normalize:
+                windows[instance][entity].normalize()
             for w in all_words:
                 if w in windows[instance][entity].model:
                     single_feature_vectore.append(windows[instance][entity].model[w])
@@ -249,7 +251,8 @@ def main():
             all_entities.append(instance+"/"+entity)
             judgement_vector.append(1)
             single_feature_vectore = []
-            windows[instance][entity].normalize()
+            if args.normalize:
+                windows[instance][entity].normalize()
             for w in all_words:
 
                 if w in windows[instance][entity].model:

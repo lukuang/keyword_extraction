@@ -222,6 +222,7 @@ def main():
     parser.add_argument("dest_dir")
     parser.add_argument("--candiate_top",'-ct',type=int,default=20)
     parser.add_argument("--type",'-t',default="ORGANIZATION")
+    parser.add_argument("--normalize",'-n',action="store_true")
 
     args=parser.parse_args()
 
@@ -236,7 +237,8 @@ def main():
     test_candidates = []
     test_vector = []
     for entity in candidate_models:
-        candidate_models[entity].normalize()
+        if args.normalize:
+            candidate_models[entity].normalize()
         test_candidates.append(entity)
         feature_vector = get_feature_vector(all_words,all_cates,candidate_models[entity].model,cate_info[entity])
         test_vector.append(feature_vector)
