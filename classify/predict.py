@@ -55,7 +55,7 @@ def main():
     classifier = get_classifier(args.method,X,y)
     prediction = classifier.predict(test_set)
     print "prediction:"
-    for i in range(len(entity)):
+    for i in range(len(entities)):
         print "\t%s: %f" %(entity[i],prediction[i])
 
 if __name__=="__main__":
