@@ -9,7 +9,7 @@ import re
 import argparse
 import codecs
 from myUtility.corpus import Document, Sentence
-from get_entity_cate import get_cate_for_entity_list
+from ..get_entity_cate import get_cate_for_entity_list
 
 def get_sentence_window(words,sentence,windows):
     """

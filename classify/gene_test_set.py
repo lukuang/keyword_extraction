@@ -9,7 +9,7 @@ import re
 import argparse
 from myUtility.corpus import *
 import copy
-from get_entity_cate import get_cate_for_entity_list
+from ..get_entity_cate import get_cate_for_entity_list
 import codecs
 
 TYPES = {
