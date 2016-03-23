@@ -121,7 +121,7 @@ def get_documents(instance_names,top_dir,disaster_name):
     return documents
 
 
-def get_json(source,required_type):
+def get_json(source,required_type,positive_entities):
     data = {}
     tag = ""
     with open(source,"r") as f:
@@ -134,7 +134,9 @@ def get_json(source,required_type):
             else:
                 m = re.search("^\t(.+?):(.+)$",line)
                 if m is not None:
-                    data[tag][m.group(1)] = float(m.group(2))
+                    entity = m.group(1)
+                    if entity not in positive_entities:
+                        data[tag][] = float(m.group(2))
                 else:
                     print "line did not match:"
                     print line
@@ -144,12 +146,13 @@ def get_json(source,required_type):
 
 
 
-def get_negative_candidates(instance_names,entity_dir,required_type):
+def get_negative_candidates(instance_names,entity_dir,required_type,entities_judgement):
     negative_candidates = {}
     for instance in instance_names:
         negative_candidates[instance] = {}
         entity_file = os.path.join(entity_dir,instance,"df")
-        negative_candidates[instance][required_type] = get_json(entity_file,required_type)
+        negative_candidates[instance][required_type] = get_json(entity_file,required_type
+                            ,entities_judgement[instance][required_type])
     return negative_candidates
 
 
@@ -162,9 +165,9 @@ def get_entities_judgement(entity_judgement_file,required_type):
     entities_judgement_data = json.loads(data)
     entities_judgement = {}
     for single in entities_judgement_data:
-        if len(single[required_type]) != 0:    
-            q = single["query_string"]
-            entities_judgement[q] = {required_type:single[required_type]}
+        #if len(single[required_type]) != 0:    
+        q = single["query_string"]
+        entities_judgement[q] = {required_type:single[required_type]}
     return entities_judgement
 
 
@@ -188,7 +191,7 @@ def main():
     documents = get_documents(instance_names,args.top_dir,args.disaster_name)
 
     entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name)
-    negative_candidates = get_negative_candidates(instance_names,entity_dir,args.type)   
+    negative_candidates = get_negative_candidates(instance_names,entity_dir,args.type,entities_judgement)   
 
 
 
