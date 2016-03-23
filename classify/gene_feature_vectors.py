@@ -136,7 +136,7 @@ def get_json(source,required_type,positive_entities):
                 if m is not None:
                     entity = m.group(1)
                     if entity not in positive_entities:
-                        data[tag][] = float(m.group(2))
+                        data[tag][entity] = float(m.group(2))
                 else:
                     print "line did not match:"
                     print line
