@@ -13,7 +13,7 @@ import subprocess
 def call_clean_html(source_dir, dest_dir, top):
     args_clean_html = [
         'python',
-        '/lustre/scratch/lukuang/keyphrase_extraction/src/clean_html.py',
+        '/lustre/scratch/lukuang/keyphrase_extraction/src/prepare_corpus/clean_html.py',
         source_dir,
         dest_dir,
         "-t",
@@ -42,7 +42,7 @@ def gene_entities(dest_dir,entity_dir):
 
     args_process_result = [
         'python',
-        '/lustre/scratch/lukuang/keyphrase_extraction/src/process_result.py',
+        '/lustre/scratch/lukuang/keyphrase_extraction/src/prepare_corpus/process_result.py',
         "JAVA OUTPUT",
         "FINAL OUTPUT",
     ]
@@ -63,7 +63,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
     parser.add_argument("top_dir")
-    parser.add_argument("--src_dir","-s", default="/lustre/scratch/lukuang/keyphrase_extraction/src")
+    parser.add_argument("--src_dir","-s", default="/lustre/scratch/lukuang/keyphrase_extraction/src/prepare_corpus")
     parser.add_argument("--top",'-t',type=int,default=10)
     args=parser.parse_args()
     
