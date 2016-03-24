@@ -105,6 +105,7 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
 
         for w in temp_windows:
             for entity_type in negative_candidates[instance]:
+                windows[instance][entity_type] = {}
                 if w in negative_candidates[instance][entity_type]:
                     windows[instance][entity_type][w] = temp_windows[w]
                     break
