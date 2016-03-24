@@ -45,7 +45,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--test_dir","-te",default = "/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/testing/ORGANIZATION")
     parser.add_argument("--training_dir","-tr",default = "/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/training/ORGANIZATION")
-    parser.add_argument('--method','-m',type=int,default=0,choices=range(3),
+    parser.add_argument('--method','-m',type=int,default=0,choices=range(4),
         help=
         """chose mthods from:
                 0:linear_svc
