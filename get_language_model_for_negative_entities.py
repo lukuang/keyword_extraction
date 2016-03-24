@@ -11,6 +11,17 @@ import codecs
 from myUtility.corpus import Document, Sentence
 from get_entity_cate import get_cate_for_entity_list
 
+TYPES = {
+    'LOCATION':[
+        "LOCATION",
+        "FACILITY"
+    ],
+    'ORGANIZATION':[
+        "ORGANIZATION"
+    ]
+}
+
+
 def get_sentence_window(words,sentence,windows):
     """
     Use the whole sentence as the context
@@ -76,12 +87,13 @@ def show_documents(documents):
             print "-"*20
     
 
-def get_all_sentence_windows(documents,entities_judgement,negative_candidates,required_type):
+def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
     windows = {}
     for instance in documents:
         print "%s:" %instance
         words = []
-        words += negative_candidates[instance][required_type]
+        for e_type in TYPES:
+            words += negative_candidates[instance][e_type]
         #words += entities_judgement[instance][required_type]
         windows[instance] = {}
 
@@ -91,16 +103,11 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates,re
             for sentence in documents[instance][single_file].sentences:
                 get_sentence_window(words,sentence.text,temp_windows)
 
-        windows[instance] = temp_windows
-        # for w in temp_windows:
-        #     for entity_type in entities_judgement[instance]:
-        #         if w in entities_judgement[instance][entity_type]:
-        #             windows[entity_type][w] = temp_windows[w]
-        #             break
-        #     for entity_type in negative_candidates[instance]:
-        #         if w in negative_candidates[instance][entity_type]:
-        #             windows[entity_type][w] = temp_windows[w]
-        #             break
+        for w in temp_windows:
+            for entity_type in negative_candidates[instance]:
+                if w in negative_candidates[instance][entity_type]:
+                    windows[entity_type][w] = temp_windows[w]
+                    break
     return windows
 
 
@@ -146,18 +153,19 @@ def get_json(source,required_type,positive_entities):
 
 
 
-def get_negative_candidates(instance_names,entity_dir,required_type,entities_judgement):
+def get_negative_candidates(instance_names,entity_dir,entities_judgement):
     negative_candidates = {}
     for instance in instance_names:
         negative_candidates[instance] = {}
         entity_file = os.path.join(entity_dir,instance,"df")
-        negative_candidates[instance][required_type] = get_json(entity_file,required_type
-                            ,entities_judgement[instance][required_type])
+        for e_type in TYPES:
+            negative_candidates[instance][e_type] = get_json(entity_file,e_type
+                            ,entities_judgement[instance][e_type])
     return negative_candidates
 
 
 
-def get_entities_judgement(entity_judgement_file,required_type,small):
+def get_entities_judgement(entity_judgement_file,small):
     data = ""
     with open(entity_judgement_file) as f:
         data = f.read()
@@ -168,7 +176,12 @@ def get_entities_judgement(entity_judgement_file,required_type,small):
         if small and len(single[required_type]) == 0:
             continue    
         q = single["query_string"]
-        entities_judgement[q] = {required_type:single[required_type]}
+        temp = {}
+        for e_type in TYPES:
+            temp[e_type] = []
+            for sub_type in TYPES[e_type]:
+                temp[e_type] += single[sub_type]
+        entities_judgement[q] = temp
     return entities_judgement
 
 
@@ -178,7 +191,6 @@ def main():
     parser.add_argument("disaster_name")
     parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data')
     parser.add_argument("dest_dir")
-    parser.add_argument("--type",'-t',default="ORGANIZATION")
     parser.add_argument("--normalize",'-n',action="store_true")
     parser.add_argument("--small",'-s',action="store_true",
             help="if given, only get the model for entities of instances with positive entities")
@@ -187,18 +199,18 @@ def main():
     
     
 
-    entities_judgement = get_entities_judgement(args.entity_judgement_file,args.type,args.small)
+    entities_judgement = get_entities_judgement(args.entity_judgement_file,args.small)
 
     args.top_dir = os.path.abspath(args.top_dir)
     instance_names = entities_judgement.keys()
     documents = get_documents(instance_names,args.top_dir,args.disaster_name)
 
     entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name)
-    negative_candidates = get_negative_candidates(instance_names,entity_dir,args.type,entities_judgement)   
+    negative_candidates = get_negative_candidates(instance_names,entity_dir,entities_judgement)   
 
 
 
-    windows = get_all_sentence_windows(documents,entities_judgement,negative_candidates, args.type)
+    windows = get_all_sentence_windows(documents,entities_judgement,negative_candidates)
   
 
 
