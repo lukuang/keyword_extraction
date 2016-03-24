@@ -162,6 +162,8 @@ def get_negative_candidates(instance_names,entity_dir,entities_judgement):
         for e_type in TYPES:
             negative_candidates[instance][e_type] = get_json(entity_file,e_type
                             ,entities_judgement[instance][e_type])
+    print "negative:"
+    show_json(negative_candidates)
     return negative_candidates
 
 
@@ -183,9 +185,12 @@ def get_entities_judgement(entity_judgement_file,small):
             for sub_type in TYPES[e_type]:
                 temp[e_type] += single[sub_type]
         entities_judgement[q] = temp
+        print "judegment:"
+        show_json(entities_judgement)
     return entities_judgement
 
-
+def show_json(data):
+    print json.dumps(data,indent=4)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
