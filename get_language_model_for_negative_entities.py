@@ -200,8 +200,12 @@ def main():
 
     windows = get_all_sentence_windows(documents,entities_judgement,negative_candidates, args.type)
   
+
+
     for instance in instance_names:
         print "store result for %s" %instance
+        for entity in windows[instance]:
+            windows[instance][w] = windows[instance][w].model
         with codecs.open(os.path.join(args.dest_dir,instance),'w','utf-8') as f:
             f.write(json.dumps(windows[instance]))
 
