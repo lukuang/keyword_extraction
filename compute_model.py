@@ -1,5 +1,5 @@
 """
-get average model of different entity types
+get average model of different entity types 
 """
 
 import os
@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 from myUtility.corpus import Model
-
+import codecs
 
 
 def get_model_for_entities(source_dir):
@@ -36,15 +36,16 @@ def main():
     args=parser.parse_args()
 
     models = get_model_for_entities(args.source_dir)
-    for entity_type in models:
-        print "%s:" %entity_type
-        if args.normalize:
-            models[entity_type].normalize()
-        # print json.dumps(models[entity_type].model,indent=True)
-        sorted_model = sorted(models[entity_type].model.items(),key=lambda x: x[1], reverse=True)
-        for (w,c) in sorted_model:
-            print "\t%s:%f" %(w,c)
-        print '-'*20
+    with codecs.open(args.dest_file,"w","utf-8") as f:
+        for entity_type in models:
+            f.write("%s:" %entity_type)
+            if args.normalize:
+                models[entity_type].normalize()
+            # print json.dumps(models[entity_type].model,indent=True)
+            sorted_model = sorted(models[entity_type].model.items(),key=lambda x: x[1], reverse=True)
+            for (w,c) in sorted_model:
+                f.write(print "\t%s:%f" %(w,c) )
+            #print '-'*20
 
 
 if __name__=="__main__":
