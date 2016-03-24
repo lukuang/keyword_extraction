@@ -32,9 +32,12 @@ def get_classifier(method,X,y):
     elif method == 1:
         from sklearn import linear_model
         classifier = linear_model.LogisticRegression(C=1e5)
-    else:
+    elif method == 2:
         from sklearn.naive_bayes import GaussianNB
         classifier = GaussianNB()
+    else: 
+        from sklearn import tree
+        classifier = tree.DecisionTreeClassifier()
 
     return classifier.fit(X,y)
 
@@ -48,6 +51,7 @@ def main():
                 0:linear_svc
                 1:logistic regression
                 2:naive bayes
+                3:decision  tree
         """)
     args=parser.parse_args()
     X,y = load_training_set(args.training_dir)
