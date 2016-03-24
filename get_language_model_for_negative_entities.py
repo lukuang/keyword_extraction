@@ -9,7 +9,7 @@ import re
 import argparse
 import codecs
 from myUtility.corpus import Document, Sentence
-from get_entity_cate import get_cate_for_entity_list
+#from get_entity_cate import get_cate_for_entity_list
 
 TYPES = {
     'LOCATION':[
@@ -106,7 +106,7 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
         for w in temp_windows:
             for entity_type in negative_candidates[instance]:
                 if w in negative_candidates[instance][entity_type]:
-                    windows[entity_type][w] = temp_windows[w]
+                    windows[instance][entity_type][w] = temp_windows[w]
                     break
     return windows
 
