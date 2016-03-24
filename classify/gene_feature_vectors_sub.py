@@ -234,7 +234,10 @@ def main():
     windows = get_all_sentence_windows(documents,entities_judgement,negative_candidates, args.type)
   
     all_entities = []
-    
+    pure_entities = set()
+    for instance in windows:
+        for entity in windows[instance]:
+            pure_entities.add(entity)
 
     all_words = get_all_words(args.positive_file,args.negative_file,args.size,args.type)
     all_features = all_words
