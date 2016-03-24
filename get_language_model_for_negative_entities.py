@@ -92,10 +92,12 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
     for instance in documents:
         print "%s:" %instance
         words = []
+        windows[instance] = {}
         for e_type in TYPES:
             words += negative_candidates[instance][e_type]
+            windows[instance][e_type] = {}
         #words += entities_judgement[instance][required_type]
-        windows[instance] = {}
+        
 
         temp_windows = {}
         for single_file in documents[instance]:
@@ -103,9 +105,11 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
             for sentence in documents[instance][single_file].sentences:
                 get_sentence_window(words,sentence.text,temp_windows)
 
+
+
         for w in temp_windows:
             for entity_type in negative_candidates[instance]:
-                windows[instance][entity_type] = {}
+
                 if w in negative_candidates[instance][entity_type]:
                     windows[instance][entity_type][w] = temp_windows[w]
                     break
