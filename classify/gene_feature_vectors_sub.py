@@ -210,7 +210,7 @@ def main():
     parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data')
     parser.add_argument("--negative_file",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/models/negative_entities/')
     parser.add_argument("--positive_file",'-pf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/models/entity_type_models')
-    parser.add_argument("--size",'-s',type=int,default=20)
+    parser.add_argument("--size",'-si',type=int,default=20)
     parser.add_argument("dest_dir")
     parser.add_argument("--type",'-t',default="ORGANIZATION")
     parser.add_argument("--normalize",'-n',action="store_true")
