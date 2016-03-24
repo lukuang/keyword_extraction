@@ -38,13 +38,13 @@ def main():
     models = get_model_for_entities(args.source_dir)
     with codecs.open(args.dest_file,"w","utf-8") as f:
         for entity_type in models:
-            f.write("%s:" %entity_type)
+            f.write("%s:\n" %entity_type)
             if args.normalize:
                 models[entity_type].normalize()
             # print json.dumps(models[entity_type].model,indent=True)
             sorted_model = sorted(models[entity_type].model.items(),key=lambda x: x[1], reverse=True)
             for (w,c) in sorted_model:
-                f.write("\t%s:%f" %(w,c) )
+                f.write("\t%s:%f\n" %(w,c) )
             #print '-'*20
 
 
