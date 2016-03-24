@@ -202,7 +202,7 @@ def main():
   
     for instance in instance_names:
         print "store result for %s" %instance
-        with open(os.path.join(args.dest_dir,instance),'w','utf-8') as f:
+        with codecs.open(os.path.join(args.dest_dir,instance),'w','utf-8') as f:
             f.write(json.dumps(windows[instance]))
 
     print "finished"
