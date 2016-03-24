@@ -201,7 +201,7 @@ def get_sub_features(type_model_file,size,required_type):
 
 def get_all_words(positive_file,negative_file,size,required_type):
     words = get_sub_features(positive_file,size,required_type)
-    words.update(get_sub_features(positive_file,size,required_type) )
+    words.update(get_sub_features(negative_file,size,required_type) )
     return words.keys()
 
 def main():
