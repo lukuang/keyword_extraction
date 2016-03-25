@@ -222,7 +222,7 @@ def get_negative_models(type_model_file,size,positive_models):
                 if m is not None:
                     i += 1
                     word = m.group(1)
-                    if word not in positive_models[tag][word]
+                    if word not in positive_models[tag][word]:
                         data[tag][word] = float(m.group(2))
                     
 
