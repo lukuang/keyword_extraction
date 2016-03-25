@@ -203,6 +203,38 @@ def get_candidates(candiate_file,candiate_top):
 
     return data
 
+def get_negative_models(type_model_file,size,positive_models):
+
+    data = {}
+    tag = ""
+    with open(type_model_file,"r") as f:
+        for line in f:
+            line = line.rstrip()
+            m = re.search("^(\w+):$",line)
+            if m is not None:
+                tag = m.group(1)
+                data[tag] = {}
+                i = 0
+            else:
+                m = re.search("^\t(.+?):(.+)$",line)
+                if i>=size:
+                    continue
+                if m is not None:
+                    i += 1
+                    word = m.group(1)
+                    if word not in positive_models[tag][word]
+                        data[tag][word] = float(m.group(2))
+                    
+
+                    
+                else:
+                    print "line did not match:"
+                    print line
+    for tag in data:
+        data[tag] = Model(True,text_dict=data[tag], need_stem = True, input_stemmed = True)
+
+    return data
+
 def get_sub_features(type_model_file,size):
     """
     get models for each type of entities    
@@ -232,7 +264,7 @@ def get_sub_features(type_model_file,size):
                     print line
     for tag in data:
         data[tag] = Model(True,text_dict=data[tag], need_stem = True, input_stemmed = True)
-        
+
     return data
 
 
@@ -300,7 +332,7 @@ def main():
     
 
     positive_models = get_sub_features(args.positive_model_file,args.size)
-    negative_models = get_sub_features(args.negative_model_file,args.size)
+    negative_models = get_negative_models(args.negative_model_file,args.size,positive_models)
 
     output = rank_entities(candidate_models,positive_models,negative_models,args.output_top,alpha)
     #print json.dumps(output,indent=4)
