@@ -291,7 +291,7 @@ def main():
 
     args=parser.parse_args()
 
-    alpha = 0.1*alpha
+    alpha = 0.1*args.alpha
     entity_candidates = get_candidates(args.candiate_file,args.candiate_top)
     candidate_models = get_candidate_models(entity_candidates,args.article_dir)
     
