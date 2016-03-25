@@ -91,11 +91,12 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
     windows = {}
     for instance in documents:
         print "%s:" %instance
-        words = []
+        words = set()
         windows[instance] = {}
         for e_type in TYPES:
-            words += negative_candidates[instance][e_type]
-            windows[instance][e_type] = {}
+            for my_type in TYPES[e_type]:
+                words.update(negative_candidates[instance][my_type])
+                windows[instance][my_type] = {}
         #words += entities_judgement[instance][required_type]
         
 
@@ -106,13 +107,10 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
                 get_sentence_window(words,sentence.text,temp_windows)
 
 
+        for entity_type in negative_candidates[instance]:
+            for w in negative_candidates[instance][entity_type]:
+                windows[instance][entity_type][w] = temp_windows[w]
 
-        for w in temp_windows:
-            for entity_type in negative_candidates[instance]:
-
-                if w in negative_candidates[instance][entity_type]:
-                    windows[instance][entity_type][w] = temp_windows[w]
-                    break
     return windows
 
 
@@ -164,8 +162,9 @@ def get_negative_candidates(instance_names,entity_dir,entities_judgement):
         negative_candidates[instance] = {}
         entity_file = os.path.join(entity_dir,instance,"df")
         for e_type in TYPES:
-            negative_candidates[instance][e_type] = get_json(entity_file,e_type
-                            ,entities_judgement[instance][e_type])
+            for my_type in TYPES[e_type]:
+                negative_candidates[instance][my_type] = get_json(entity_file,e_type
+                            ,entities_judgement[instance][my_type])
     print "negative:"
     show_json(negative_candidates)
     return negative_candidates
@@ -183,14 +182,16 @@ def get_entities_judgement(entity_judgement_file,small):
         if small and len(single[required_type]) == 0:
             continue    
         q = single["query_string"]
-        temp = {}
-        for e_type in TYPES:
-            temp[e_type] = []
-            for sub_type in TYPES[e_type]:
-                temp[e_type] += single[sub_type]
-        entities_judgement[q] = temp
-        print "judegment:"
-        show_json(entities_judgement)
+        single.pop("query_string",None)
+        entities_judgement[q] = single
+        # temp = {}
+        # for e_type in TYPES:
+        #     temp[e_type] = []
+        #     for sub_type in TYPES[e_type]:
+        #         temp[e_type] += single[sub_type]
+        # entities_judgement[q] = temp
+        # print "judegment:"
+        # show_json(entities_judgement)
     return entities_judgement
 
 def show_json(data):
