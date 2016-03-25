@@ -230,6 +230,9 @@ def get_sub_features(type_model_file,size):
                 else:
                     print "line did not match:"
                     print line
+    for tag in data:
+        data[tag] = Model(True,text_dict=data[tag], need_stem = True, input_stemmed = True)
+        
     return data
 
 
