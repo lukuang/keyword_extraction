@@ -81,6 +81,15 @@ def get_files(article_dir):
     return all_files
 
 
+
+def get_nochange_map(words):
+    entity_map = {}
+    for w in words:
+        entity_map[w] = w
+    return entity_map
+
+
+
 def get_entity_map(words):
     entity_map = {}
     multiple = []
@@ -110,7 +119,7 @@ def get_entity_map(words):
 
 
 
-def get_all_sentence_windows(documents,entity_candidates):
+def get_all_sentence_windows(documents,entity_candidates,collapse):
     windows = {}
     
     words = []
@@ -120,8 +129,11 @@ def get_all_sentence_windows(documents,entity_candidates):
             windows[entity_type] = {}
     print "there are %d words" %(len(words))
 
-
-    entity_map = get_entity_map(words)
+    if collapse:
+        entity_map = get_entity_map(words)
+    else:
+        entity_map = get_nochange_map(words)
+        
     temp_windows = {}
     for single_file in documents:
         #if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
@@ -141,7 +153,7 @@ def get_all_sentence_windows(documents,entity_candidates):
     return windows
 
 
-def get_candidate_models(entity_candidates,article_dir):
+def get_candidate_models(entity_candidates,article_dir,collapse):
 
 
     all_files = get_files(article_dir)
@@ -149,7 +161,7 @@ def get_candidate_models(entity_candidates,article_dir):
     for single_file in all_files:
         documents[single_file] = Document(single_file,file_path = single_file)
     
-    windows = get_all_sentence_windows(documents,entity_candidates)
+    windows = get_all_sentence_windows(documents,entity_candidates,collapse)
     return windows
 
 
@@ -246,13 +258,15 @@ def main():
     parser.add_argument("candiate_file")
     parser.add_argument("article_dir")
     parser.add_argument("type_model_file")
+    parser.add_argument("--collapse","-c",action='store_true',
+        help='When specified, collapse common substrings into one entity')
     parser.add_argument("--candiate_top",'-ct',type=int,default=20)
     parser.add_argument("--output_top",'-ot',type=int,default=20)
 
     args=parser.parse_args()
 
     entity_candidates = get_candidates(args.candiate_file,args.candiate_top)
-    candidate_models = get_candidate_models(entity_candidates,args.article_dir)
+    candidate_models = get_candidate_models(entity_candidates,args.article_dir,args.collapse)
     
     type_models = get_type_model(args.type_model_file)
 
