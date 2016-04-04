@@ -130,10 +130,12 @@ def get_all_sentence_windows(documents,entity_candidates,collapse):
     print "there are %d words" %(len(words))
 
     if collapse:
+        print "change"
         entity_map = get_entity_map(words)
     else:
+        print "no change!"
         entity_map = get_nochange_map(words)
-        
+
     temp_windows = {}
     for single_file in documents:
         #if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
