@@ -135,7 +135,7 @@ def get_all_sentence_windows(documents,entity_candidates,collapse):
     else:
         print "no change!"
         entity_map = get_nochange_map(words)
-    print json.dumps(entity_map,indent=4)
+    #print json.dumps(entity_map,indent=4)
     temp_windows = {}
     for single_file in documents:
         #if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
