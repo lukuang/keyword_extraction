@@ -21,17 +21,21 @@ TYPES = {
     ]
 }
 
-def get_sentence_window(entity_map,sentence,windows):
+def get_sentence_window(entity_map,sentence,windows,collapse):
     """
     Use the whole sentence as the context
     """
     #print sentence
+    if collapse:
+        all_entities = entity_map.keys()
+    else:
+        all_entities = sorted(entity_map.keys(),key=lambda x:len(x),reverse=True)
     for w in entity_map:
         
         if sentence.find(w) != -1:
             temp_sentence = sentence
             #print "found sentence %s" %temp_sentence
-            for t in entity_map:
+            for t in all_entities:
                 if entity_map[t]:
                     temp_sentence = temp_sentence.replace(entity_map[t],"")
                 elif temp_sentence.find(t) != -1:
@@ -143,7 +147,7 @@ def get_all_sentence_windows(documents,entity_candidates,collapse):
         print "process file %s" %single_file
         for sentence in documents[single_file].sentences:
 
-            get_sentence_window(entity_map,sentence.text,temp_windows)
+            get_sentence_window(entity_map,sentence.text,temp_windows,collapse)
     print "there are %d words in temp_windows" %(len(temp_windows))
     for w in temp_windows:
         for entity_type in entity_candidates:
