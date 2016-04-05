@@ -64,27 +64,44 @@ def get_entity_map(words):
 
 
 
-def get_text_window(words,document,windows,window_size):
+def get_text_window(entity_map,sentence,windows,window_size):
     """
-    Use a window as the context
+    Use a sized text window as the context
     """
-    spaces = [m.start() for m in re.finditer(' ', document)]
-    for w in words:
-        w_size = w.count(" ")+1
-        if w not in windows: 
-            windows[w] = []
-        for m in re.finditer(w,document):
-            start = m.start()-1
-            if start in spaces:
-                w_start = max(0,spaces.index(start)-window_size)
-                w_end = min(len(spaces)-1,spaces.index(start)+window_size+w_size)
-                #window_string = document[spaces[w_start]:spaces[w_end]]
-                window_string = document[spaces[w_start]:m.start()-1] +" "+ document[m.end()+1:spaces[w_end]]
-            else:
-                w_end = min(len(spaces)-1,window_size+w_size-1)
-                #window_string = document[0:spaces[w_end]]
-                window_string = document[m.end()+1:spaces[w_end]]
-            windows[w].append(Sentence(window_string,remove_stopwords=True).stemmed_text)
+    
+    for w in entity_map:
+
+        if sentence.find(w) != -1:
+
+            temp_sentence = sentence
+            for t in entity_map:
+                if entity_map[t]:
+                    temp_sentence = temp_sentence.replace(entity_map[t],"")
+                elif temp_sentence.find(t) != -1:
+                    temp_sentence = temp_sentence.replace(t,"")
+
+            if entity_map[w]:
+                w = entity_map[w]
+
+            w_size = w.count(" ")+1
+
+            spaces = [m.start() for m in re.finditer(' ', temp_sentence)]
+            
+            for m in re.finditer(w,temp_sentence):
+                start = m.start()-1
+                if start in spaces:
+                    w_start = max(0,spaces.index(start)-window_size)
+                    w_end = min(len(spaces)-1,spaces.index(start)+window_size+w_size)
+                    #window_string = document[spaces[w_start]:spaces[w_end]]
+                    window_string = temp_sentence[spaces[w_start]:m.start()-1] +" "+ temp_sentence[m.end()+1:spaces[w_end]]
+                else:
+                    w_end = min(len(spaces)-1,window_size+w_size-1)
+                    #window_string = document[0:spaces[w_end]]
+                    window_string = temp_sentence[m.end()+1:spaces[w_end]]
+                if w not in windows: 
+                    windows[w] = Sentence(window_string,remove_stopwords=True).stemmed_model
+                else:
+                    windows[w] += Sentence(window_string,remove_stopwords=True).stemmed_model
 
 
 
@@ -127,6 +144,28 @@ def get_all_sentence_windows(documents,entities_judgement):
                     break
     return windows
 
+def get_all_text_windows(documents,entities_judgement,window_size):
+    windows = {}
+    for instance in documents:
+        print "%s:" %instance
+        words = []
+        for entity_type in entities_judgement[instance]:
+            words += entities_judgement[instance][entity_type]
+            if entity_type not in windows:
+                windows[entity_type] = {}
+        entity_map = get_entity_map(words)
+        temp_windows = {}
+        for single_file in documents[instance]:
+            print "process file %s" %single_file
+            for sentence in documents[instance][single_file].sentences:
+                get_text_window(entity_map,sentence.text,temp_windows,window_size)
+        for w in temp_windows:
+            for entity_type in entities_judgement[instance]:
+                if w in entities_judgement[instance][entity_type]:
+                    windows[entity_type][w] = temp_windows[w]
+                    break
+    return windows
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -134,6 +173,8 @@ def main():
     parser.add_argument("top_dir")
     parser.add_argument("dest_dir")
     parser.add_argument("run_id",type=int)
+    parser.add_argument("--using_text_window","-u",action='store_true')
+    parser.add_argument("--window_size",'-wz',type=int,default=3)
     parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
     args=parser.parse_args()
     
@@ -170,7 +211,10 @@ def main():
 
     #show_documents(documents)#debug purpose
     #print json.documents(files,indent=4)
-    windows = get_all_sentence_windows(documents,entities_judgement)
+    if args.using_text_window:
+        windows = get_all_text_windows(documents,entities_judgement,args.window_size)
+    else:    
+        windows = get_all_sentence_windows(documents,entities_judgement)
     for entity_type in windows:
         for w in windows[entity_type]:
             windows[entity_type][w] = windows[entity_type][w].model
