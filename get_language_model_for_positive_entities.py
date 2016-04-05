@@ -93,6 +93,7 @@ def get_text_window(entity_map,sentence,windows,window_size):
 
             w_size = w.count(" ")+1
 
+            temp_sentence = re.sub(" +"," ",temp_sentence)
             spaces = [m.start() for m in re.finditer(' ', temp_sentence)]
             
             for m in re.finditer(w,temp_sentence):
@@ -139,7 +140,7 @@ def get_all_sentence_windows(documents,entities_judgement):
             words += entities_judgement[instance][entity_type]
             if entity_type not in windows:
                 windows[entity_type] = {}
-        entity_map = get_entity_map(words)
+        entity_map = get_nochange_map(words)
         temp_windows = {}
         for single_file in documents[instance]:
             print "process file %s" %single_file
@@ -161,7 +162,7 @@ def get_all_text_windows(documents,entities_judgement,window_size):
             words += entities_judgement[instance][entity_type]
             if entity_type not in windows:
                 windows[entity_type] = {}
-        entity_map = get_entity_map(words)
+        entity_map = get_nochange_map(words)
         temp_windows = {}
         for single_file in documents[instance]:
             print "process file %s" %single_file

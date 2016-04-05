@@ -76,6 +76,7 @@ def get_text_window(entity_map,sentence,windows,window_size):
 
             w_size = w.count(" ")+1
 
+            temp_sentence = re.sub(" +"," ",temp_sentence)
             spaces = [m.start() for m in re.finditer(' ', temp_sentence)]
             
             for m in re.finditer(w,temp_sentence):
