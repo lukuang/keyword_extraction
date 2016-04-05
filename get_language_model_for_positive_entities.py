@@ -76,6 +76,8 @@ def get_text_window(entity_map,sentence,windows,window_size):
             temp_sentence = sentence
             print "found sentence %s" %temp_sentence
             for t in entity_map:
+                if t==w:
+                    continue
                 if entity_map[t]:
                     temp_sentence = temp_sentence.replace(entity_map[t],"")
                 elif temp_sentence.find(t) != -1:
