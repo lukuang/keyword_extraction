@@ -37,6 +37,7 @@ def get_sentence_window(entity_map,sentence,windows):
 
 def get_entity_map(words):
     entity_map = {}
+
     multiple = []
     for w in words:
         entity_map[w] = None
@@ -62,7 +63,11 @@ def get_entity_map(words):
     #sys.exit(-1)
     return entity_map  
 
-
+def get_nochange_map(words):
+    entity_map = {}
+    for w in words:
+        entity_map[w] = w
+    return entity_map
 
 def get_text_window(entity_map,sentence,windows,window_size):
     """

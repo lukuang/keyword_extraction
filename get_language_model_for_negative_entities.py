@@ -92,8 +92,17 @@ def get_text_window(entity_map,sentence,windows,window_size):
                     windows[w] += Sentence(window_string,remove_stopwords=True).stemmed_model
 
 
+
+def get_nochange_map(words):
+    entity_map = {}
+    for w in words:
+        entity_map[w] = w
+    return entity_map
+
+    
 def get_entity_map(words):
     entity_map = {}
+
     multiple = []
     for w in words:
         entity_map[w] = None
@@ -146,7 +155,7 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
                 words.update(negative_candidates[instance][my_type])
                 windows[instance][my_type] = {}
         #words += entities_judgement[instance][required_type]
-        entity_map = get_entity_map(words)
+        entity_map = get_nochange_map(words)
 
         temp_windows = {}
         for single_file in documents[instance]:
