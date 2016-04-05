@@ -87,6 +87,8 @@ def get_text_window(entity_map,sentence,windows,window_size):
                     w_end = min(len(spaces)-1,window_size+w_size-1)
                     #window_string = document[0:spaces[w_end]]
                     window_string = temp_sentence[m.end()+1:spaces[w_end]]
+                if w =='Indiana State Police':
+                    print "window string is %s" %window_string
                 if w not in windows: 
                     windows[w] = Sentence(window_string,remove_stopwords=True).stemmed_model
                 else:
