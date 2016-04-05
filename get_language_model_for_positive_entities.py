@@ -112,6 +112,7 @@ def get_text_window(entity_map,sentence,windows,window_size):
                         print "sentence is %s" %sentence
                         print "temp sentece is %s" %temp_sentence
                         print "m_end and w_end: %d %d" %(m.end,w_end)
+                        sys.exit(-1)
                 if w not in windows: 
                     windows[w] = Sentence(window_string,remove_stopwords=True).stemmed_model
                 else:
