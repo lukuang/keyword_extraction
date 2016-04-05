@@ -22,20 +22,24 @@ TYPES = {
 }
 
 
-def get_sentence_window(words,sentence,windows):
+def get_sentence_window(entity_map,sentence,windows):
     """
     Use the whole sentence as the context
     """
     #print sentence
-    for w in words:
+    for w in entity_map:
         
         if sentence.find(w) != -1:
             temp_sentence = sentence
             #print "found sentence %s" %temp_sentence
-            for t in words:
-                if temp_sentence.find(t) != -1:
+            for t in entity_map:
+                if entity_map[t]:
+                    temp_sentence = temp_sentence.replace(entity_map[t],"")
+                elif temp_sentence.find(t) != -1:
                     temp_sentence = temp_sentence.replace(t,"")
             #print "after process %s" %temp_sentence
+            if entity_map[w]:
+                w = entity_map[w]
             if w not in windows:
                 windows[w] = Sentence(temp_sentence,remove_stopwords=True).stemmed_model
             else:
@@ -45,31 +49,75 @@ def get_sentence_window(words,sentence,windows):
 
 
 
+def get_text_window(entity_map,sentence,windows,window_size):
+    """
+    Use a sized text window as the context
+    """
+    
+    for w in entity_map:
 
-def get_text_window(words,document,windows,window_size):
-    """
-    Use a window as the context
-    """
-    spaces = [m.start() for m in re.finditer(' ', document)]
+        if sentence.find(w) != -1:
+
+            temp_sentence = sentence
+            #print "found sentence %s" %temp_sentence
+            for t in entity_map:
+                if t.find(w) != -1:
+                    continue
+                if entity_map[t]:
+                    temp_sentence = temp_sentence.replace(entity_map[t],"")
+                elif temp_sentence.find(t) != -1:
+                    temp_sentence = temp_sentence.replace(t,"")
+
+            if entity_map[w]:
+                w = entity_map[w]
+
+            w_size = w.count(" ")+1
+
+            spaces = [m.start() for m in re.finditer(' ', temp_sentence)]
+            
+            for m in re.finditer(w,temp_sentence):
+                start = m.start()-1
+                if start in spaces:
+                    w_start = max(0,spaces.index(start)-window_size)
+                    w_end = min(len(spaces)-1,spaces.index(start)+window_size+w_size)
+                    #window_string = document[spaces[w_start]:spaces[w_end]]
+                    window_string = temp_sentence[spaces[w_start]:m.start()-1] +" "+ temp_sentence[m.end()+1:spaces[w_end]]
+                else:
+                    w_end = min(len(spaces)-1,window_size+w_size-1)
+                    #window_string = document[0:spaces[w_end]]
+                    window_string = temp_sentence[m.end()+1:spaces[w_end]]
+                if w not in windows: 
+                    windows[w] = Sentence(window_string,remove_stopwords=True).stemmed_model
+                else:
+                    windows[w] += Sentence(window_string,remove_stopwords=True).stemmed_model
+
+
+def get_entity_map(words):
+    entity_map = {}
+    multiple = []
     for w in words:
-        w_size = w.count(" ")+1
-        if w not in windows: 
-            windows[w] = []
-        for m in re.finditer(w,document):
-            start = m.start()-1
-            if start in spaces:
-                w_start = max(0,spaces.index(start)-window_size)
-                w_end = min(len(spaces)-1,spaces.index(start)+window_size+w_size)
-                #window_string = document[spaces[w_start]:spaces[w_end]]
-                window_string = document[spaces[w_start]:m.start()-1] +" "+ document[m.end()+1:spaces[w_end]]
-            else:
-                w_end = min(len(spaces)-1,window_size+w_size-1)
-                #window_string = document[0:spaces[w_end]]
-                window_string = document[m.end()+1:spaces[w_end]]
-            windows[w].append(Sentence(window_string,remove_stopwords=True).stemmed_text)
+        entity_map[w] = None
+        for e in words:
+            if w != e:
+                if e.find(w)!=-1:
+                    if entity_map[w] != None:
+                        if entity_map[w].find(e) != -1:
+                            pass
+                        elif  e.find(entity_map[w]) != -1:
+                            entity_map[w] = e
+                        else:
+                            multiple.append(w)
+                            #print "For %s, there are two none substring candidates: %s %s" %(w, e,entity_map[w] )
+                            #sys.exit(-1)
+                    else:
+                        entity_map[w] = e
+    # delete the ones that have multiple possibilities
+    for w in multiple:
+        entity_map.pop(w, None)
 
-
-
+    #print json.dumps(entity_map)
+    #sys.exit(-1)
+    return entity_map 
 
 def get_files(a_dir):
     all_files = os.walk(a_dir).next()[2]
@@ -98,13 +146,13 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
                 words.update(negative_candidates[instance][my_type])
                 windows[instance][my_type] = {}
         #words += entities_judgement[instance][required_type]
-        
+        entity_map = get_entity_map(words)
 
         temp_windows = {}
         for single_file in documents[instance]:
             print "process file %s" %single_file
             for sentence in documents[instance][single_file].sentences:
-                get_sentence_window(words,sentence.text,temp_windows)
+                get_sentence_window(entity_map,sentence.text,temp_windows)
 
 
         for entity_type in negative_candidates[instance]:
@@ -202,7 +250,6 @@ def main():
     parser.add_argument("disaster_name")
     parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data')
     parser.add_argument("dest_dir")
-    parser.add_argument("--normalize",'-n',action="store_true")
     parser.add_argument("--small",'-s',action="store_true",
             help="if given, only get the model for entities of instances with positive entities")
     parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
