@@ -77,7 +77,6 @@ def get_text_window(entity_map,sentence,windows,window_size):
             temp_sentence = re.sub(" +"," ",temp_sentence)
             temp_sentence += ' ' #little trick to ensure that the last token of sentence is a space
             spaces = [m.start() for m in re.finditer(' ', temp_sentence)]
-            if len(spaces) == 0:
 
             for m in re.finditer(w,temp_sentence):
                 start = m.start()-1
