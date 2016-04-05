@@ -59,7 +59,8 @@ def get_text_window(entity_map,sentence,windows,window_size):
         if sentence.find(w) != -1:
 
             temp_sentence = sentence
-            print "found sentence %s" %temp_sentence
+            if w =='Indiana State Police':
+                print "found sentence %s" %temp_sentence
             for t in entity_map:
                 if t.find(w) != -1:
                     continue
