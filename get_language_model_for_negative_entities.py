@@ -115,7 +115,7 @@ def get_entity_map(words):
     for w in multiple:
         entity_map.pop(w, None)
 
-    #print json.dumps(entity_map)
+    print json.dumps(entity_map)
     #sys.exit(-1)
     return entity_map 
 
