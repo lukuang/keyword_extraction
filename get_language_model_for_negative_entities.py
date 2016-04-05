@@ -61,8 +61,6 @@ def get_text_window(entity_map,sentence,windows,window_size):
             temp_sentence = sentence
             #print "BEFORE w is %s" %w
 
-            if w =='Indiana State Police':
-                print "found sentence %s" %temp_sentence
             for t in entity_map:
                 if t.find(w) != -1 or w.find(t)!= -1:
                     continue
@@ -77,8 +75,10 @@ def get_text_window(entity_map,sentence,windows,window_size):
             w_size = w.count(" ")+1
 
             temp_sentence = re.sub(" +"," ",temp_sentence)
+            temp_sentence += ' ' #little trick to ensure that the last token of sentence is a space
             spaces = [m.start() for m in re.finditer(' ', temp_sentence)]
-            
+            if len(spaces) == 0:
+
             for m in re.finditer(w,temp_sentence):
                 start = m.start()-1
                 if start in spaces:
@@ -87,6 +87,7 @@ def get_text_window(entity_map,sentence,windows,window_size):
                     #window_string = document[spaces[w_start]:spaces[w_end]]
                     window_string = temp_sentence[spaces[w_start]:m.start()-1] +" "+ temp_sentence[m.end()+1:spaces[w_end]]
                 else:
+
                     w_end = min(len(spaces)-1,window_size+w_size-1)
                     #window_string = document[0:spaces[w_end]]
                     try:
@@ -97,8 +98,6 @@ def get_text_window(entity_map,sentence,windows,window_size):
                         print "m_end and w_end: %d %d" %(m.end(),w_end)
                         sys.exit(-1)
                 #print "now w is %s" %w
-                if w =='Indiana State Police':
-                    print "window string is %s" %window_string
                 if w not in windows: 
                     windows[w] = Sentence(window_string,remove_stopwords=True).stemmed_model
                 else:
