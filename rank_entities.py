@@ -49,6 +49,68 @@ def get_sentence_window(entity_map,sentence,windows,collapse):
                 windows[w] += Sentence(temp_sentence,remove_stopwords=True).stemmed_model
 
 
+
+
+
+def get_text_window(entity_map,sentence,windows,collapse,window_size):
+    """
+    Use a sized text window as the context
+    """
+    if collapse:
+        all_entities = entity_map.keys()
+    else:
+        all_entities = sorted(entity_map.keys(),key=lambda x:len(x),reverse=True)
+        
+    for w in entity_map:
+
+        if sentence.find(w) != -1:
+
+            temp_sentence = sentence
+            #print "BEFORE w is %s" %w
+
+            for t in all_entities:
+                if t.find(w) != -1 or w.find(t)!= -1:
+                    continue
+                if entity_map[t]:
+                    temp_sentence = temp_sentence.replace(entity_map[t],"")
+                elif temp_sentence.find(t) != -1:
+                    temp_sentence = temp_sentence.replace(t,"")
+
+            if entity_map[w]:
+                w = entity_map[w]
+
+            w_size = w.count(" ")+1
+
+            temp_sentence = re.sub(" +"," ",temp_sentence)
+            temp_sentence += ' ' #little trick to ensure that the last token of sentence is a space
+            spaces = [m.start() for m in re.finditer(' ', temp_sentence)]
+
+            for m in re.finditer(w,temp_sentence):
+                start = m.start()-1
+                if start in spaces:
+                    w_start = max(0,spaces.index(start)-window_size)
+                    w_end = min(len(spaces)-1,spaces.index(start)+window_size+w_size)
+                    #window_string = document[spaces[w_start]:spaces[w_end]]
+                    window_string = temp_sentence[spaces[w_start]:m.start()-1] +" "+ temp_sentence[m.end()+1:spaces[w_end]]
+                else:
+
+                    w_end = min(len(spaces)-1,window_size+w_size-1)
+                    #window_string = document[0:spaces[w_end]]
+                    try:
+                        window_string = temp_sentence[m.end()+1:spaces[w_end]]
+                    except IndexError:
+                        print "sentence is %s" %sentence
+                        print "temp sentece is %s" %temp_sentence
+                        print "m_end and w_end: %d %d" %(m.end(),w_end)
+                        sys.exit(-1)
+                #print "now w is %s" %w
+                if w not in windows: 
+                    windows[w] = Sentence(window_string,remove_stopwords=True).stemmed_model
+                else:
+                    windows[w] += Sentence(window_string,remove_stopwords=True).stemmed_model
+
+
+
 def get_type_model(type_model_file):
     """
     get models for each type of entities    
@@ -158,16 +220,53 @@ def get_all_sentence_windows(documents,entity_candidates,collapse):
         print "there are %d words" %(len(windows[t]))
     return windows
 
+def get_all_text_windows(documents,entity_candidates,collapse,window_size):
+    windows = {}
+    
+    words = []
+    for entity_type in entity_candidates:
+        words += entity_candidates[entity_type]
+        if entity_type not in windows:
+            windows[entity_type] = {}
+    print "there are %d words" %(len(words))
 
-def get_candidate_models(entity_candidates,article_dir,collapse):
+    if collapse:
+        print "change"
+        entity_map = get_entity_map(words)
+    else:
+        print "no change!"
+        entity_map = get_nochange_map(words)
+    #print json.dumps(entity_map,indent=4)
+    temp_windows = {}
+    for single_file in documents:
+        #if single_file!='clean_text/Oklahoma/2013-05-21/41-0':
+        #    continue
+        print "process file %s" %single_file
+        for sentence in documents[single_file].sentences:
+
+            get_text_window(entity_map,sentence.text,temp_windows,collapse,window_size)
+    print "there are %d words in temp_windows" %(len(temp_windows))
+    for w in temp_windows:
+        for entity_type in entity_candidates:
+            if w in entity_candidates[entity_type]:
+                windows[entity_type][w] = temp_windows[w]
+                break
+    for t in windows:
+        print "there are %d words" %(len(windows[t]))
+    return windows
+
+
+def get_candidate_models(entity_candidates,article_dir,collapse,using_text_window,window_size):
 
 
     all_files = get_files(article_dir)
     documents = {}
     for single_file in all_files:
         documents[single_file] = Document(single_file,file_path = single_file)
-    
-    windows = get_all_sentence_windows(documents,entity_candidates,collapse)
+    if using_text_window:
+        windows = get_all_text_windows(documents,entity_candidates,collapse,window_size)
+    else:
+        windows = get_all_sentence_windows(documents,entity_candidates,collapse)
     return windows
 
 
@@ -266,13 +365,15 @@ def main():
     parser.add_argument("type_model_file")
     parser.add_argument("--collapse","-c",action='store_true',
         help='When specified, collapse common substrings into one entity')
+    parser.add_argument("--using_text_window","-u",action='store_true')
+    parser.add_argument("--window_size",'-wz',type=int,default=3)
     parser.add_argument("--candiate_top",'-ct',type=int,default=20)
     parser.add_argument("--output_top",'-ot',type=int,default=20)
 
     args=parser.parse_args()
 
     entity_candidates = get_candidates(args.candiate_file,args.candiate_top)
-    candidate_models = get_candidate_models(entity_candidates,args.article_dir,args.collapse)
+    candidate_models = get_candidate_models(entity_candidates,args.article_dir,args.collapse,args.using_text_window,args.window_size)
     
     type_models = get_type_model(args.type_model_file)
 
