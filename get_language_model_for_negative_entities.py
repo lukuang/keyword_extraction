@@ -188,7 +188,7 @@ def get_all_text_windows(documents,entities_judgement,negative_candidates,window
             print "process file %s" %single_file
             for sentence in documents[instance][single_file].sentences:
                 get_text_window(entity_map,sentence.text,temp_windows,window_size)
-
+                print json.dumps(temp_windows,indent=4)
 
         for entity_type in negative_candidates[instance]:
             for w in negative_candidates[instance][entity_type]:
