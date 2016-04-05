@@ -59,6 +59,8 @@ def get_text_window(entity_map,sentence,windows,window_size):
         if sentence.find(w) != -1:
 
             temp_sentence = sentence
+            print "BEFORE w is %s" %w
+
             if w =='Indiana State Police':
                 print "found sentence %s" %temp_sentence
             for t in entity_map:
@@ -87,6 +89,7 @@ def get_text_window(entity_map,sentence,windows,window_size):
                     w_end = min(len(spaces)-1,window_size+w_size-1)
                     #window_string = document[0:spaces[w_end]]
                     window_string = temp_sentence[m.end()+1:spaces[w_end]]
+                print "now w is %s" %w
                 if w =='Indiana State Police':
                     print "window string is %s" %window_string
                 if w not in windows: 
