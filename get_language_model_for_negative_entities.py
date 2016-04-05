@@ -94,7 +94,7 @@ def get_text_window(entity_map,sentence,windows,window_size):
                     except IndexError:
                         print "sentence is %s" %sentence
                         print "temp sentece is %s" %temp_sentence
-                        print "m_end and w_end: %d %d" %(m.end,w_end)
+                        print "m_end and w_end: %d %d" %(m.end(),w_end)
                         sys.exit(-1)
                 #print "now w is %s" %w
                 if w =='Indiana State Police':
