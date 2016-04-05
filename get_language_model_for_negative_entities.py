@@ -186,8 +186,6 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
 def get_all_text_windows(documents,entities_judgement,negative_candidates,window_size):
     windows = {}
     for instance in documents:
-        if instance!='2012_oklahoma_kansas_tornado':
-            continue
         print "%s:" %instance
         words = set()
         windows[instance] = {}
