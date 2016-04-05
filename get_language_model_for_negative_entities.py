@@ -89,7 +89,13 @@ def get_text_window(entity_map,sentence,windows,window_size):
                 else:
                     w_end = min(len(spaces)-1,window_size+w_size-1)
                     #window_string = document[0:spaces[w_end]]
-                    window_string = temp_sentence[m.end()+1:spaces[w_end]]
+                    try:
+                        window_string = temp_sentence[m.end()+1:spaces[w_end]]
+                    except IndexError:
+                        print "sentence is %s" %sentence
+                        print "temp sentece is %s" %temp_sentence
+                        print "m_end and w_end: %d %d" %(m.end,w_end)
+                        sys.exit(-1)
                 #print "now w is %s" %w
                 if w =='Indiana State Police':
                     print "window string is %s" %window_string
@@ -155,6 +161,8 @@ def show_documents(documents):
 def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
     windows = {}
     for instance in documents:
+        if instance!='2012_oklahoma_kansas_tornado':
+            continue
         print "%s:" %instance
         words = set()
         windows[instance] = {}
