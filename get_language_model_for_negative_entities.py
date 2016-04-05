@@ -99,7 +99,7 @@ def get_nochange_map(words):
         entity_map[w] = w
     return entity_map
 
-    
+
 def get_entity_map(words):
     entity_map = {}
 
@@ -162,6 +162,32 @@ def get_all_sentence_windows(documents,entities_judgement,negative_candidates):
             print "process file %s" %single_file
             for sentence in documents[instance][single_file].sentences:
                 get_sentence_window(entity_map,sentence.text,temp_windows)
+
+
+        for entity_type in negative_candidates[instance]:
+            for w in negative_candidates[instance][entity_type]:
+                windows[instance][entity_type][w] = temp_windows[w]
+
+    return windows
+
+def get_all_text_windows(documents,entities_judgement,negative_candidates,window_size):
+    windows = {}
+    for instance in documents:
+        print "%s:" %instance
+        words = set()
+        windows[instance] = {}
+        for e_type in TYPES:
+            for my_type in TYPES[e_type]:
+                words.update(negative_candidates[instance][my_type])
+                windows[instance][my_type] = {}
+        #words += entities_judgement[instance][required_type]
+        entity_map = get_nochange_map(words)
+
+        temp_windows = {}
+        for single_file in documents[instance]:
+            print "process file %s" %single_file
+            for sentence in documents[instance][single_file].sentences:
+                get_text_window(entity_map,sentence.text,temp_windows,window_size)
 
 
         for entity_type in negative_candidates[instance]:
@@ -259,6 +285,8 @@ def main():
     parser.add_argument("disaster_name")
     parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data')
     parser.add_argument("dest_dir")
+    parser.add_argument("--using_text_window","-u",action='store_true')
+    parser.add_argument("--window_size",'-wz',type=int,default=3)
     parser.add_argument("--small",'-s',action="store_true",
             help="if given, only get the model for entities of instances with positive entities")
     parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
@@ -275,9 +303,11 @@ def main():
     entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name)
     negative_candidates = get_negative_candidates(instance_names,entity_dir,entities_judgement)   
 
+    if args.using_text_window:
+        windows = get_all_text_windows(documents,entities_judgement,negative_candidates,args.window_size)
 
-
-    windows = get_all_sentence_windows(documents,entities_judgement,negative_candidates)
+    else:
+        windows = get_all_sentence_windows(documents,entities_judgement,negative_candidates)
   
 
 
