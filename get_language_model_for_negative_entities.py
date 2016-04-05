@@ -59,7 +59,7 @@ def get_text_window(entity_map,sentence,windows,window_size):
         if sentence.find(w) != -1:
 
             temp_sentence = sentence
-            #print "found sentence %s" %temp_sentence
+            print "found sentence %s" %temp_sentence
             for t in entity_map:
                 if t.find(w) != -1:
                     continue
@@ -188,7 +188,7 @@ def get_all_text_windows(documents,entities_judgement,negative_candidates,window
             print "process file %s" %single_file
             for sentence in documents[instance][single_file].sentences:
                 get_text_window(entity_map,sentence.text,temp_windows,window_size)
-                print json.dumps(temp_windows,indent=4)
+
 
         for entity_type in negative_candidates[instance]:
             for w in negative_candidates[instance][entity_type]:
