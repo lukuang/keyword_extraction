@@ -37,7 +37,7 @@ public class JsonReader {
             String key = (String)eid.next();
             JSONObject sub_data = (JSONObject) loaded_obj.get(key);
             narrative_map.put(key,(String)sub_data.get("narrative"));
-            JSONOArray original_entities = (JSONOArray) sub_data.get("entities");
+            JSONArray original_entities = (JSONArray) sub_data.get("entities");
             for (int i=0;i<original_entities.size();i++){
                 String name = (String)original_entities.get(i);
                 original_entitiy_map.doublePut(key,name);
@@ -63,12 +63,12 @@ public class JsonReader {
 
     List<Triple<String, Integer, Integer>> list;
     for (Map.Entry<String, String> narrative_entry : narrative_map.entrySet()){
-        String eid = narrative_map.getKey();
-        String narrative = narrative_map.getValue();
+        String eid = narrative_entry.getKey();
+        String narrative = narrative_entry.getValue();
         list = classifier.classifyToCharacterOffsets(narrative);
         for (Triple<String, Integer, Integer> item : list) {
             String entitiy_type = item.first();
-            String entity = fileContents.substring(item.second(), item.third());
+            String entity = narrative.substring(item.second(), item.third());
             if(entitiy_type.equals("LOCATION") || entitiy_type.equals("ORGANIZATION") ){
                 all_entitiy_map.doublePut(eid,entity);
             }
@@ -83,8 +83,8 @@ public class JsonReader {
         String eid = episode_Entry.getKey();
         JSONObject entities = new JSONObject();
         for (Map.Entry<String, Integer> entity_Entry : episode_Entry.getValue().entrySet()) {
-            String entity = phraseEntry.getKey();
-            Integer count = phraseEntry.getValue();
+            String entity = entity_Entry.getKey();
+            Integer count = entity_Entry.getValue();
             entities.put(entity,count);
         }
         obj.put(eid, entities);    
