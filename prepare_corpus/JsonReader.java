@@ -40,9 +40,9 @@ public class JsonReader {
     Iterator<?> eid = obj4.keySet().iterator();
     while(eid.hasNext()){
         String key = (String)eid.next();
-        JSONObject sub_data = (JSONObject) loaded_obj.get(key)
-        narrative_map.put(key,sub_data.get("narrative"))
-        JSONOArray original_entities = (JSONOArray) sub_data.get("entities")
+        JSONObject sub_data = (JSONObject) loaded_obj.get(key);
+        narrative_map.put(key,sub_data.get("narrative"));
+        JSONOArray original_entities = (JSONOArray) sub_data.get("entities");
         for (int i=0;i<original_entities.size();i++){
             String name = (String)original_entities.get(i);
             original_entitiy_map.doublePut(key,name);
