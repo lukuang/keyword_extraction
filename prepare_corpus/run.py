@@ -76,7 +76,8 @@ def main():
         source_dir = os.path.join(args.top_dir,"raw",args.disaster_name,instance)
         dest_dir = os.path.join(args.top_dir,"clean_text",args.disaster_name,instance)
         entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name,instance)
-
+        if not os.path.exists(entity_dir):
+            os.mkdir(entity_dir)
         call_clean_html(source_dir, dest_dir, args.top)
 
     
