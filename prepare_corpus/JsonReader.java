@@ -99,8 +99,8 @@ public class JsonReader {
         //JSONObject entities = new JSONObject(episode_Entry.getValue(););
         JSONObject entities = new JSONObject();
         for (Map.Entry<String, Integer> entity_Entry : episode_Entry.getValue().entrySet()) {
-            String entity = (String)entity_Entry.getKey();
-            Integer count = (Integer)entity_Entry.getValue();
+            String entity = entity_Entry.getKey();
+            Integer count = entity_Entry.getValue();
             entities.put(entity,count);
         }
         obj.put(eid, entities);    
