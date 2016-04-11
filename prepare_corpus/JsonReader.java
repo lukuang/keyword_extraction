@@ -94,10 +94,13 @@ public class JsonReader {
     Map<String, HashMap<String, Integer>> all_entitiy_hash = all_entitiy_map.get_hash();
     for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : all_entitiy_hash.entrySet()) {
         String eid = episode_Entry.getKey();
+        
+
+        //JSONObject entities = new JSONObject(episode_Entry.getValue(););
         JSONObject entities = new JSONObject();
         for (Map.Entry<String, Integer> entity_Entry : episode_Entry.getValue().entrySet()) {
-            String entity = entity_Entry.getKey();
-            Integer count = entity_Entry.getValue();
+            String entity = (String)entity_Entry.getKey();
+            Integer count = (Integer)entity_Entry.getValue();
             entities.put(entity,count);
         }
         obj.put(eid, entities);    
