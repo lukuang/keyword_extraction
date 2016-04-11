@@ -28,29 +28,31 @@ public class JsonReader {
     all_entitiy_map = new MyWrapper();
 
     try{
+        JSONParser parser = new JSONParser();
         String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
+        obj = parser.parse(content);
+        loaded_obj = (JSONObject) obj;
+        Iterator<?> eid = obj4.keySet().iterator();
+        while(eid.hasNext()){
+            String key = (String)eid.next();
+            JSONObject sub_data = (JSONObject) loaded_obj.get(key);
+            narrative_map.put(key,sub_data.get("narrative"));
+            JSONOArray original_entities = (JSONOArray) sub_data.get("entities");
+            for (int i=0;i<original_entities.size();i++){
+                String name = (String)original_entities.get(i);
+                original_entitiy_map.doublePut(key,name);
+                all_entitiy_map.doublePut(key,name);
+            }
+
+        }
+        this.get_entities_from_narrative();
     }
     catch(FileNotFoundException fe){
         System.out.println("Cannot find file "+file_path);
         System.out.println(fe);
 
     }
-    obj = parser.parse(content);
-    loaded_obj = (JSONObject) obj;
-    Iterator<?> eid = obj4.keySet().iterator();
-    while(eid.hasNext()){
-        String key = (String)eid.next();
-        JSONObject sub_data = (JSONObject) loaded_obj.get(key);
-        narrative_map.put(key,sub_data.get("narrative"));
-        JSONOArray original_entities = (JSONOArray) sub_data.get("entities");
-        for (int i=0;i<original_entities.size();i++){
-            String name = (String)original_entities.get(i);
-            original_entitiy_map.doublePut(key,name);
-            all_entitiy_map.doublePut(key,name);
-        }
-
-    }
-    this.get_entities_from_narrative();
+    
   }
 
   private void get_entities_from_narrative(){
