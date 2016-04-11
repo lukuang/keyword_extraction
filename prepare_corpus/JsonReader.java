@@ -83,7 +83,10 @@ public class JsonReader {
     catch(IOException ioe){
         System.out.println(ioe);
     }
-    
+    catch(ClassNotFoundException ce){
+        System.out.println(ce);
+
+    }
   }
 
   public JSONObject get_result_json(){
