@@ -32,7 +32,7 @@ public class JsonReader {
         String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
         obj = parser.parse(content);
         loaded_obj = (JSONObject) obj;
-        Iterator<?> eid = obj4.keySet().iterator();
+        Iterator<?> eid = loaded_obj.keySet().iterator();
         while(eid.hasNext()){
             String key = (String)eid.next();
             JSONObject sub_data = (JSONObject) loaded_obj.get(key);
