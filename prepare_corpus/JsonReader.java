@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
-import java.io.File;
+import java.io.*;
 import java.util.*;
 import java.io.FileNotFoundException;
 
@@ -66,23 +66,24 @@ public class JsonReader {
 
     try{
         AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
+        List<Triple<String, Integer, Integer>> list;
+        for (Map.Entry<String, String> narrative_entry : narrative_map.entrySet()){
+            String eid = narrative_entry.getKey();
+            String narrative = narrative_entry.getValue();
+            list = classifier.classifyToCharacterOffsets(narrative);
+            for (Triple<String, Integer, Integer> item : list) {
+                String entitiy_type = item.first();
+                String entity = narrative.substring(item.second(), item.third());
+                if(entitiy_type.equals("LOCATION") || entitiy_type.equals("ORGANIZATION") ){
+                    all_entitiy_map.doublePut(eid,entity);
+                }
+            }
+        }
     }
     catch(IOException ioe){
         System.out.println(ioe);
     }
-    List<Triple<String, Integer, Integer>> list;
-    for (Map.Entry<String, String> narrative_entry : narrative_map.entrySet()){
-        String eid = narrative_entry.getKey();
-        String narrative = narrative_entry.getValue();
-        list = classifier.classifyToCharacterOffsets(narrative);
-        for (Triple<String, Integer, Integer> item : list) {
-            String entitiy_type = item.first();
-            String entity = narrative.substring(item.second(), item.third());
-            if(entitiy_type.equals("LOCATION") || entitiy_type.equals("ORGANIZATION") ){
-                all_entitiy_map.doublePut(eid,entity);
-            }
-        }
-    }
+    
   }
 
   public JSONObject get_result_json(){
