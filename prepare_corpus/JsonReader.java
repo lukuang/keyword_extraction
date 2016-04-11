@@ -52,15 +52,24 @@ public class JsonReader {
         System.out.println(fe);
 
     }
+    catch(ParseException pe){
+
+         System.out.println("position: " + pe.getPosition());
+         System.out.println(pe);
+    }
+
     
   }
 
   private void get_entities_from_narrative(){
     String serializedClassifier = "/home/1546/source/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
 
-
-    AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
-
+    try{
+        AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
+    }
+    catch(IOException ioe){
+        System.out.println(ioe);
+    }
     List<Triple<String, Integer, Integer>> list;
     for (Map.Entry<String, String> narrative_entry : narrative_map.entrySet()){
         String eid = narrative_entry.getKey();
