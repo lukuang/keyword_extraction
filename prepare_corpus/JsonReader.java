@@ -1,0 +1,133 @@
+import edu.stanford.nlp.ie.AbstractSequenceClassifier;
+import edu.stanford.nlp.ie.crf.*;
+import edu.stanford.nlp.io.IOUtils;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.sequences.DocumentReaderAndWriter;
+import edu.stanford.nlp.util.Triple;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
+import org.json.simple.parser.JSONParser;
+import java.io.File;
+import java.util.*;
+import java.io.FileNotFoundException;
+
+public class JsonReader {
+
+  private Object obj;
+  private JSONObject loaded_obj;
+  private HashMap<String, String> narrative_map;
+  private MyWrapper original_entitiy_map;
+  private MyWrapper all_entitiy_map;
+
+  public JsonReader (String file_path){
+
+    narrative_map = new HashMap<String, String>();
+    original_entitiy_map = new MyWrapper();
+    all_entitiy_map = new MyWrapper();
+
+    try{
+        String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
+    }
+    catch(FileNotFoundException fe){
+        System.out.println("Cannot find file "+file_path);
+        System.out.println(fe);
+
+    }
+    obj = parser.parse(content);
+    loaded_obj = (JSONObject) obj;
+    Iterator<?> eid = obj4.keySet().iterator();
+    while(eid.hasNext()){
+        String key = (String)eid.next();
+        JSONObject sub_data = (JSONObject) loaded_obj.get(key)
+        narrative_map.put(key,sub_data.get("narrative"))
+        JSONOArray original_entities = (JSONOArray) sub_data.get("entities")
+        for (int i=0;i<original_entities.size();i++){
+            String name = (String)original_entities.get(i);
+            original_entitiy_map.doublePut(key,name);
+            all_entitiy_map.doublePut(key,name);
+        }
+
+    }
+    this.get_entities_from_narrative();
+  }
+
+  private void get_entities_from_narrative(){
+    String serializedClassifier = "/home/1546/source/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
+
+
+    AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
+
+    List<Triple<String, Integer, Integer>> list;
+    for (Map.Entry<String, String> narrative_entry : narrative_map.entrySet()){
+        String eid = narrative_map.getKey();
+        String narrative = narrative_map.getValue();
+        list = classifier.classifyToCharacterOffsets(narrative);
+        for (Triple<String, Integer, Integer> item : list) {
+            String entitiy_type = item.first();
+            String entity = fileContents.substring(item.second(), item.third());
+            if(entitiy_type.equals("LOCATION") || entitiy_type.equals("ORGANIZATION") ){
+                all_entitiy_map.doublePut(eid,entity);
+            }
+        }
+    }
+  }
+
+  public JSONObject get_result_json(){
+    
+  }
+
+
+  private static class MyWrapper {
+        private HashMap<String, HashMap<String, Integer>> hashX;
+
+        public MyWrapper(){
+            hashX = new HashMap<String, HashMap<String, Integer>>();
+        }
+        // ...
+        public void doublePut(String one, String two) {
+            Integer value = 1;
+            if (hashX == null){
+                System.out.println("NULL!!!");
+            }
+            if (hashX.get(one) == null ) {
+                hashX.put(one, new HashMap<String, Integer>());
+            }
+            if (hashX.get(one).get(two)!= null){
+                value = hashX.get(one).get(two)+1;
+            } 
+            hashX.get(one).put(two, value);
+        }
+
+        public void show(){
+            //StringWriter out = new StringWriter();
+            //JSONValue.writeJSONString(hashX, out);
+            //String jsonText = out.toString();
+            //System.out.print(jsonText);
+            //System.out.println(hashX);
+            for (Map.Entry<String, HashMap<String, Integer>> tagEntry : hashX.entrySet()) {
+                String tag = tagEntry.getKey();
+                System.out.println(tag+":");
+                for (Map.Entry<String, Integer> phraseEntry : tagEntry.getValue().entrySet()) {
+                    String phrase = phraseEntry.getKey();
+                    Integer count = phraseEntry.getValue();
+                    System.out.println("\t"+phrase+":"+count);
+                }
+            }
+        }
+
+        public Map<String, HashMap<String, Integer>> get_hash(){
+            return hashX;
+        }
+    }
+
+  public static void main(String[] args) throws Exception {
+
+    
+    String file_path = args[0];
+    JsonReader my_reader = new JsonReader(file_path);
+
+    
+  }
+}  
