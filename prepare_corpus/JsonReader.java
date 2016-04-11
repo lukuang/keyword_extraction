@@ -75,7 +75,19 @@ public class JsonReader {
   }
 
   public JSONObject get_result_json(){
-    
+    JSONObject obj = new JSONObject();
+    Map<String, HashMap<String, Integer>> all_entitiy_hash = all_entitiy_map.get_hash();
+    for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : all_entitiy_hash.entrySet()) {
+        String eid = episode_Entry.getKey();
+        JSONObject entities = new JSONObject();
+        for (Map.Entry<String, Integer> entity_Entry : episode_Entry.getValue().entrySet()) {
+            String entity = phraseEntry.getKey();
+            Integer count = phraseEntry.getValue();
+            entities.put(entity,count);
+        }
+        obj.put(eid, entities);    
+    }
+    return obj;
   }
 
 
@@ -127,7 +139,8 @@ public class JsonReader {
     
     String file_path = args[0];
     JsonReader my_reader = new JsonReader(file_path);
-
+    JSONObject result_json = my_reader.get_result_json();
+    System.out.println(result_json);
     
   }
 }  
