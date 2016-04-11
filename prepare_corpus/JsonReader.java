@@ -36,7 +36,7 @@ public class JsonReader {
         while(eid.hasNext()){
             String key = (String)eid.next();
             JSONObject sub_data = (JSONObject) loaded_obj.get(key);
-            narrative_map.put(key,sub_data.get("narrative"));
+            narrative_map.put(key,(String)sub_data.get("narrative"));
             JSONOArray original_entities = (JSONOArray) sub_data.get("entities");
             for (int i=0;i<original_entities.size();i++){
                 String name = (String)original_entities.get(i);
