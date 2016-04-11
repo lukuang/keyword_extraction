@@ -64,7 +64,7 @@ def main():
         dest_dir = os.path.join(args.dest_dir,a_dir)
         source_dir = os.path.join(args.source_dir,a_dir)
         if not os.path.exists(dest_dir):
-            os.mkdir(dest_dir)
+            os.makedirs(dest_dir)
         gene_text_single_dir(parser,source_dir,dest_dir,args.top, args.first_only)
     
 
