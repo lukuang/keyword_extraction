@@ -10,7 +10,7 @@ import argparse
 
 
 def read_single_file(file_path, required_entity_types):
-    print "process file %s" %file_path
+    # print "process file %s" %file_path
     data = {}
     with open(file_path,"r") as f:
         for line in f:
@@ -27,11 +27,10 @@ def read_single_file(file_path, required_entity_types):
                     print "line did not match:"
                     print line
     returned_data = []
-    print data
-    print data.keys()
-    print required_entity_types
+
     for tag in required_entity_types:
-        returned_data += data[tag]
+        if tag in data:
+            returned_data += data[tag]
     return returned_data
 
 
