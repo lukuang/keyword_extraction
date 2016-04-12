@@ -24,8 +24,9 @@ def read_single_file(file_path, required_entity_types):
                 if m is not None:
                     data[tag].append(m.group(1))
                 else:
-                    print "line did not match:"
-                    print line
+                    pass
+                    #print "line did not match:"
+                    #print line
     returned_data = []
 
     for tag in required_entity_types:
@@ -62,14 +63,14 @@ def match_entities(narrative_entities,news_entities):
     match_percent_narrative = []
     match_percent_news = []
     for eid in narrative_entities:
-        if eid != '70289':
-            continue
-        else:
-            print "narrative_entities:"
-            print narrative_entities[eid]
+        # if eid != '70289':
+        #     continue
+        # else:
+        #     print "narrative_entities:"
+        #     print narrative_entities[eid]
 
-            print "news_entities:"
-            print news_entities[eid]
+        #     print "news_entities:"
+        #     print news_entities[eid]
         total_narrative += len(narrative_entities[eid])
         total_news += len(news_entities[eid])
         single_match = 0
