@@ -25,11 +25,10 @@ def read_single_file(file_path, required_entity_types):
                 else:
                     print "line did not match:"
                     print line
-    if required_entity_types is not None:
-        for tag in data.keys():
-            if tag not in required_entity_types:
-                data.pop(tag,None)
-    return data
+    returned_data = []
+    for tag in required_entity_types:
+        returned_data += data[tag]
+    return returned_data
 
 
 def get_narrative_entities(narrative_entity_file):
