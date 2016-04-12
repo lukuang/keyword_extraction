@@ -64,10 +64,10 @@ def match_entities(narrative_entities,news_entities):
             continue
         else:
             print "narrative_entities:"
-            print narrative_entities[eid]:
+            print narrative_entities[eid]
 
             print "news_entities:"
-            print news_entities[eid]:
+            print news_entities[eid]
         total_narrative += len(narrative_entities[eid])
         total_news += len(news_entities[eid])
         single_match = 0
