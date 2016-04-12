@@ -26,6 +26,7 @@ def read_single_file(file_path, required_entity_types):
                     print "line did not match:"
                     print line
     returned_data = []
+    print data
     for tag in required_entity_types:
         returned_data += data[tag]
     return returned_data
