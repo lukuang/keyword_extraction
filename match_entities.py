@@ -10,6 +10,7 @@ import argparse
 
 
 def read_single_file(file_path, required_entity_types):
+    print "process file %s" %file_path
     data = {}
     with open(file_path,"r") as f:
         for line in f:
