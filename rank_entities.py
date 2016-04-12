@@ -126,7 +126,7 @@ def get_type_model(type_model_file):
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^\t(.+?):(.+)$",line)
+                m = re.search("^\t(.+?):(\d+\.?\d+)$",line)
                 if m is not None:
                     data[tag][m.group(1)] = float(m.group(2))
                     
@@ -290,7 +290,7 @@ def get_candidates(candiate_file,candiate_top):
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^\t(.+?):(.+)$",line)
+                m = re.search("^\t(.+?):(\d+\.?\d+)$",line)
                 if m is not None:
                     frequency = float(m.group(2))
                     #if frequency <= 1.0:
