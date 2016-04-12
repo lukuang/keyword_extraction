@@ -132,7 +132,7 @@ def get_json(source,required_type,positive_entities):
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^\t(.+?):(\d+\.?\d+)$",line)
+                m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
                     entity = m.group(1)
                     if entity not in positive_entities:

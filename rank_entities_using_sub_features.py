@@ -62,7 +62,7 @@ def get_type_model(type_model_file):
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^\t(.+?):(\d+\.?\d+)$",line)
+                m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
                     data[tag][m.group(1)] = float(m.group(2))
                     
@@ -185,7 +185,7 @@ def get_candidates(candiate_file,candiate_top):
                 tag = m.group(1)
                 data[tag] = {}
             else:
-                m = re.search("^\t(.+?):(\d+\.?\d+)$",line)
+                m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
                     frequency = float(m.group(2))
                     #if frequency <= 1.0:
@@ -226,7 +226,7 @@ def get_negative_models(type_model_file,size,positive_models):
                 data[tag] = {}
                 i = 0
             else:
-                m = re.search("^\t(.+?):(\d+\.?\d+)$",line)
+                m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if i>=size:
                     continue
                 if m is not None:
@@ -261,7 +261,7 @@ def get_sub_features(type_model_file,size):
                 data[tag] = {}
                 i = 0
             else:
-                m = re.search("^\t(.+?):(\d+\.?\d+)$",line)
+                m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if i>=size:
                     continue
                 if m is not None:
