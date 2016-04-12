@@ -53,6 +53,7 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name):
 def match_entities(narrative_entities,news_entities):
     total_narrative = 0 
     total_news = 0
+    zero_entity_news = 0
     matched = 0
     average_percentage_narrative = .0
     average_percentage_news = .0
@@ -66,7 +67,11 @@ def match_entities(narrative_entities,news_entities):
             if entity in news_entities[eid]:
                 single_match +=1 
         matched += single_match
-        match_percent_news.append((single_match*1.0)/len(news_entities[eid]))
+        if len(news_entities[eid])) == 0:
+            match_percent_news.append(.0)
+            zero_entity_news += 1
+        else:
+            match_percent_news.append((single_match*1.0)/len(news_entities[eid]))
         match_percent_narrative.append((single_match*1.0)/len(narrative_entities[eid]))
 
     number_of_eids = len(narrative_entities)
@@ -77,6 +82,7 @@ def match_entities(narrative_entities,news_entities):
     show the result
     """
     print "-"*20
+    print "There are %d episodes and %d of them do not have news entities" %(len(narrative_entities),zero_entity_news)
     print "There are %d narrative entities and %d news entities" %(total_narrative,total_news)
     print "Total matched entities %d" %(matched)
     print "average macthing percentage:\nnarrative %f,\tnews: %f" %(average_percentage_narrative,average_percentage_news)
