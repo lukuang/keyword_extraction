@@ -67,7 +67,7 @@ def match_entities(narrative_entities,news_entities):
             if entity in news_entities[eid]:
                 single_match +=1 
         matched += single_match
-        if len(news_entities[eid])) == 0:
+        if len(news_entities[eid]) == 0:
             match_percent_news.append(.0)
             zero_entity_news += 1
         else:
