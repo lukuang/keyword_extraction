@@ -7,7 +7,8 @@ import json
 import sys
 import re
 import argparse
-
+reload(sys)
+sys.setdefaultencoding('UTF8')
 
 def read_single_file(file_path, required_entity_types):
     # print "process file %s" %file_path
