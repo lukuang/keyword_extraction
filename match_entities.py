@@ -121,7 +121,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
     show the result
     """
     print "-"*20
-    print "There are %d episodes and %d of them do not have news entities" %(len(narrative_entities),zero_entity_news)
+    print "There are %d episodes and %d of them do not have news entities,\nand %d of them do not match any original entities" %(len(narrative_entities),zero_entity_news,len(no_match_original))
     print "There are %d episide entities, among which %d are narrative entities and %d are original entities" %(total_episode,total_narrative,total_original)
     print "There are %d news entiies." %(total_news)
     print "Total matched entities %d" %(matched)
