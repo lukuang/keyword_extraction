@@ -82,7 +82,16 @@ def match_entities(narrative_entities,original_entities,news_entities):
 
         #     print "news_entities:"
         #     print news_entities[eid]
-        
+        if len(news_entities[eid]) == 0:
+            
+            zero_entity_news += 1
+            continue
+        else:
+            if (original_match==0):
+                no_match_original.append(eid)
+                continue
+
+                
         original_match = 0
         narrative_match = 0
         single_match = 0
@@ -97,14 +106,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
         
 
 
-        if len(news_entities[eid]) == 0:
-            
-            zero_entity_news += 1
-            continue
-        else:
-            if (original_match==0):
-                no_match_original.append(eid)
-                continue
+        
 
         matched += single_match
         total_narrative += len(narrative_entities[eid])
