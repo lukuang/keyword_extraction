@@ -94,11 +94,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
         single_match = narrative_match + original_match
         matched += single_match
 
-        total_narrative += len(narrative_entities[eid])
-        total_original += len(original_entities[eid])
-        sinlge_episode_entities = narrative_entities[eid] + original_entities[eid]
-        total_episode += len(sinlge_episode_entities)
-        total_news += len(news_entities[eid])
+        
 
 
         if len(news_entities[eid]) == 0:
@@ -110,6 +106,13 @@ def match_entities(narrative_entities,original_entities,news_entities):
                 continue
         if len(narrative_entities[eid]) == 0:
             match_percent_narrative.append(.0)
+
+        total_narrative += len(narrative_entities[eid])
+        total_original += len(original_entities[eid])
+        sinlge_episode_entities = narrative_entities[eid] + original_entities[eid]
+        total_episode += len(sinlge_episode_entities)
+        total_news += len(news_entities[eid])
+        
         else:
             match_percent_narrative.append((narrative_match*1.0)/len(narrative_entities[eid]))
         match_percent_original.append((original_match*1.0)/len(original_entities[eid]))
