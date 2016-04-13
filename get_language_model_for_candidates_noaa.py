@@ -249,10 +249,9 @@ def get_json(source,required_type,positive_entities):
 
 
 
-def get_candidates(positive_file,negative_file):
-    positive_candidates = json.load(open(positive_file))
-    negative_candidates = json.load(open(negative_file))
-    return positive_candidates, negative_candidates
+def get_candidates(candidate_file):
+    candidates = json.load(open(candidate_file))
+    return candidates
 
 
 
@@ -264,8 +263,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--text_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/clean_text/')
     parser.add_argument("dest_dir")
-    parser.add_argument("--negative_file",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/negative')
-    parser.add_argument("--positive_file",'-pf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/positive')
+    parser.add_argument("candidate_file")
 
     parser.add_argument("--using_text_window","-u",action='store_true')
     parser.add_argument("--window_size",'-wz',type=int,default=3)
@@ -275,17 +273,17 @@ def main():
 
 
     args.top_dir = os.path.abspath(args.top_dir)
-    positive_candidate, negative_candidates= get_candidates(args.positive_file,args.negative_file)
+    candidates= get_candidates(,args.candidate_file)
     instance_names = entities_judgement.keys()
     documents = get_documents(instance_names,args.text_dir)
 
  
 
     if args.using_text_window:
-        windows = get_all_text_windows(documents,entities_judgement,negative_candidates,args.window_size)
+        windows = get_all_text_windows(documents,entities_judgement,candidates,args.window_size)
 
     else:
-        windows = get_all_sentence_windows(documents,entities_judgement,negative_candidates)
+        windows = get_all_sentence_windows(documents,entities_judgement,candidates)
   
 
 
