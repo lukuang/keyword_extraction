@@ -123,7 +123,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
         match_percent_news.append((single_match*1.0)/len(news_entities[eid]))
 
 
-    number_of_eids = len(narrative_entities)-zero_entity_news-len(no_match_original)
+    #number_of_eids = len(narrative_entities)-zero_entity_news-len(no_match_original)
     average_percentage_narrative = sum(match_percent_narrative)/len(match_percent_narrative)
     average_percentage_original = sum(match_percent_original)/len(match_percent_original)
     average_percentage_episode = sum(match_percent_episode)/len(match_percent_episode)
