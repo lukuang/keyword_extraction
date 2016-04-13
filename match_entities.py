@@ -100,7 +100,10 @@ def match_entities(narrative_entities,original_entities,news_entities):
             zero_entity_news += 1
         else:
             match_percent_news.append((single_match*1.0)/len(news_entities[eid]))
-        match_percent_narrative.append((narrative_match*1.0)/len(narrative_entities[eid]))
+        if len(narrative_entities[eid]) == 0:
+            match_percent_narrative.append(.0)
+        else:
+            match_percent_narrative.append((narrative_match*1.0)/len(narrative_entities[eid]))
         match_percent_original.append((original_match*1.0)/len(original_entities[eid]))
         match_percent_episode.append((single_match*1.0)/len(sinlge_episode_entities))
 
