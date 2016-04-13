@@ -92,17 +92,27 @@ public class JsonReader {
   public JSONObject get_result_json(){
     JSONObject obj = new JSONObject();
     Map<String, HashMap<String, Integer>> all_entitiy_hash = all_entitiy_map.get_hash();
+    Map<String, HashMap<String, Integer>> original_entitiy_hash = original_entitiy_map.get_hash();
     for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : all_entitiy_hash.entrySet()) {
         String eid = episode_Entry.getKey();
         
 
         //JSONObject entities = new JSONObject(episode_Entry.getValue(););
-        JSONObject entities = new JSONObject();
-        for (Map.Entry<String, Integer> entity_Entry : episode_Entry.getValue().entrySet()) {
-            String entity = entity_Entry.getKey();
-            Integer count = entity_Entry.getValue();
-            entities.put(entity,count);
+        JSONObject entitiies = new JSONObject();
+        JSONObject original_entities = new JSONObject();
+        JSONObject all_entitiies = new JSONObject();
+        for (Map.Entry<String, Integer> all_entity_Entry : episode_Entry.getValue().entrySet()) {
+            String entity = all_entity_Entry.getKey();
+            Integer count = all_entity_Entry.getValue();
+            all_entitiies.put(entity,count);
         }
+        for (Map.Entry<String, Integer> original_entity_Entry : original_entitiy_hash.get(eid).entrySet()) {
+            String entity = original_entity_Entry.getKey();
+            Integer count = original_entity_Entry.getValue();
+            original_entities.put(entity,count);
+        }
+        entities.put("original",original_entities);
+        entities.put("all",all_entitiies);
         obj.put(eid, entities);    
     }
     return obj;
