@@ -36,13 +36,15 @@ def read_single_file(file_path, required_entity_types):
     return returned_data
 
 
-def get_narrative_entities(narrative_entity_file):
+def get_episode_entities(narrative_entity_file):
     narrative_entities = {}
+    original_entities = {}
     with open(narrative_entity_file) as f:
         data = json.load(f)
         for eid in data:
-            narrative_entities[eid] = data[eid].keys()
-    return narrative_entities
+            narrative_entities[eid] = data[eid]['narrative'].keys()
+            original_entities[eid] = data[eid]['original'].keys()
+    return narrative_entities,original_entities
 
 
 def get_news_entities(news_entity_dir,required_entity_types,required_file_name):
@@ -54,14 +56,20 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name):
     return news_entities
 
 
-def match_entities(narrative_entities,news_entities):
+def match_entities(narrative_entities,original_entities,news_entities):
     total_narrative = 0 
+    total_original = 0 
+    total_episode = 0 
     total_news = 0
     zero_entity_news = 0
     matched = 0
     average_percentage_narrative = .0
+    average_percentage_original = .0
+    average_percentage_episode = .0
     average_percentage_news = .0
     match_percent_narrative = []
+    match_percent_original = []
+    match_percent_episode = []
     match_percent_news = []
     for eid in narrative_entities:
         # if eid != '70289':
@@ -73,21 +81,33 @@ def match_entities(narrative_entities,news_entities):
         #     print "news_entities:"
         #     print news_entities[eid]
         total_narrative += len(narrative_entities[eid])
+        total_original += len(original_entities[eid])
+        sinlge_episode_entities = narrative_entities[eid] + original_entities[eid]
+        total_episode += len(sinlge_episode_entities)
         total_news += len(news_entities[eid])
+        original_match = 0
+        narrative_match = 0
         single_match = 0
-        for entity in narrative_entities[eid]:
-            if entity in news_entities[eid]:
-                single_match +=1 
+        for entity in news_entities[eid]:
+            if entity in narrative_entities[eid]:
+                narrative_match += 1
+            elif entity in original_entities[eid]:
+                original_match += 1 
+        single_match = narrative_match + original_match
         matched += single_match
         if len(news_entities[eid]) == 0:
             match_percent_news.append(.0)
             zero_entity_news += 1
         else:
             match_percent_news.append((single_match*1.0)/len(news_entities[eid]))
-        match_percent_narrative.append((single_match*1.0)/len(narrative_entities[eid]))
+        match_percent_narrative.append((narrative_match*1.0)/len(narrative_entities[eid]))
+        match_percent_original.append((original_match*1.0)/len(original_entities[eid]))
+        match_percent_episode.append((single_match*1.0)/len(sinlge_episode_entities))
 
     number_of_eids = len(narrative_entities)
     average_percentage_narrative = sum(match_percent_narrative)/number_of_eids
+    average_percentage_original = sum(match_percent_original)/number_of_eids
+    average_percentage_episode = sum(match_percent_episode)/number_of_eids
     average_percentage_news = sum(match_percent_news)/number_of_eids
 
     """
@@ -95,9 +115,11 @@ def match_entities(narrative_entities,news_entities):
     """
     print "-"*20
     print "There are %d episodes and %d of them do not have news entities" %(len(narrative_entities),zero_entity_news)
-    print "There are %d narrative entities and %d news entities" %(total_narrative,total_news)
+    print "There are %d episide entities, among which %d are narrative entities and %d are original entities" %(total_episode,total_narrative,total_original)
+    print "There are %d news entiies." %(total_news)
     print "Total matched entities %d" %(matched)
-    print "average macthing percentage:\nnarrative %f,\tnews: %f" %(average_percentage_narrative,average_percentage_news)
+    print "average macthing percentage:\nnarrative %f,\toriginal: %f" %(average_percentage_narrative,average_percentage_original)
+    print "average macthing percentage:\nepisode %f,\tnews: %f" %(average_percentage_episode,average_percentage_news)
 
 
       
@@ -114,9 +136,9 @@ def main():
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
     args=parser.parse_args()
 
-    narrative_entities = get_narrative_entities(args.narrative_entity_file)
+    narrative_entities,original_entities = get_episode_entities(args.narrative_entity_file)
     news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name)
-    match_entities(narrative_entities,news_entities)
+    match_entities(narrative_entities,original_entities,news_entities)
 
 if __name__=="__main__":
     main()
