@@ -274,7 +274,6 @@ def main():
 
     
     candidates= get_candidates(args.candidate_file)
-    instance_names = entities_judgement.keys()
     documents = get_documents(instance_names,args.text_dir)
 
  
