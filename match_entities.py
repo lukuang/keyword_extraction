@@ -57,6 +57,8 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name):
 
 
 def match_entities(narrative_entities,original_entities,news_entities):
+    positive = {}
+    negative = {}
     total_narrative = 0 
     total_original = 0 
     total_episode = 0 
@@ -82,15 +84,20 @@ def match_entities(narrative_entities,original_entities,news_entities):
 
         #     print "news_entities:"
         #     print news_entities[eid]
-        
+        positive[eid] = []
+        negative[eid] = []
         original_match = 0
         narrative_match = 0
         single_match = 0
         for entity in news_entities[eid]:
             if entity in narrative_entities[eid]:
                 narrative_match += 1
+                positive[eid].append(entity)
             elif entity in original_entities[eid]:
                 original_match += 1 
+                positive[eid].append(entity)
+            else:
+                negative[eid].append(entity)
         single_match = narrative_match + original_match
         
 
@@ -100,10 +107,15 @@ def match_entities(narrative_entities,original_entities,news_entities):
         if len(news_entities[eid]) == 0:
             
             zero_entity_news += 1
+            positive.pop(eid,None)
+            negative.pop(eid,None)
+
             continue
         else:
             if (original_match==0):
                 no_match_original.append(eid)
+                positive.pop(eid,None)
+                negative.pop(eid,None)
                 continue
 
 
@@ -143,9 +155,14 @@ def match_entities(narrative_entities,original_entities,news_entities):
     print "The episodes did not match any original entities"
     print no_match_original
       
-
+    return positive, negative
         
 
+def output(positive,negative,positive_out,negative_out):
+    with open(positive_out,'w') as f:
+        f.write(json.dumps(positive))
+    with open(negativeout,'w') as f:
+        f.write(json.dumps(negative))
 
 
 def main():
@@ -154,11 +171,15 @@ def main():
     parser.add_argument("--narrative_entity_file",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/episode_entities.json')
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
+    parser.add_argument('--positive_out','-po',default='./positive')
+    parser.add_argument('--negative_out','-po',default='./negative')
+
     args=parser.parse_args()
 
     narrative_entities,original_entities = get_episode_entities(args.narrative_entity_file)
     news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name)
-    match_entities(narrative_entities,original_entities,news_entities)
+    positive,negative = match_entities(narrative_entities,original_entities,news_entities)
+    output(positive,negative,args.positive_out,args.negative_out)
 
 if __name__=="__main__":
     main()
