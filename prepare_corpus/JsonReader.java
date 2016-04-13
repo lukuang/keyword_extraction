@@ -100,12 +100,15 @@ public class JsonReader {
         JSONObject entities = new JSONObject();
         JSONObject original_entities = new JSONObject();
         JSONObject narrative_entities = new JSONObject();
+        HashMap<String, Integer> sub_original = original_entitiy_hash.get(eid);
         for (Map.Entry<String, Integer> narrative_entity_Entry : episode_Entry.getValue().entrySet()) {
             String entity = narrative_entity_Entry.getKey();
             Integer count = narrative_entity_Entry.getValue();
-            narrative_entities.put(entity,count);
+            if (sub_original.get(entity) == null){
+                narrative_entities.put(entity,count);
+            }
         }
-        for (Map.Entry<String, Integer> original_entity_Entry : original_entitiy_hash.get(eid).entrySet()) {
+        for (Map.Entry<String, Integer> original_entity_Entry : sub_original.entrySet()) {
             String entity = original_entity_Entry.getKey();
             Integer count = original_entity_Entry.getValue();
             original_entities.put(entity,count);
