@@ -11,15 +11,6 @@ import codecs
 from myUtility.corpus import Document, Sentence
 #from get_entity_cate import get_cate_for_entity_list
 
-TYPES = {
-    'LOCATION':[
-        "LOCATION",
-        "FACILITY"
-    ],
-    'ORGANIZATION':[
-        "ORGANIZATION"
-    ]
-}
 
 
 def get_sentence_window(entity_map,sentence,windows):
@@ -212,11 +203,11 @@ def get_all_text_windows(documents,entities_judgement,negative_candidates,window
     return windows
 
 
-def get_documents(instance_names,top_dir,disaster_name):
+def get_documents(instance_names,text_dir):
     documents = {}
     for instance in instance_names:
         print "for %s" %instance
-        source_dir = os.path.join(top_dir,"clean_text",disaster_name,instance)
+        source_dir = os.path.join(text_dir,instance)
         
         sub_dirs = os.walk(source_dir).next()[1]
         documents[instance] = {}
@@ -254,18 +245,7 @@ def get_json(source,required_type,positive_entities):
 
 
 
-def get_negative_candidates(instance_names,entity_dir,entities_judgement):
-    negative_candidates = {}
-    for instance in instance_names:
-        negative_candidates[instance] = {}
-        entity_file = os.path.join(entity_dir,instance,"df")
-        for e_type in TYPES:
-            for my_type in TYPES[e_type]:
-                negative_candidates[instance][my_type] = get_json(entity_file,e_type
-                            ,entities_judgement[instance][my_type])
-    print "negative:"
-    show_json(negative_candidates)
-    return negative_candidates
+
 
 
 
@@ -282,9 +262,11 @@ def show_json(data):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("disaster_name")
-    parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa')
+    parser.add_argument("--text_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/clean_text/')
     parser.add_argument("dest_dir")
+    parser.add_argument("--negative_file",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/negative')
+    parser.add_argument("--positive_file",'-pf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/positive')
+
     parser.add_argument("--using_text_window","-u",action='store_true')
     parser.add_argument("--window_size",'-wz',type=int,default=3)
     args=parser.parse_args()
@@ -295,7 +277,7 @@ def main():
     args.top_dir = os.path.abspath(args.top_dir)
     positive_candidate, negative_candidates= get_candidates(args.positive_file,args.negative_file)
     instance_names = entities_judgement.keys()
-    documents = get_documents(instance_names,args.top_dir,args.disaster_name)
+    documents = get_documents(instance_names,args.text_dir)
 
  
 
