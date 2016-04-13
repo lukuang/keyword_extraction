@@ -161,7 +161,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
 def output(positive,negative,positive_out,negative_out):
     with open(positive_out,'w') as f:
         f.write(json.dumps(positive))
-    with open(negativeout,'w') as f:
+    with open(negative_out,'w') as f:
         f.write(json.dumps(negative))
 
 
