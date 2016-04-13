@@ -71,6 +71,8 @@ def match_entities(narrative_entities,original_entities,news_entities):
     match_percent_original = []
     match_percent_episode = []
     match_percent_news = []
+
+    no_match_original = []
     for eid in narrative_entities:
         # if eid != '70289':
         #     continue
@@ -100,6 +102,8 @@ def match_entities(narrative_entities,original_entities,news_entities):
             zero_entity_news += 1
         else:
             match_percent_news.append((single_match*1.0)/len(news_entities[eid]))
+            if (original_match==0):
+                no_match_original.append(eid)
         if len(narrative_entities[eid]) == 0:
             match_percent_narrative.append(.0)
         else:
@@ -123,8 +127,8 @@ def match_entities(narrative_entities,original_entities,news_entities):
     print "Total matched entities %d" %(matched)
     print "average macthing percentage:\nnarrative %f,\toriginal: %f" %(average_percentage_narrative,average_percentage_original)
     print "average macthing percentage:\nepisode %f,\tnews: %f" %(average_percentage_episode,average_percentage_news)
-
-
+    print "The episodes did not match any original entities"
+    print no_match_original
       
 
         
