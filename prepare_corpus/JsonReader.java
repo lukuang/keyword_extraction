@@ -19,13 +19,13 @@ public class JsonReader {
   private JSONObject loaded_obj;
   private HashMap<String, String> narrative_map;
   private MyWrapper original_entitiy_map;
-  private MyWrapper all_entitiy_map;
+  private MyWrapper narrative_entitiy_map;
 
   public JsonReader (String file_path){
 
     narrative_map = new HashMap<String, String>();
     original_entitiy_map = new MyWrapper();
-    all_entitiy_map = new MyWrapper();
+    narrative_entitiy_map = new MyWrapper();
 
     try{
         JSONParser parser = new JSONParser();
@@ -41,7 +41,6 @@ public class JsonReader {
             for (int i=0;i<original_entities.size();i++){
                 String name = (String)original_entities.get(i);
                 original_entitiy_map.doublePut(key,name);
-                all_entitiy_map.doublePut(key,name);
             }
 
         }
@@ -75,7 +74,7 @@ public class JsonReader {
                 String entitiy_type = item.first();
                 String entity = narrative.substring(item.second(), item.third());
                 if(entitiy_type.equals("LOCATION") || entitiy_type.equals("ORGANIZATION") ){
-                    all_entitiy_map.doublePut(eid,entity);
+                    narrative_entitiy_map.doublePut(eid,entity);
                 }
             }
         }
@@ -91,20 +90,20 @@ public class JsonReader {
 
   public JSONObject get_result_json(){
     JSONObject obj = new JSONObject();
-    Map<String, HashMap<String, Integer>> all_entitiy_hash = all_entitiy_map.get_hash();
+    Map<String, HashMap<String, Integer>> narrative_entitiy_hash = narrative_entitiy_map.get_hash();
     Map<String, HashMap<String, Integer>> original_entitiy_hash = original_entitiy_map.get_hash();
-    for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : all_entitiy_hash.entrySet()) {
+    for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : narrative_entitiy_hash.entrySet()) {
         String eid = episode_Entry.getKey();
         
 
         //JSONObject entities = new JSONObject(episode_Entry.getValue(););
         JSONObject entities = new JSONObject();
         JSONObject original_entities = new JSONObject();
-        JSONObject all_entities = new JSONObject();
-        for (Map.Entry<String, Integer> all_entity_Entry : episode_Entry.getValue().entrySet()) {
-            String entity = all_entity_Entry.getKey();
-            Integer count = all_entity_Entry.getValue();
-            all_entities.put(entity,count);
+        JSONObject narrative_entities = new JSONObject();
+        for (Map.Entry<String, Integer> narrative_entity_Entry : episode_Entry.getValue().entrySet()) {
+            String entity = narrative_entity_Entry.getKey();
+            Integer count = narrative_entity_Entry.getValue();
+            narrative_entities.put(entity,count);
         }
         for (Map.Entry<String, Integer> original_entity_Entry : original_entitiy_hash.get(eid).entrySet()) {
             String entity = original_entity_Entry.getKey();
@@ -112,7 +111,7 @@ public class JsonReader {
             original_entities.put(entity,count);
         }
         entities.put("original",original_entities);
-        entities.put("all",all_entities);
+        entities.put("narrative",narrative_entities);
         obj.put(eid, entities);    
     }
     return obj;
