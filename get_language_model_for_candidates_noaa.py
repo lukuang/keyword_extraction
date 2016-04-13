@@ -274,6 +274,7 @@ def main():
 
     
     candidates= get_candidates(args.candidate_file)
+    instance_names = candidates.keys()
     documents = get_documents(instance_names,args.text_dir)
 
  
