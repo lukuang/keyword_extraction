@@ -172,7 +172,7 @@ def main():
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
     parser.add_argument('--positive_out','-po',default='./positive')
-    parser.add_argument('--negative_out','-po',default='./negative')
+    parser.add_argument('--negative_out','-no',default='./negative')
 
     args=parser.parse_args()
 
