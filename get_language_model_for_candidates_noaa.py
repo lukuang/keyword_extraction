@@ -153,6 +153,7 @@ def show_documents(documents):
 def get_all_sentence_windows(documents,candidates):
     windows = {}
     for instance in documents:
+        not_found = {}
         if instance != '70610':
             continue
         print "%s:" %instance
@@ -171,8 +172,15 @@ def get_all_sentence_windows(documents,candidates):
 
 
         for w in candidates[instance]:
-            windows[instance][w] = temp_windows[w]
-
+            try:
+                windows[instance][w] = temp_windows[w]
+            except KeyError e:
+                print "cannot find entity %s" %(w)
+                print 'store to remove later'
+                not_found[w] = 0
+        for w in not_found:
+            candidates.pop(w,None)
+        
     return windows
 
 def get_all_text_windows(documents,entities_judgement,negative_candidates,window_size):
