@@ -147,14 +147,14 @@ def show_documents(documents):
             print "-"*20
     
 
-def get_all_sentence_windows(documents,positive_candidates,negative_candidates):
+def get_all_sentence_windows(documents,candidates):
     windows = {}
     for instance in documents:
 
         print "%s:" %instance
         words = set()
         windows[instance] = {}
-        words.update(negative_candidates[instance])
+        words.update(candidates[instance])
         windows[instance]= {}
         #words += entities_judgement[instance][required_type]
         entity_map = get_nochange_map(words)
@@ -166,7 +166,7 @@ def get_all_sentence_windows(documents,positive_candidates,negative_candidates):
                 get_sentence_window(entity_map,sentence.text,temp_windows)
 
 
-        for w in negative_candidates[instance]:
+        for w in candidates[instance]:
             windows[instance][w] = temp_windows[w]
 
     return windows
