@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 import codecs
-from myUtility.corpus import Document, Sentence
+from myUtility.corpus import Document, Sentence, Model
 #from get_entity_cate import get_cate_for_entity_list
 
 
