@@ -280,10 +280,10 @@ def main():
  
 
     if args.using_text_window:
-        windows = get_all_text_windows(documents,entities_judgement,candidates,args.window_size)
+        windows = get_all_text_windows(documents,candidates,args.window_size)
 
     else:
-        windows = get_all_sentence_windows(documents,entities_judgement,candidates)
+        windows = get_all_sentence_windows(documents,candidates)
   
 
 
