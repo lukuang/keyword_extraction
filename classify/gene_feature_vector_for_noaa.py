@@ -178,7 +178,7 @@ def get_sub_features(model,size):
 
     data = Model(True, need_stem = True, input_stemmed = True)
     for instance in model:
-        for w in model:
+        for w in model[instance]:
             data += model[instance][w]
     data.normalize()
     terms = data.model
