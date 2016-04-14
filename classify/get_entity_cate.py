@@ -7,6 +7,7 @@ import json
 import sys
 import re
 import argparse
+import time
 from myUtility.wikiapi import *
 
 
@@ -31,6 +32,7 @@ def get_cate_for_entity_list(entity_list):
     cate_info = {}
     for entity in entity_list:
         result =  get_entity_cate(entity,wikipedia_caller,wikidata_caller)
+        time.sleep(60)
         if not result:
             cate_info[entity] = None
         else:
