@@ -301,9 +301,6 @@ def main():
 
     for instance in instance_names:
         print "store result for %s" %instance
-        for entity_type in windows[instance]:
-            for entity in windows[instance][entity_type]:
-                windows[instance][entity_type][entity] = windows[instance][entity_type][entity].model
         with codecs.open(os.path.join(args.dest_dir,instance),'w','utf-8') as f:
             f.write(json.dumps(windows[instance]))
 
