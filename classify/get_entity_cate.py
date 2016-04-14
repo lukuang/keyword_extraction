@@ -32,7 +32,7 @@ def get_cate_for_entity_list(entity_list):
     cate_info = {}
     for entity in entity_list:
         result =  get_entity_cate(entity,wikipedia_caller,wikidata_caller)
-        time.sleep(60)
+        time.sleep(20)
         if not result:
             cate_info[entity] = None
         else:
