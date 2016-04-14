@@ -174,7 +174,7 @@ def get_all_sentence_windows(documents,candidates):
         for w in candidates[instance]:
             try:
                 windows[instance][w] = temp_windows[w]
-            except KeyError e:
+            except KeyError:
                 print "cannot find entity %s" %(w)
                 print 'store to remove later'
                 not_found[w] = 0
