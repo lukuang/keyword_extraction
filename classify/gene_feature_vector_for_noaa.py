@@ -151,6 +151,7 @@ def get_single_model(candidate_dir):
     candidate_models = {}
     files = os.walk(candidate_dir).next()[2]
     for a_file in files:
+        candidate_models[a_file] = {}
         temp_model = json.load(open(os.path.join(candidate_dir,a_file)))
         for w in temp_model:
             if w not in candidate_models:
