@@ -193,6 +193,15 @@ def get_sub_features(model,size):
     return features
 
 
+def get_cate_info(pure_entities,cate_info_file):
+    if os.path.exists(cate_info_file):
+        cate_info = json.load(open(cate_info_file))
+    else:
+        cate_info = get_cate_for_entity_list(list(pure_entities) )
+        with codecs.open(cate_info_file,'w','utf-8') as f:
+            f.write(json.dumps(cate_info)) 
+    return cate_info
+
 
 def get_all_word_features(positive_model,negative_model,size):
     words = get_sub_features(positive_model,size)
@@ -202,6 +211,7 @@ def get_all_word_features(positive_model,negative_model,size):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--negative_dir",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/model/negative')
+    parser.add_argument("--cate_info_file",'-cf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/model/cate_info_file')
     parser.add_argument("--positive_dir",'-pf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/model/positive')
     parser.add_argument("--size",'-si',type=int,default=20)
     parser.add_argument("dest_dir")
@@ -227,7 +237,8 @@ def main():
     all_features = all_word_features
 
 
-    cate_info = get_cate_for_entity_list(list(pure_entities) )
+    cate_info = get_cate_info(pure_entities,args.cate_info_file)
+    
     all_cates = []
     for entity in cate_info:
         if cate_info[entity]:
@@ -243,8 +254,8 @@ def main():
 
     all_entities = []
 
-    for instance in positive_candidates:
-        for entity in negative_candidates[instance]:
+    for instance in positive_model:
+        for entity in negative_model[instance]:
             all_entities.append(instance+"/"+entity)
             judgement_vector.append(-1)
             single_feature_vectore = []
@@ -266,7 +277,7 @@ def main():
             feature_vector.append(single_feature_vectore)
 
 
-        for entity in positive_candidates[instance]:
+        for entity in positive_model[instance]:
             all_entities.append(instance+"/"+entity)
             judgement_vector.append(1)
             single_feature_vectore = []
