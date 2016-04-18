@@ -208,7 +208,9 @@ def get_cate_info(pure_entities,cate_info_file):
 def get_all_word_features(positive_model,negative_model,size):
     words = get_sub_features(positive_model,size)
     words.update(get_sub_features(negative_model,size) )
-    return words.keys()
+    all_word_features = words.keys()
+    print "return %d word features" %(all_word_features)
+    return all_word_features
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
