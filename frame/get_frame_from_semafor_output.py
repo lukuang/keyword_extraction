@@ -21,7 +21,7 @@ def get_frame(output):
                 element_name = annotation['name']
                 element_text = []
                 
-                for span in annotation['name']['spans']:
+                for span in annotation['spans']:
                     element_text.append(span['text'])
 
                 single_frame['elements'][element_name] =element_text
