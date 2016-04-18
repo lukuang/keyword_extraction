@@ -228,6 +228,7 @@ def get_cate_features(cate_info, cate_feature_size):
         all_cates.append(k)
         i += 1
         if i==cate_feature_size:
+            print "break when i is",i
             break
     print "return %d category features" %(len(all_cates) )
     return all_cates
