@@ -17,7 +17,7 @@ def get_frame(output):
             single_frame['name'] = frame['target']['name']
             single_frame['core_text'] = frame['target']['spans'][i]['text']
             single_frame['elements'] = {}
-            for annotations in frame['annotationSets'][i]['frameElements']:    
+            for annotation in frame['annotationSets'][i]['frameElements']:    
                 element_name = annotation['name']
                 element_text = []
                 
