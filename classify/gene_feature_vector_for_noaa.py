@@ -226,7 +226,7 @@ def get_cate_features(cate_info, cate_feature_size):
     for (k,v) in sorted_cates:
         all_cates.append(k)
 
-    print "return %d category features" %(all_cates)
+    print "return %d category features" %(len(all_cates) )
     return all_cates
     
 
