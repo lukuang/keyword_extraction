@@ -16,6 +16,14 @@ def get_candidates(candidate_file):
     return candidates
 
 
+def get_files(a_dir):
+    all_files = os.walk(a_dir).next()[2]
+    files = []
+    for f in all_files:
+        files.append( f )
+    return files
+    
+
 def get_documents(instance_names,text_dir):
     documents = {}
     for instance in instance_names:
