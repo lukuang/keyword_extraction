@@ -10,7 +10,7 @@ import argparse
 reload(sys)
 sys.setdefaultencoding('UTF8')
 
-def read_single_file(file_path, required_entity_types):
+def read_single_file(file_path, required_entity_types,no_single_appearance):
     # print "process file %s" %file_path
     data = {}
     with open(file_path,"r") as f:
@@ -23,7 +23,11 @@ def read_single_file(file_path, required_entity_types):
             else:
                 m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
-                    data[tag].append(m.group(1))
+                    if no_single_appearance:
+                        if float(m.group(2)>1):
+                            data[tag].append(m.group(1))
+                    else:
+                        data[tag].append(m.group(1))
                 else:
                     pass
                     #print "line did not match:"
@@ -47,12 +51,12 @@ def get_episode_entities(narrative_entity_file):
     return narrative_entities,original_entities
 
 
-def get_news_entities(news_entity_dir,required_entity_types,required_file_name):
+def get_news_entities(news_entity_dir,required_entity_types,required_file_name,no_single_appearance):
     news_entities = {}
     eids = os.walk(news_entity_dir).next()[1]
     for eid in eids:
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
-        news_entities[eid] = read_single_file(entity_file, required_entity_types)
+        news_entities[eid] = read_single_file(entity_file, required_entity_types,no_single_appearance)
     return news_entities
 
 
@@ -170,6 +174,8 @@ def main():
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
     parser.add_argument("--narrative_entity_file",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/episode_entities.json')
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
+    parser.add_argument("--no_single_appearance",'-no',action='store_true',
+        help="If given, remove entities with idf/tf <=1")
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
     parser.add_argument('--positive_out','-po',default='./positive')
     parser.add_argument('--negative_out','-no',default='./negative')
@@ -177,7 +183,7 @@ def main():
     args=parser.parse_args()
 
     narrative_entities,original_entities = get_episode_entities(args.narrative_entity_file)
-    news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name)
+    news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name,args.no_single_appearance)
     positive,negative = match_entities(narrative_entities,original_entities,news_entities)
     output(positive,negative,args.positive_out,args.negative_out)
 
