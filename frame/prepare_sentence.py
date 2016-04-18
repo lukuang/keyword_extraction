@@ -48,13 +48,13 @@ def get_sentence_window(entity_map,sentence,windows):
     """
     #print sentence
     for w in entity_map:
-        if w != u'Jefferson County':
-            continue
-        else:
-            pass
-            #print "YES!"
+        # if w != u'Jefferson County':
+        #     continue
+        # else:
+        #     pass
+        #     print "YES!"
         if sentence.find(w) != -1:
-            print "found sentence %s" %sentence
+            #print "found sentence %s" %sentence
             if entity_map[w]:
                 w = entity_map[w]
             if w not in windows:
@@ -77,8 +77,8 @@ def get_all_sentence_windows(documents,candidates):
     windows = {}
     for instance in documents:
         print "%s:" %instance
-        if instance!='59890':
-            continue
+        # if instance!='59890':
+        #     continue
         words = set()
         windows[instance] = {}
         words.update(candidates[instance])
