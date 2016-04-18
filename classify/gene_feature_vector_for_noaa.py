@@ -261,8 +261,8 @@ def main():
             single_feature_vectore = []
             
             for w in all_word_features:
-                if w in windows[instance][entity].model:
-                    single_feature_vectore.append(windows[instance][entity].model[w])
+                if w in negative_model[instance][entity].model:
+                    single_feature_vectore.append(negative_model[instance][entity].model[w])
                 else:
                     single_feature_vectore.append(0)
 
@@ -281,12 +281,11 @@ def main():
             all_entities.append(instance+"/"+entity)
             judgement_vector.append(1)
             single_feature_vectore = []
-            if args.normalize:
-                windows[instance][entity].normalize()
+    
             for w in all_word_features:
 
-                if w in windows[instance][entity].model:
-                    single_feature_vectore.append(windows[instance][entity].model[w])
+                if w in positive_model[instance][entity].model:
+                    single_feature_vectore.append(positive_model[instance][entity].model[w])
                 else:
                     single_feature_vectore.append(0)
 
