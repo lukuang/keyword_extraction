@@ -17,9 +17,14 @@ def get_frame(output):
             single_frame['name'] = frame['target']['name']
             single_frame['core_text'] = frame['target']['spans'][i]['text']
             single_frame['elements'] = {}
-            for annotation in frame['annotationSets'][i]:    
-                single_frame['elements']['name'] = annotation['frameElements']['name']
-                single_frame['elements']['text'] = annotation['frameElements']['spans']['text']
+            for annotations in frame['annotationSets'][i]['frameElements']:    
+                element_name = annotation['name']
+                element_text = []
+                
+                for span in annotation['name']['spans']:
+                    element_text.append(span['text'])
+
+                single_frame['elements'][element_name] =element_text
             all_frames.append(single_frame)
     return all_frames
 
