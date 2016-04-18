@@ -22,7 +22,7 @@ def get_files(a_dir):
     for f in all_files:
         files.append( f )
     return files
-    
+
 
 def get_documents(instance_names,text_dir):
     documents = {}
@@ -130,7 +130,7 @@ def main():
         for instance in windows:
             for w in windows[instance]:
                 for sentence in windows[instance][w]:
-                    f.write(sentence+'\n')
+                    f.write(sentence.rstrip()+'\n')
                     i += 1
                     sentence_index_map[i] = {"entity":w,'instance':instance}
 
