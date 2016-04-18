@@ -12,14 +12,15 @@ import argparse
 def get_frame(output):
     all_frames = []
     for frame in output["frames"]:
-        single_frame = {}
-        single_frame['name'] = frame['target']['name']
-        single_frame['core_text'] = frame['target']['spans']['text']
-        single_frame['elements'] = {}
-        for annotation in frame['annotationSets']:    
-            single_frame['elements']['name'] = annotation['frameElements']['name']
-            single_frame['elements']['text'] = annotation['frameElements']['spans']['text']
-        all_frames.append(single_frame)
+        for i in range(0,len(frame['target']['spans'])):
+            single_frame = {}
+            single_frame['name'] = frame['target']['name']
+            single_frame['core_text'] = frame['target']['spans'][i]['text']
+            single_frame['elements'] = {}
+            for annotation in frame['annotationSets'][i]:    
+                single_frame['elements']['name'] = annotation['frameElements']['name']
+                single_frame['elements']['text'] = annotation['frameElements']['spans']['text']
+            all_frames.append(single_frame)
     return all_frames
 
 
