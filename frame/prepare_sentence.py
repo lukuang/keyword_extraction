@@ -54,13 +54,13 @@ def get_sentence_window(entity_map,sentence,windows):
             pass
             #print "YES!"
         if sentence.find(w) != -1:
-            print "found sentence %s" %temp_sentence
+            print "found sentence %s" %sentence
             if entity_map[w]:
                 w = entity_map[w]
             if w not in windows:
                 windows[w] = []
             
-            windows[w].append(temp_sentence)
+            windows[w].append(sentence)
 
 
 
