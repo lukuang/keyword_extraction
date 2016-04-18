@@ -223,9 +223,12 @@ def get_cate_features(cate_info, cate_feature_size):
                     cate_hash[cate] = 0
                 cate_hash[cate] += 1
     sorted_cates = sorted(cate_hash.items(),key = lambda x : x[1],reverse=True)
+    i = 0
     for (k,v) in sorted_cates:
         all_cates.append(k)
-
+        i += 1
+        if i==0:
+            break
     print "return %d category features" %(len(all_cates) )
     return all_cates
     
@@ -257,7 +260,7 @@ def main():
 
 
     all_word_features = get_all_word_features(positive_model,negative_model,args.size)
-    all_features = all_word_features
+    all_features = list(all_word_features)
 
 
     cate_info = get_cate_info(pure_entities,args.cate_info_file)
