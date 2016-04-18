@@ -209,8 +209,26 @@ def get_all_word_features(positive_model,negative_model,size):
     words = get_sub_features(positive_model,size)
     words.update(get_sub_features(negative_model,size) )
     all_word_features = words.keys()
-    print "return %d word features" %(all_word_features)
+    print "return %d word features" %(len(all_word_features))
     return all_word_features
+
+
+def get_cate_features(cate_info, cate_feature_size):
+    all_cates = []
+    cate_hash = {}
+    for entity in cate_info:
+        if cate_info[entity]:
+            for cate in cate_info[entity]:
+                if cate not in cate_hash:
+                    cate_hash[cate] = 0
+                cate_hash[cate] += 1
+    sorted_cates = sorted(cate_hash.items(),key = lambda x : x[1],reverse=True)
+    for (k,v) in sorted_cates:
+        all_cates.append(k)
+
+    print "return %d category features" %(all_cates)
+    return all_cates
+    
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -218,6 +236,7 @@ def main():
     parser.add_argument("--cate_info_file",'-cf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/model/cate_info_file')
     parser.add_argument("--positive_dir",'-pf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/model/positive')
     parser.add_argument("--size",'-si',type=int,default=20)
+    parser.add_argument("--cate_feature_size",'-cs',type=int,default=20)
     parser.add_argument("dest_dir")
     args=parser.parse_args()
     
@@ -243,15 +262,11 @@ def main():
 
     cate_info = get_cate_info(pure_entities,args.cate_info_file)
     
-    all_cates = []
-    for entity in cate_info:
-        if cate_info[entity]:
-            for cate in cate_info[entity]:
-                if cate not in all_cates:
-                    all_cates.append(cate)
+    
 
-    all_features += all_cates
+    all_cates = get_cate_features(cate_info,args.cate_feature_size)
    
+    all_features += all_cates
 
     judgement_vector = []
     feature_vector = []
