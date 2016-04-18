@@ -48,10 +48,10 @@ def get_sentence_window(entity_map,sentence,windows):
     """
     #print sentence
     for w in entity_map:
-        # if w != u'La. 421':
-        #     continue
-        # else:
-        #     print "YES!"
+        if w != u'Jefferson County':
+            continue
+        else:
+            print "YES!"
         if sentence.find(w) != -1:
             temp_sentence = sentence
             print "found sentence %s" %temp_sentence
