@@ -118,7 +118,7 @@ def main():
     windows = get_all_sentence_windows(documents,candidates)
     i = 0
     sentence_index_map ={}
-    with codecs.open(args.sentence_output,'w','utf-8') f:
+    with codecs.open(args.sentence_output,'w','utf-8') as f:
         for instance in windows:
             for w in windows[instance]:
                 for sentence in windows[instance][w]:
