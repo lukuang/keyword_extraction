@@ -54,14 +54,7 @@ def get_sentence_window(entity_map,sentence,windows):
             pass
             #print "YES!"
         if sentence.find(w) != -1:
-            temp_sentence = sentence
             print "found sentence %s" %temp_sentence
-            for t in entity_map:
-                if entity_map[t]:
-                    temp_sentence = temp_sentence.replace(entity_map[t],"")
-                elif temp_sentence.find(t) != -1:
-                    temp_sentence = temp_sentence.replace(t,"")
-            print "after process %s" %temp_sentence
             if entity_map[w]:
                 w = entity_map[w]
             if w not in windows:
