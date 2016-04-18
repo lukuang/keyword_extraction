@@ -189,7 +189,9 @@ def get_sub_features(model,size):
         features[w] = v
         i += 1
         if i == size:
+            print "break when i is",i
             break
+    print "get %d features" %(len(features))
     return features
 
 
