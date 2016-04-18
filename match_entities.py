@@ -174,7 +174,7 @@ def main():
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
     parser.add_argument("--narrative_entity_file",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/episode_entities.json')
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
-    parser.add_argument("--no_single_appearance",'-no',action='store_true',
+    parser.add_argument("--no_single_appearance",'-ns',action='store_true',
         help="If given, remove entities with idf/tf <=1")
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
     parser.add_argument('--positive_out','-po',default='./positive')
