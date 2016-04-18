@@ -60,7 +60,7 @@ def get_sentence_window(entity_map,sentence,windows):
             if w not in windows:
                 windows[w] = []
             
-            windows[w].append(re.sub(sentence,"\n"," "))
+            windows[w].append(re.sub("\n"," ",sentence))
 
 
 
