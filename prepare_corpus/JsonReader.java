@@ -97,7 +97,7 @@ public class JsonReader {
     JSONObject obj = new JSONObject();
     Map<String, HashMap<String, Integer>> narrative_entitiy_hash = narrative_entitiy_map.get_hash();
     Map<String, HashMap<String, Integer>> original_entitiy_hash = original_entitiy_map.get_hash();
-    for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : narrative_entitiy_hash.entrySet()) {
+    for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : original_entitiy_map.entrySet()) {
         String eid = episode_Entry.getKey();
         
 
@@ -105,18 +105,20 @@ public class JsonReader {
         JSONObject entities = new JSONObject();
         JSONObject original_entities = new JSONObject();
         JSONObject narrative_entities = new JSONObject();
-        HashMap<String, Integer> sub_original = original_entitiy_hash.get(eid);
-        for (Map.Entry<String, Integer> narrative_entity_Entry : episode_Entry.getValue().entrySet()) {
-            String entity = narrative_entity_Entry.getKey();
-            Integer count = narrative_entity_Entry.getValue();
-            if (sub_original.get(entity) == null){
-                narrative_entities.put(entity,count);
-            }
-        }
-        for (Map.Entry<String, Integer> original_entity_Entry : sub_original.entrySet()) {
+        for (Map.Entry<String, Integer> original_entity_Entry : episode_Entry.getValue().entrySet()) {
             String entity = original_entity_Entry.getKey();
             Integer count = original_entity_Entry.getValue();
             original_entities.put(entity,count);
+        }
+        if (narrative_entitiy_hash.get(eid)!=null){
+            HashMap<String, Integer> sub_narrative = narrative_entitiy_hash.get(eid);
+            for (Map.Entry<String, Integer> narrative_entity_Entry : sub_narrative.entrySet()) {
+                String entity = narrative_entity_Entry.getKey();
+                Integer count = narrative_entity_Entry.getValue();
+                if(episode_Entry.getValue().get(entity) == null){
+                    narrative_entities.put(entity,count);
+                }
+            }
         }
         entities.put("original",original_entities);
         entities.put("narrative",narrative_entities);
