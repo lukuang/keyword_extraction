@@ -12,10 +12,12 @@ import codecs
 def get_frame(output):
     all_frames = []
     line_num = 1
+    sentence = " ".join(output['tokens'])
     try:
         for frame in output["frames"]:
             for i in range(0,len(frame['target']['spans'])):
                 single_frame = {}
+                single_frame['text'] = sentence
                 single_frame['name'] = frame['target']['name']
                 single_frame['core_text'] = frame['target']['spans'][i]['text']
                 single_frame['elements'] = {}
