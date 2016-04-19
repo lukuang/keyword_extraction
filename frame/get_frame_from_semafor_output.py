@@ -74,7 +74,8 @@ def write_frams(semafor_json,output_file,sentence_index):
         entity = sentence_index[index]['entity']
         instance = sentence_index[index]['instance']
         indentifier = instance+'/'+entity
-        if get_valid_entities(sentence_frames,entity) is not None:
+        valid_entities = get_valid_entities(sentence_frames,entity)
+        if valid_entities is not None:
             if indentifier not in result_json:
                 result_json[indentifier] = []
             result_json[indentifier] += valid_entities
