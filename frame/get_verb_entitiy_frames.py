@@ -45,6 +45,7 @@ def get_verb_frames(entity_frame_file):
     entity_frame = read_entity_frame_file(entity_frame_file)
     i = 0
     for indentifier in entity_frame:
+        print "for",indentifier
         for single_frame in entity_frame[indentifier]:
             if check_core_text(single_frame):
                 if indentifier not in entity_verb_frames:
