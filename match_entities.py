@@ -26,6 +26,8 @@ def read_single_file(file_path, required_entity_types,no_single_appearance):
                     if no_single_appearance:
                         if float(m.group(2)>1):
                             data[tag].append(m.group(1))
+                        else:
+                            print "not include %s with %s" %(m.group(1),m.group(2))
                     else:
                         data[tag].append(m.group(1))
                 else:
