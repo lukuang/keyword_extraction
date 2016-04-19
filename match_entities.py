@@ -63,6 +63,11 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name,n
     eids = os.walk(news_entity_dir).next()[1]
     for eid in eids:
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
+        if eid not in narrative_entities:
+            print "NO NARA"
+        if eid not in original_entities:
+            print "NO ORI"
+        narrative_entities[eid],original_entities[eid]
         news_entities[eid] = read_single_file(entity_file, required_entity_types,no_single_appearance,narrative_entities[eid],original_entities[eid])
     return news_entities
 
