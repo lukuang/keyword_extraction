@@ -36,6 +36,9 @@ public class JsonReader {
         Iterator<?> eid = loaded_obj.keySet().iterator();
         while(eid.hasNext()){
             String key = (String)eid.next();
+            if(key=='69591'){
+                System.out.println("found 69591!");
+            }
             JSONObject sub_data = (JSONObject) loaded_obj.get(key);
             narrative_map.put(key,(String)sub_data.get("narrative"));
             JSONArray original_entities = (JSONArray) sub_data.get("entities");
@@ -79,6 +82,7 @@ public class JsonReader {
                 }
             }
         }
+        System.out.println("now the sizes are "+original_entitiy_map.size()+" "+narrative_entitiy_map.size());
     }
     catch(IOException ioe){
         System.out.println(ioe);
@@ -145,6 +149,10 @@ public class JsonReader {
             hashX.get(one).put(two, value);
         }
 
+        public int size(){
+            return hashX.size();
+        }
+
         public void show(){
             //StringWriter out = new StringWriter();
             //JSONValue.writeJSONString(hashX, out);
@@ -173,7 +181,7 @@ public class JsonReader {
     String file_path = args[0];
     JsonReader my_reader = new JsonReader(file_path);
     JSONObject result_json = my_reader.get_result_json();
-    System.out.println(result_json);
+    //System.out.println(result_json);
     
   }
 }  
