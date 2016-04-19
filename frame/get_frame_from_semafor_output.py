@@ -33,10 +33,11 @@ def load_sentence_index(sentence_index):
     return json.load(open(sentence_index))
 
 
-def check(sentence_frame,entity):
-    frame_text = sentence_frame['core_text']
-    for element_name in sentence_frame['elements']:
-        frame_text += "  "+entence_frame['elements'][element_name]
+def check(sentence_frames,entity):
+    for single_frame in sentence_frames:
+        frame_text = single_frame['core_text']
+        for element_name in single_frame['elements']:
+            frame_text += "  "+single_frame['elements'][element_name]
 
     return (frame_text.find(entity) != -1)
 
@@ -53,16 +54,16 @@ def write_frams(semafor_json,output_file,sentence_index):
     result_json = {}
     i=1
     for sentence_json in semafor_json:
-        sentence_frame = get_frame(semafor_json)
-        print sentence_frame
+        sentence_frames = get_frame(semafor_json)
+        print sentence_frames
         index = str(i)
         entity = sentence_index[index]['entity']
         instance = sentence_index[index]['instance']
         indentifier = instance+'/'+entity
-        if check(sentence_frame,entity):
+        if check(sentence_frames,entity):
             if indentifier not in result_json:
                 result_json[indentifier] = []
-            result_json[indentifier].append(sentence_frame)
+            result_json[indentifier].append(sentence_frames)
 
         i += 1
 
@@ -80,8 +81,8 @@ def main():
     sentence_index = load_sentence_index(args.sentence_index)
     semafor_json = get_semafor_json(args.semafor_output)
     write_frams(semafor_json,args.output_file,sentence_index)
-    #sentence_frame = get_frame(test_json_output)
-    #print json.dumps(sentence_frame,indent=4)
+    #sentence_frames = get_frame(test_json_output)
+    #print json.dumps(sentence_frames,indent=4)
 
 if __name__=="__main__":
     main()
