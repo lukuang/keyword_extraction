@@ -97,7 +97,7 @@ public class JsonReader {
     JSONObject obj = new JSONObject();
     Map<String, HashMap<String, Integer>> narrative_entitiy_hash = narrative_entitiy_map.get_hash();
     Map<String, HashMap<String, Integer>> original_entitiy_hash = original_entitiy_map.get_hash();
-    for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : narrative_entitiy_hash.entrySet()) {
+    for (Map.Entry<String, HashMap<String, Integer>> episode_Entry : original_entitiy_hash.entrySet()) {
         String eid = episode_Entry.getKey();
         
 
