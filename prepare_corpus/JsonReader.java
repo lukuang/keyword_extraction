@@ -36,7 +36,7 @@ public class JsonReader {
         Iterator<?> eid = loaded_obj.keySet().iterator();
         while(eid.hasNext()){
             String key = (String)eid.next();
-            if(key=='69591'){
+            if(key=="69591"){
                 System.out.println("found 69591!");
             }
             JSONObject sub_data = (JSONObject) loaded_obj.get(key);
