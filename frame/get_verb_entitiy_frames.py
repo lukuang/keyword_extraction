@@ -27,7 +27,7 @@ def read_entity_frame_file(entity_frame_file):
 
 
 def get_pos_tag(core_text):
-    tokens = nltk.word_tokenize(text)
+    tokens = nltk.word_tokenize(core_text)
     tags = nltk.pos_tag(tokens)
     return tags
 
