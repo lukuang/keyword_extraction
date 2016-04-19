@@ -10,7 +10,8 @@ import argparse
 reload(sys)
 sys.setdefaultencoding('UTF8')
 
-def read_single_file(file_path, required_entity_types,no_single_appearance):
+def read_single_file(file_path, required_entity_types,no_single_appearance,
+    narrative_entities,original_entities):
     # print "process file %s" %file_path
     data = {}
     with open(file_path,"r") as f:
@@ -24,9 +25,11 @@ def read_single_file(file_path, required_entity_types,no_single_appearance):
                 m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
                     if no_single_appearance:
-                        if float(m.group(2))>1:
+                        if m.group(1) in narrative_entities or m.group(1) in original_entities:
                             data[tag].append(m.group(1))
-                            #print "include %s with %s" %(m.group(1),m.group(2))
+                        elif float(m.group(2))>1:
+                            data[tag].append(m.group(1))
+                            #print "include %s with %s" %(m.group(1),m.group(2)
                         else:
                             print "not include %s with %s" %(m.group(1),m.group(2))
                     else:
@@ -54,12 +57,13 @@ def get_episode_entities(narrative_entity_file):
     return narrative_entities,original_entities
 
 
-def get_news_entities(news_entity_dir,required_entity_types,required_file_name,no_single_appearance):
+def get_news_entities(news_entity_dir,required_entity_types,required_file_name,no_single_appearance,
+    narrative_entities,original_entities):
     news_entities = {}
     eids = os.walk(news_entity_dir).next()[1]
     for eid in eids:
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
-        news_entities[eid] = read_single_file(entity_file, required_entity_types,no_single_appearance)
+        news_entities[eid] = read_single_file(entity_file, required_entity_types,no_single_appearance,narrative_entities[eid],original_entities[eid])
     return news_entities
 
 
@@ -186,7 +190,7 @@ def main():
     args=parser.parse_args()
 
     narrative_entities,original_entities = get_episode_entities(args.narrative_entity_file)
-    news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name,args.no_single_appearance)
+    news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name,args.no_single_appearance,narrative_entities,original_entities)
     positive,negative = match_entities(narrative_entities,original_entities,news_entities)
     output(positive,negative,args.positive_out,args.negative_out)
 
