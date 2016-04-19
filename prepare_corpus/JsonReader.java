@@ -183,7 +183,7 @@ public class JsonReader {
     String file_path = args[0];
     JsonReader my_reader = new JsonReader(file_path);
     JSONObject result_json = my_reader.get_result_json();
-    //System.out.println(result_json);
+    System.out.println(result_json);
     
   }
 }  
