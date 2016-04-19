@@ -51,9 +51,9 @@ def get_verb_frames(entity_frame_file):
                     entity_verb_frames[indentifier] = []
                 entity_verb_frames[indentifier].append(single_frame)
         i += 1
-        if (i%100==0){
+        if (i%100==0):
             print "processed %d entities" %i
-        }
+        
     return entity_verb_frames
 
 def output(entity_verb_frames,output_file):
