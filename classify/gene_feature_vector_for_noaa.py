@@ -202,8 +202,10 @@ def get_cate_info(pure_entities,cate_info_file):
         for entity in pure_entities:
             if entity not in cate_info:
                 new_cate.append(entity)
-                
-        cate_info.update(get_cate_for_entity_list(new_cate))
+        if len(new_cate)!=0:
+            cate_info.update(get_cate_for_entity_list(new_cate))
+        with codecs.open(cate_info_file,'w','utf-8') as f:
+            f.write(json.dumps(cate_info)) 
     else:
         cate_info = get_cate_for_entity_list(list(pure_entities) )
         with codecs.open(cate_info_file,'w','utf-8') as f:
