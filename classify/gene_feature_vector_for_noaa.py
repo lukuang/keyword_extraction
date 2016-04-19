@@ -198,6 +198,12 @@ def get_sub_features(model,size):
 def get_cate_info(pure_entities,cate_info_file):
     if os.path.exists(cate_info_file):
         cate_info = json.load(open(cate_info_file))
+        new_cate = []
+        for entity in pure_entities:
+            if entity not in cate_info:
+                new_cate.append(entity)
+                
+        cate_info.update(get_cate_for_entity_list(new_cate))
     else:
         cate_info = get_cate_for_entity_list(list(pure_entities) )
         with codecs.open(cate_info_file,'w','utf-8') as f:
