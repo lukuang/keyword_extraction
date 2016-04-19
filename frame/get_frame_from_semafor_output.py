@@ -49,7 +49,7 @@ def get_semafor_json(semafor_output):
     data = []
     with open(semafor_output) as f:
         for line in f:
-            data = json.loads(line.rstrip())
+            data.append(json.loads(line.rstrip()))
     print "there are %d sentence frmaes" %(len(data))
     return data
 
