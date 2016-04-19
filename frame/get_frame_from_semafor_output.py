@@ -7,7 +7,7 @@ import json
 import sys
 import re
 import argparse
-
+import codecs
 
 def get_frame(output):
     all_frames = []
