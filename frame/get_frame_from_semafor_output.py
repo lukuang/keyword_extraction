@@ -54,6 +54,7 @@ def write_frams(semafor_json,output_file,sentence_index):
     i=1
     for sentence_json in semafor_json:
         sentence_frame = get_frame(semafor_json)
+        print sentence_frame
         index = str(i)
         entity = sentence_index[index]['entity']
         instance = sentence_index[index]['instance']
