@@ -40,15 +40,19 @@ def load_sentence_index(sentence_index):
     return json.load(open(sentence_index))
 
 
-def check(sentence_frames,entity):
-    has_entity = False
+def get_valid_entities(sentence_frames,entity):
+    valid_entities = []
     for single_frame in sentence_frames:
         frame_text = single_frame['core_text']
         for element_name in single_frame['elements']:
             #for text in single_frame['elements'][element_name]:
             frame_text += "  ".join(single_frame['elements'][element_name])
-            has_entity = (frame_text.find(entity) != -1)
-    return has_entity
+            if (frame_text.find(entity) != -1):
+                valid_entities.append(single_frame)
+    if len(valid_entities)==0:
+        return None
+    else:
+        return valid_entities
 
 
 
@@ -70,10 +74,10 @@ def write_frams(semafor_json,output_file,sentence_index):
         entity = sentence_index[index]['entity']
         instance = sentence_index[index]['instance']
         indentifier = instance+'/'+entity
-        if check(sentence_frames,entity):
+        if get_valid_entities(sentence_frames,entity) is not None:
             if indentifier not in result_json:
                 result_json[indentifier] = []
-            result_json[indentifier].append(sentence_frames)
+            result_json[indentifier] += valid_entities
 
         i += 1
 
