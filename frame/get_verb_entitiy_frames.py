@@ -43,12 +43,17 @@ def check_core_text(single_frame):
 def get_verb_frames(entity_frame_file):
     entity_verb_frames = {}
     entity_frame = read_entity_frame_file(entity_frame_file)
+    i = 0
     for indentifier in entity_frame:
         for single_frame in entity_frame[indentifier]:
             if check_core_text(single_frame):
                 if indentifier not in entity_verb_frames:
                     entity_verb_frames[indentifier] = []
                 entity_verb_frames[indentifier].append(single_frame)
+        i += 1
+        if (i%100==0){
+            print "processed %d entities" %i
+        }
     return entity_verb_frames
 
 def output(entity_verb_frames,output_file):

@@ -31,7 +31,8 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
                             data[tag].append(m.group(1))
                             #print "include %s with %s" %(m.group(1),m.group(2)
                         else:
-                            print "not include %s with %s" %(m.group(1),m.group(2))
+                            pass
+                            #print "not include %s with %s" %(m.group(1),m.group(2))
                     else:
                         data[tag].append(m.group(1))
                 else:
