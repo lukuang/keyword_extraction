@@ -31,7 +31,7 @@ def get_frame(output):
             line_num += 1    
     except:
         print "error at %d" %line_num
-        print output
+        #print output
         sys.exit(-1)
     return all_frames
 
