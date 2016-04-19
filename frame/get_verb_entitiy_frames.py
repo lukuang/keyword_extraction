@@ -35,7 +35,7 @@ def get_pos_tag(core_text):
 def check_core_text(single_frame):
     tags = get_pos_tag(single_frame['core_text'])
     for t in tags:
-        if t[2] is in NEEDED_TAGS:
+        if t[1] in NEEDED_TAGS:
             return True
     return False
 
