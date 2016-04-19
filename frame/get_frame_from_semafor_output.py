@@ -70,7 +70,7 @@ def write_frams(semafor_json,output_file,sentence_index):
         i += 1
 
     with codecs.open(output_file,'w','utf-8') as f:
-        f.write(result_json)
+        f.write(json.dumps(result_json) )
 
 
 
