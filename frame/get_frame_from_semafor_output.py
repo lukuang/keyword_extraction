@@ -30,13 +30,33 @@ def get_frame(output):
 
 
 
+def get_semafor_json(semafor_output):
+    data = []
+    with open(semafor_output) as f:
+        for line in f:
+            data = json.loads(line.rstrip())
+    return data
+
+def write_frams(semafor_json,output_file):
+    result_json = []
+    for sentence_json in semafor_json:
+        sentence_frame = get_frame(semafor_json)
+        fresult_json.append(sentence_frame)
+
+    with codecs.open(output_file,'w','utf-8') as f:
+        f.write(result_json)
+
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("test_json_output")
+    parser.add_argument("semafor_output")
+    parser.add_argument("output_file")
     args=parser.parse_args()
-    test_json_output = json.load(open(args.test_json_output))
-    sentence_frame = get_frame(test_json_output)
-    print json.dumps(sentence_frame,indent=4)
+    semafor_json = get_semafor_json(open(args.semafor_output))
+    write_frams(semafor_json,args.output_file)
+    #sentence_frame = get_frame(test_json_output)
+    #print json.dumps(sentence_frame,indent=4)
 
 if __name__=="__main__":
     main()
