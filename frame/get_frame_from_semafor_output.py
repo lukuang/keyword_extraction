@@ -40,7 +40,7 @@ def check(sentence_frames,entity):
         for element_name in single_frame['elements']:
             #for text in single_frame['elements'][element_name]:
             frame_text += "  ".join(single_frame['elements'][element_name])
-
+            has_entity = (frame_text.find(entity) != -1)
     return has_entity
 
 
@@ -50,6 +50,7 @@ def get_semafor_json(semafor_output):
     with open(semafor_output) as f:
         for line in f:
             data = json.loads(line.rstrip())
+    print "there are %d sentence frmaes" %(len(data))
     return data
 
 def write_frams(semafor_json,output_file,sentence_index):
@@ -57,7 +58,7 @@ def write_frams(semafor_json,output_file,sentence_index):
     i=1
     for sentence_json in semafor_json:
         sentence_frames = get_frame(semafor_json)
-        print sentence_frames
+        #print sentence_frames
         index = str(i)
         entity = sentence_index[index]['entity']
         instance = sentence_index[index]['instance']
