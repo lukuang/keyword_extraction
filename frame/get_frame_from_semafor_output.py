@@ -11,21 +11,28 @@ import codecs
 
 def get_frame(output):
     all_frames = []
-    for frame in output["frames"]:
-        for i in range(0,len(frame['target']['spans'])):
-            single_frame = {}
-            single_frame['name'] = frame['target']['name']
-            single_frame['core_text'] = frame['target']['spans'][i]['text']
-            single_frame['elements'] = {}
-            for annotation in frame['annotationSets'][i]['frameElements']:    
-                element_name = annotation['name']
-                element_text = []
-                
-                for span in annotation['spans']:
-                    element_text.append(span['text'])
+    line_num = 1
+    try:
+        for frame in output["frames"]:
+            for i in range(0,len(frame['target']['spans'])):
+                single_frame = {}
+                single_frame['name'] = frame['target']['name']
+                single_frame['core_text'] = frame['target']['spans'][i]['text']
+                single_frame['elements'] = {}
+                for annotation in frame['annotationSets'][i]['frameElements']:    
+                    element_name = annotation['name']
+                    element_text = []
+                    
+                    for span in annotation['spans']:
+                        element_text.append(span['text'])
 
-                single_frame['elements'][element_name] =element_text
-            all_frames.append(single_frame)
+                    single_frame['elements'][element_name] =element_text
+                all_frames.append(single_frame)
+            line_num += 1    
+    except:
+        print "error at %d" %line_num
+        print output
+        sys.exit(-1)
     return all_frames
 
 
