@@ -32,7 +32,7 @@ public class JsonReader {
         String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
         obj = parser.parse(content);
         loaded_obj = (JSONObject) obj;
-        System.out.println("Loaded size: "+ loaded_obj.size());
+        //System.out.println("Loaded size: "+ loaded_obj.size());
         Iterator<?> eid = loaded_obj.keySet().iterator();
         while(eid.hasNext()){
             String key = (String)eid.next();
@@ -82,7 +82,7 @@ public class JsonReader {
                 }
             }
         }
-        System.out.println("now the sizes are "+original_entitiy_map.size()+" "+narrative_entitiy_map.size());
+        //System.out.println("now the sizes are "+original_entitiy_map.size()+" "+narrative_entitiy_map.size());
     }
     catch(IOException ioe){
         System.out.println(ioe);
@@ -124,7 +124,7 @@ public class JsonReader {
         entities.put("narrative",narrative_entities);
         obj.put(eid, entities);    
     }
-    System.out.println("result size: "+ obj.size());
+    //System.out.println("result size: "+ obj.size());
 
     return obj;
   }
