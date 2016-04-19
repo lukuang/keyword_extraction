@@ -54,8 +54,9 @@ def write_frams(semafor_json,output_file,sentence_index):
     i=1
     for sentence_json in semafor_json:
         sentence_frame = get_frame(semafor_json)
-        entity = sentence_index[i]['entity']
-        instance = sentence_index[i]['instance']
+        index = str(i)
+        entity = sentence_index[index]['entity']
+        instance = sentence_index[index]['instance']
         indentifier = instance+'/'+entity
         if check(sentence_frame,entity):
             if indentifier not in result_json:
