@@ -34,12 +34,14 @@ def load_sentence_index(sentence_index):
 
 
 def check(sentence_frames,entity):
+    has_entity = False
     for single_frame in sentence_frames:
         frame_text = single_frame['core_text']
         for element_name in single_frame['elements']:
-            frame_text += "  "+single_frame['elements'][element_name]
+            #for text in single_frame['elements'][element_name]:
+            frame_text += "  ".join(single_frame['elements'][element_name])
 
-    return (frame_text.find(entity) != -1)
+    return has_entity
 
 
 
