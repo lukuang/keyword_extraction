@@ -29,6 +29,18 @@ def get_frame(output):
     return all_frames
 
 
+def load_sentence_index(sentence_index):
+    return json.load(open(sentence_index))
+
+
+def check(sentence_frame,entity):
+    frame_text = sentence_frame['core_text']
+    for element_name in sentence_frame['elements']:
+        frame_text += "  "+entence_frame['elements'][element_name]
+
+    return (frame_text.find(entity) != -1)
+
+
 
 def get_semafor_json(semafor_output):
     data = []
@@ -37,11 +49,20 @@ def get_semafor_json(semafor_output):
             data = json.loads(line.rstrip())
     return data
 
-def write_frams(semafor_json,output_file):
-    result_json = []
+def write_frams(semafor_json,output_file,sentence_index):
+    result_json = {}
+    i=1
     for sentence_json in semafor_json:
         sentence_frame = get_frame(semafor_json)
-        fresult_json.append(sentence_frame)
+        entity = sentence_index[i]['entity']
+        instance = sentence_index[i]['instance']
+        indentifier = instance+'/'+entity
+        if check(sentence_frame,entity):
+            if indentifier not in result_json:
+                result_json[indentifier] = []
+            result_json[indentifier].append(sentence_frame)
+
+        i += 1
 
     with codecs.open(output_file,'w','utf-8') as f:
         f.write(result_json)
@@ -52,9 +73,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("semafor_output")
     parser.add_argument("output_file")
+    parser.add_argument("sentence_index")
     args=parser.parse_args()
-    semafor_json = get_semafor_json(open(args.semafor_output))
-    write_frams(semafor_json,args.output_file)
+    sentence_index = load_sentence_index(args.sentence_index)
+    semafor_json = get_semafor_json(args.semafor_output)
+    write_frams(semafor_json,args.output_file,sentence_index)
     #sentence_frame = get_frame(test_json_output)
     #print json.dumps(sentence_frame,indent=4)
 
