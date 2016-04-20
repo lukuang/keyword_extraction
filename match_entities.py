@@ -175,9 +175,17 @@ def match_entities(narrative_entities,original_entities,news_entities):
     return positive, negative
         
 
-def output(positive,negative,positive_out,negative_out):
+def output(positive,negative,positive_out,negative_out,overlap):
     with open(positive_out,'w') as f:
         f.write(json.dumps(positive))
+
+    remove_count = 0
+    for instance in negative:
+        for w in overlap[instance]:
+            if w in negative[instance]:
+                negative[instance].remove(w)
+                remove_count += 1
+    print "removed %d entities" %remove_count
     with open(negative_out,'w') as f:
         f.write(json.dumps(negative))
 
@@ -186,10 +194,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
     parser.add_argument("--narrative_entity_file",'-nf',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/episode_entities.json')
-    parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION"])
+    parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
     parser.add_argument("--no_single_appearance",'-ns',action='store_true',
         help="If given, remove entities with idf/tf <=1")
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
+    parser.add_argument("--overlap",'-op',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/overlap.json')
     parser.add_argument('--positive_out','-po',default='./positive')
     parser.add_argument('--negative_out','-no',default='./negative')
 
@@ -197,8 +206,9 @@ def main():
 
     narrative_entities,original_entities = get_episode_entities(args.narrative_entity_file)
     news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name,args.no_single_appearance,narrative_entities,original_entities)
+    overlap = json.load(open(args.overlap))
     positive,negative = match_entities(narrative_entities,original_entities,news_entities)
-    output(positive,negative,args.positive_out,args.negative_out)
+    output(positive,negative,args.positive_out,args.negative_out,overlap)
 
 if __name__=="__main__":
     main()
