@@ -2,4 +2,4 @@ run example:
     java -cp '.:../lib/*' RankEntity /lustre/scratch/lukuang/keyphrase_extraction/data/clean_text/48h/non_stem/top10/
 
 compile example:
-    javac -cp '.:/home/1546/source/stanford-ner-2015-12-09/*'
+    javac -cp '.:../lib/*'
