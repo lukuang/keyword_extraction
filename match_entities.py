@@ -97,16 +97,16 @@ def match_entities(narrative_entities,original_entities,news_entities):
     no_match_original = []
     no_news_entities = []
     for eid in original_entities:
-        if eid == '60534':
+        # if eid == '60534':
             
-            print "narrative_entities:"
-            print narrative_entities[eid]
+        #     print "narrative_entities:"
+        #     print narrative_entities[eid]
 
-            print "news_entities:"
-            print news_entities[eid]
+        #     print "news_entities:"
+        #     print news_entities[eid]
 
-            print "original_entities:"
-            print original_entities[eid]
+        #     print "original_entities:"
+        #     print original_entities[eid]
 
         positive[eid] = []
         negative[eid] = []
@@ -125,10 +125,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
         single_match = narrative_match + original_match
         
 
-        if eid == '60534':
-            print single_match
-            print original_match
-            print narrative_match
+
 
 
         if len(news_entities[eid]) == 0:
@@ -194,10 +191,11 @@ def output(positive,negative,positive_out,negative_out,overlap):
     remove_count = 0
     for instance in negative:
         for overlap_instance in overlap[instance]:
-            for w in positive[overlap_instance]:
-                if w in negative[instance]:
-                    negative[instance].remove(w)
-                    remove_count += 1
+            if overlap_instance in positive:
+                for w in positive[overlap_instance]:
+                    if w in negative[instance]:
+                        negative[instance].remove(w)
+                        remove_count += 1
     print "removed %d entities" %remove_count
     with open(negative_out,'w') as f:
         f.write(json.dumps(negative))
@@ -220,13 +218,6 @@ def main():
     narrative_entities,original_entities = get_episode_entities(args.narrative_entity_file)
     news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name,args.no_single_appearance,narrative_entities,original_entities)
     overlap = json.load(open(args.overlap))
-    eid = '60534'
-    if eid in news_entities:
-        print "IN NEWS"
-    if eid in original_entities:
-        print "IN ORIGINAL"
-    if eid in narrative_entities:
-        print 'IN NARRATITVE'
     positive,negative = match_entities(narrative_entities,original_entities,news_entities)
     output(positive,negative,args.positive_out,args.negative_out,overlap)
 
