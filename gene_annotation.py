@@ -48,7 +48,6 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("")
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION"])
     parser.add_argument("--required_file_name",'-rn',default='df')
