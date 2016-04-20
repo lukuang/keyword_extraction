@@ -15,7 +15,7 @@ def get_top(data,size):
     sorted_data = sorted(data.items(),key=lambda x:x[1], reverse=True)
     i = 0
     for (k,v) in sorted_data:
-        entities.append(entity)
+        entities.append(k)
         i+=1
         if i==size:
             break
