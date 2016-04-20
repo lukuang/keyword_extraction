@@ -104,6 +104,10 @@ def match_entities(narrative_entities,original_entities,news_entities):
 
             print "news_entities:"
             print news_entities[eid]
+
+            print "original_entities:"
+            print original_entities[eid]
+            
         positive[eid] = []
         negative[eid] = []
         original_match = 0
