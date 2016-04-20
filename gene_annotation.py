@@ -9,6 +9,9 @@ import re
 import argparse
 import csv
 import codecs
+reload(sys)
+sys.setdefaultencoding('UTF8')
+
 
 def get_top(data,size):
     entities = []
