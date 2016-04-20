@@ -55,6 +55,9 @@ def get_episode_entities(narrative_entity_file):
         for eid in data:
             narrative_entities[eid] = data[eid]['narrative'].keys()
             original_entities[eid] = data[eid]['original'].keys()
+    print len(original_entities)
+    print len(narrative_entities)
+    
     return narrative_entities,original_entities
 
 
@@ -93,19 +96,15 @@ def match_entities(narrative_entities,original_entities,news_entities):
 
     no_match_original = []
     no_news_entities = []
-    for eid in original_entities:
-        if eid != '60534':
-            continue
-        else:
-            print "narrative_entities:"
-            print narrative_entities[eid]
+    for eid in narrative_entities:
+        # if eid != '70289':
+        #     continue
+        # else:
+        #     print "narrative_entities:"
+        #     print narrative_entities[eid]
 
-            print "news_entities:"
-            print news_entities[eid]
-
-            print "original_entities:"
-            print original_entities[eid]
-            
+        #     print "news_entities:"
+        #     print news_entities[eid]
         positive[eid] = []
         negative[eid] = []
         original_match = 0
