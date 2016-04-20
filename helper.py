@@ -8,7 +8,7 @@ import sys
 
 
 def count_entities(file_name,count_only=False):
-    data = json.load(file_name)
+    data = json.load(open(file_name) )
 
     if not count_only:
         c = {}
