@@ -97,9 +97,8 @@ def match_entities(narrative_entities,original_entities,news_entities):
     no_match_original = []
     no_news_entities = []
     for eid in original_entities:
-        if eid != '60534':
-            continue
-        else:
+        if eid == '60534':
+            
             print "narrative_entities:"
             print narrative_entities[eid]
 
