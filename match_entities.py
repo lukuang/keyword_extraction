@@ -57,7 +57,7 @@ def get_episode_entities(narrative_entity_file):
             original_entities[eid] = data[eid]['original'].keys()
     print len(original_entities)
     print len(narrative_entities)
-    
+
     return narrative_entities,original_entities
 
 
@@ -96,7 +96,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
 
     no_match_original = []
     no_news_entities = []
-    for eid in narrative_entities:
+    for eid in original_entities:
         # if eid != '70289':
         #     continue
         # else:
