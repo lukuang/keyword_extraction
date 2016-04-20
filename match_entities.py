@@ -211,6 +211,13 @@ def main():
     narrative_entities,original_entities = get_episode_entities(args.narrative_entity_file)
     news_entities = get_news_entities(args.news_entity_dir,args.required_entity_types,args.required_file_name,args.no_single_appearance,narrative_entities,original_entities)
     overlap = json.load(open(args.overlap))
+    eid = '60534'
+    if eid in news_entities:
+        print "IN NEWS"
+    if eid in original_entities:
+        print "IN ORIGINAL"
+    if eid in narrative_entities:
+        print 'IN NARRATITVE'
     positive,negative = match_entities(narrative_entities,original_entities,news_entities)
     output(positive,negative,args.positive_out,args.negative_out,overlap)
 
