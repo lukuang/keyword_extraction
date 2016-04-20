@@ -181,10 +181,11 @@ def output(positive,negative,positive_out,negative_out,overlap):
 
     remove_count = 0
     for instance in negative:
-        for w in overlap[instance]:
-            if w in negative[instance]:
-                negative[instance].remove(w)
-                remove_count += 1
+        for overlap_instance in overlap[instance]:
+            for w in positive[overlap_instance]:
+                if w in negative[instance]:
+                    negative[instance].remove(w)
+                    remove_count += 1
     print "removed %d entities" %remove_count
     with open(negative_out,'w') as f:
         f.write(json.dumps(negative))
