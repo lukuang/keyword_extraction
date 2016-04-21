@@ -48,7 +48,12 @@ def gene_entities(dest_dir,entity_dir):
     ]
 
     for java_file in java_files:
+        final_output = os.path.join(entity_dir,java_files[java_file])
+        if os.path.exists(final_output):
+            print "Skip already finished dir",entity_dir
+            continue
         args_run_java[3] = java_file
+
         print " ".join(args_run_java)
         p = subprocess.Popen(" ".join(args_run_java), stdout=subprocess.PIPE, shell=True)
         output = p.communicate()[0]
@@ -56,7 +61,7 @@ def gene_entities(dest_dir,entity_dir):
         with open(file_name,'w') as f:
             f.write(output)
         args_process_result[2] = file_name
-        args_process_result[3] = os.path.join(entity_dir,java_files[java_file])
+        args_process_result[3] = final_output
         subprocess.call(args_process_result)
 
 def main():

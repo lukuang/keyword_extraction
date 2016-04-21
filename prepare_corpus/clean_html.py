@@ -39,6 +39,8 @@ def gene_text_single_dir(parser,source_dir,dest_dir,top,first_only):
     files = get_files(source_dir,top,first_only)
     for f in files:
         dest_file = os.path.join(dest_dir,f)
+        if os.path.exists(dest_file):
+            continue
         text = parser.get_text(os.path.join(source_dir,f))
         lan = langid.classify(text)[0]
         if lan != 'en':
