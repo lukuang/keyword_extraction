@@ -52,7 +52,7 @@ class VerbPairFinder {
   public static List <String> read_file(String file_name){
     try (BufferedReader br = new BufferedReader(new FileReader(file_name))) {
       String line;
-      List <String> content = new List<String>();
+      List <String> content = new ArrayList<String>();
       while ((line = br.readLine()) != null) {
        // process the line.
         content.add(line);
@@ -102,7 +102,7 @@ class VerbPairFinder {
     GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
     List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
 
-    List <String> verbs = new List<String>();
+    List <String> verbs = new ArrayList<String>();
     for (int i=0;i<tdl.size();i++){
         System.out.println(tdl.get(i).reln().getShortName());
   
