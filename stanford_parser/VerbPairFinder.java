@@ -35,7 +35,8 @@ class VerbPairFinder {
       JSONObject entity_content = read_entity_file(args[1]);
       JSONObject result= new JSONObject();
       for (int i=0;i<content.size();i++){
-        String index = (i+1).toString();
+        Integer temp_int = i+1;
+        String index = temp_int.toString();
         JSONObject sub_data = entity_content.get(index);
         String entity = sub_data.get("entity");
         List <String> sentence_verbs = find_verb_pair_in_sentence(lp,entity,content.get(i));
@@ -71,7 +72,7 @@ class VerbPairFinder {
   }
 
 
-  public static JSONParser read_entity_file(String file_path){
+  public static JSONObject read_entity_file(String file_path){
     JSONParser parser = new JSONParser();
         String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
         obj = parser.parse(content);
