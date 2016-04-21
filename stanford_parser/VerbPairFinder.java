@@ -39,11 +39,12 @@ class VerbPairFinder {
         List <String> sentence_verbs = find_verb_pair_in_sentence(lp,entity,content.get(i));
         JSONArray verb_array = new JSONArray();
         for(int j=0;j<sentence_verbs.size();j++){
-          verb_array.add(sentence_verbs.get(i));
+          verb_array.add(sentence_verbs.get(j));
         }
         sub_data.put("verbs",verb_array);
         result.put(index,sub_data);
       }
+      System.out.println(result);
     } else {
       System.out.println("ERROR: use file_name and entity file as input!");
     }
@@ -121,7 +122,7 @@ class VerbPairFinder {
 
     List <String> verbs = new ArrayList<String>();
     for (int i=0;i<tdl.size();i++){
-        System.out.println(tdl.get(i).reln().getShortName());
+        //System.out.println(tdl.get(i).reln().getShortName());
   
         String rel = tdl.get(i).reln().getShortName().toString();
         if (rel.equals("root")){
