@@ -35,7 +35,7 @@ def gene_entities(dest_dir,entity_dir):
     args_run_java = [
         'java',
         '-cp',
-        "'.:/home/1546/source/stanford-ner-2015-12-09/*:/home/1546/source/stanford-ner-2015-12-09/lib/*'",
+        "'.:/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/lib/*'",
         "JAVA FILE",
         dest_dir,
     ]
