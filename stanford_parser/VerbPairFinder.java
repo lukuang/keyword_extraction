@@ -64,7 +64,9 @@ class VerbPairFinder {
         System.out.println("Cannot find file "+file_name);
         System.out.println(fe);
 
-    } 
+    }catch(IOException e){
+      e.printStackTrace();
+    }
 
   }
 
@@ -72,10 +74,17 @@ class VerbPairFinder {
   public static JSONObject read_entity_file(String file_path){
     JSONParser parser = new JSONParser();
     String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
-    Object obj = parser.parse(content);
-    JSONObject loaded_obj = (JSONObject) obj;
-    return loaded_obj;
+    try{
+      Object obj = parser.parse(content);
+      JSONObject loaded_obj = (JSONObject) obj;
+      return loaded_obj;
         //System.out.println("Loaded size: "+ loaded_obj.size());
+    }
+    catch(ParseException pe){
+
+         System.out.println("position: " + pe.getPosition());
+         System.out.println(pe);
+    }
         
   }
 
