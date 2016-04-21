@@ -1,8 +1,5 @@
-
-import java.util.Collection;
-import java.util.List;
 import java.io.*;
-
+import java.util.*;
 import edu.stanford.nlp.process.Tokenizer;
 import edu.stanford.nlp.process.TokenizerFactory;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
@@ -37,8 +34,8 @@ class VerbPairFinder {
       for (int i=0;i<content.size();i++){
         Integer temp_int = i+1;
         String index = temp_int.toString();
-        JSONObject sub_data = entity_content.get(index);
-        String entity = sub_data.get("entity");
+        JSONObject sub_data = (JSONObject) entity_content.get(index);
+        String entity = (String)sub_data.get("entity");
         List <String> sentence_verbs = find_verb_pair_in_sentence(lp,entity,content.get(i));
         JSONArray verb_array = new JSONArray();
         for(int j=0;j<sentence_verbs.size();j++){
@@ -74,10 +71,10 @@ class VerbPairFinder {
 
   public static JSONObject read_entity_file(String file_path){
     JSONParser parser = new JSONParser();
-        String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
-        obj = parser.parse(content);
-        loaded_obj = (JSONObject) obj;
-        return loaded_obj;
+    String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
+    JSONObject obj = parser.parse(content);
+    JSONObject loaded_obj = (JSONObject) obj;
+    return loaded_obj;
         //System.out.println("Loaded size: "+ loaded_obj.size());
         
   }
@@ -87,7 +84,7 @@ class VerbPairFinder {
    * find_verb_pair_in_sentence takes a sentence and an entity as input,
    * and return the verb-entity back 
    */
-  List <String> find_verb_pair_in_sentence(LexicalizedParser lp, String entity, String sentence) {
+  public static List <String> find_verb_pair_in_sentence(LexicalizedParser lp, String entity, String sentence) {
     // This option shows parsing a list of correctly tokenized words
     
 
@@ -98,7 +95,7 @@ class VerbPairFinder {
     Tokenizer<CoreLabel> tok =
         tokenizerFactory.getTokenizer(new StringReader(sentence));
     List<CoreLabel> rawWords2 = tok.tokenize();
-    parse = lp.apply(rawWords2);
+    Tree parse = lp.apply(rawWords2);
 
     TreebankLanguagePack tlp = lp.treebankLanguagePack(); // PennTreebankLanguagePack for English
     GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
