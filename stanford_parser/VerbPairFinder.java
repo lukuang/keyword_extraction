@@ -51,7 +51,7 @@ class VerbPairFinder {
     }
   }
 
-  public List <String> read_file(String file_name){
+  public static List <String> read_file(String file_name){
     try (BufferedReader br = new BufferedReader(new FileReader(file_name))) {
       String line;
       List <String> content = new List<String>();
@@ -71,7 +71,7 @@ class VerbPairFinder {
   }
 
 
-  public JSONParser read_entity_file(String file_path){
+  public static JSONParser read_entity_file(String file_path){
     JSONParser parser = new JSONParser();
         String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
         obj = parser.parse(content);
@@ -86,7 +86,7 @@ class VerbPairFinder {
    * find_verb_pair_in_sentence takes a sentence and an entity as input,
    * and return the verb-entity back 
    */
-  public static void find_verb_pair_in_sentence(LexicalizedParser lp, String entity, String sentence) {
+  List <String> find_verb_pair_in_sentence(LexicalizedParser lp, String entity, String sentence) {
     // This option shows parsing a list of correctly tokenized words
     
 
