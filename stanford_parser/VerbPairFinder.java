@@ -37,7 +37,7 @@ class VerbPairFinder {
       for (int i=0;i<content.size();i++){
         String index = (i+1).toString();
         JSONObject sub_data = entity_content.get(index);
-        String entity = sub_data.get('entity');
+        String entity = sub_data.get("entity");
         List <String> sentence_verbs = find_verb_pair_in_sentence(lp,entity,content.get(i));
         JSONArray verb_array = new JSONArray();
         for(int j=0;j<sentence_verbs.size();j++){
@@ -78,21 +78,7 @@ class VerbPairFinder {
         loaded_obj = (JSONObject) obj;
         return loaded_obj;
         //System.out.println("Loaded size: "+ loaded_obj.size());
-        Iterator<?> eid = loaded_obj.keySet().iterator();
-        while(eid.hasNext()){
-            String key = (String)eid.next();
-            if(key=="69591"){
-                System.out.println("found 69591!");
-            }
-            JSONObject sub_data = (JSONObject) loaded_obj.get(key);
-            narrative_map.put(key,(String)sub_data.get("narrative"));
-            JSONArray original_entities = (JSONArray) sub_data.get("entities");
-            for (int i=0;i<original_entities.size();i++){
-                String name = (String)original_entities.get(i);
-                original_entitiy_map.doublePut(key,name);
-            }
-
-        }
+        
   }
 
 
