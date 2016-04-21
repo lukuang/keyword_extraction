@@ -50,15 +50,16 @@ class VerbPairFinder {
   }
 
   public static List <String> read_file(String file_name){
+    List <String> content = new ArrayList<String>();
     try (BufferedReader br = new BufferedReader(new FileReader(file_name))) {
       String line;
-      List <String> content = new ArrayList<String>();
+      
       while ((line = br.readLine()) != null) {
        // process the line.
         content.add(line);
 
       }
-      return content;
+      
     }
     catch(FileNotFoundException fe){
         System.out.println("Cannot find file "+file_name);
@@ -67,7 +68,7 @@ class VerbPairFinder {
     }catch(IOException e){
       e.printStackTrace();
     }
-
+    return content;
   }
 
 
