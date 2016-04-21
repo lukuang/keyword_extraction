@@ -77,7 +77,7 @@ class VerbPairFinder {
     try{
       String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
     }catch(FileNotFoundException fe){
-        System.out.println("Cannot find file "+file_name);
+        System.out.println("Cannot find file "+file_path);
         System.out.println(fe);
 
     }
