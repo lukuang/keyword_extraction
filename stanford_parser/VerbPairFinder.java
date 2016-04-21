@@ -76,13 +76,7 @@ class VerbPairFinder {
     JSONParser parser = new JSONParser();
     try{
       String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
-    }catch(FileNotFoundException fe){
-        System.out.println("Cannot find file "+file_path);
-        System.out.println(fe);
-
-    }
     
-    try{
       Object obj = parser.parse(content);
       JSONObject loaded_obj = (JSONObject) obj;
       return loaded_obj;
@@ -92,6 +86,11 @@ class VerbPairFinder {
 
          System.out.println("position: " + pe.getPosition());
          System.out.println(pe);
+    }
+    catch(FileNotFoundException fe){
+        System.out.println("Cannot find file "+file_path);
+        System.out.println(fe);
+
     }
         
   }
