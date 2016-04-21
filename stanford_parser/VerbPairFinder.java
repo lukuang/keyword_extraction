@@ -74,7 +74,7 @@ class VerbPairFinder {
 
   public static JSONObject read_entity_file(String file_path){
     JSONParser parser = new JSONParser();
-    JSONObject loaded_obj;
+    JSONObject loaded_obj = new JSONObject();
     try{
       String content = new Scanner(new File(file_path)).useDelimiter("\\Z").next();
     
