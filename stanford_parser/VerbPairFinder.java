@@ -230,7 +230,7 @@ class VerbPairFinder {
       return remove_duplicate(verbs);
     }
     else{
-      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,denpendent_words,old_words) );
+      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,new_denpendent_words,old_words) );
       
     }
 
