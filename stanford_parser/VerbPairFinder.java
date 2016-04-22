@@ -166,7 +166,7 @@ class VerbPairFinder {
         //System.out.println(word+" / "+tag);
         //System.out.println(tdl.get(i).gov());
     }
-    if (verb.size()!=0){
+    if (verbs.size()!=0){
       return verbs;
     }
     else{
