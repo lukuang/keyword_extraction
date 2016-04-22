@@ -170,7 +170,7 @@ class VerbPairFinder {
       return verbs;
     }
     else{
-      List<String> old_words = ArrayList<String>();
+      List<String> old_words = new ArrayList<String>();
       old_words.add(entity);
       return remove_duplicate(find_verb_pair_in_denpendencies(tdl,denpendent_words,old_words) );
     }
