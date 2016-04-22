@@ -120,13 +120,22 @@ class VerbPairFinder {
     GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
     List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
 
+    List <String> verbs = find_verb_pair_in_denpendencies(tdl,entity);
+    // You can also use a TreePrint object to print trees and dependencies
+    //TreePrint tp = new TreePrint("penn,typedDependenciesCollapsed");
+    //tp.printTree(parse);
+    return verbs;
+  }
+
+  public static List <String> find_verb_pair_in_denpendencies(List<TypedDependency> tdl, String entity){
     List <String> verbs = new ArrayList<String>();
+    List <String> denpendent_words = new ArrayList<String>();
     for (int i=0;i<tdl.size();i++){
         //System.out.println(tdl.get(i).reln().getShortName());
   
         String rel = tdl.get(i).reln().getShortName().toString();
         if (rel.equals("root")){
-		      continue;
+          continue;
         }
         String d_tag = tdl.get(i).dep().tag();
         String g_tag = tdl.get(i).gov().tag();
@@ -138,6 +147,9 @@ class VerbPairFinder {
                 //System.out.println(d_word+" "+g_word+" "+rel);
                 verbs.add(d_word);
             } 
+            else{
+                denpendent_words.add(d_word);
+            }
         }
         else if(d_word.equals(entity) ){
             if (g_tag.contains("VB") ){
@@ -145,15 +157,92 @@ class VerbPairFinder {
                 //System.out.println(d_word+" "+g_word+" "+rel);
                 verbs.add(g_word);
             }
+            else{
+                denpendent_words.add(g_word);
+
+            }
         }
 
         //System.out.println(word+" / "+tag);
         //System.out.println(tdl.get(i).gov());
     }
-    return verbs;
-    // You can also use a TreePrint object to print trees and dependencies
-    //TreePrint tp = new TreePrint("penn,typedDependenciesCollapsed");
-    //tp.printTree(parse);
+    if (verb.size()!=0){
+      return verbs;
+    }
+    else{
+      List<String> old_words = ArrayList<String>();
+      old_words.add(entity);
+      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,denpendent_words,old_words) );
+    }
+  }
+
+
+  public static List <String> find_verb_pair_in_denpendencies(List<TypedDependency> tdl, List <String> denpendent_words,
+                    List <String> old_words){
+    List <String> verbs = new ArrayList<String>();
+    List <String> new_denpendent_words = new ArrayList<String>();
+    for(int j =0; j<denpendent_words.size(); j++){
+      String entity = denpendent_words.get(j);
+      for (int i=0;i<tdl.size();i++){
+        //System.out.println(tdl.get(i).reln().getShortName());
+  
+        String rel = tdl.get(i).reln().getShortName().toString();
+        if (rel.equals("root")){
+          continue;
+        }
+        String d_tag = tdl.get(i).dep().tag();
+        String g_tag = tdl.get(i).gov().tag();
+        String d_word = tdl.get(i).dep().word();
+        String g_word = tdl.get(i).gov().word();
+        if(g_word.equals(entity) ){
+            if (d_tag.contains("VB") ){
+                //System.out.println("Found!");
+                //System.out.println(d_word+" "+g_word+" "+rel);
+                verbs.add(d_word);
+            } 
+            else{
+              if(!old_words.contains(d_word)){
+                new_denpendent_words.add(d_word);
+              }
+
+            }
+        }
+        else if(d_word.equals(entity) ){
+            if (g_tag.contains("VB") ){
+                //System.out.println("Found!");
+                //System.out.println(d_word+" "+g_word+" "+rel);
+                verbs.add(g_word);
+            }
+            else{
+              if(!old_words.contains(g_word)){
+                new_denpendent_words.add(g_word);
+              }
+
+            }
+        }
+
+        //System.out.println(word+" / "+tag);
+        //System.out.println(tdl.get(i).gov());
+      }
+      old_words.add(entity);
+    }
+    if(verbs.size()!=0){
+      return remove_duplicate(verbs);
+    }
+    else{
+      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,denpendent_words,old_words) );
+      
+    }
+
+  }
+
+
+  public static List<String> remove_duplicate(List<String> al){
+    Set<String> hs = new HashSet<>();
+    hs.addAll(al);
+    al.clear();
+    al.addAll(hs);
+    return al;
   }
 
   private VerbPairFinder() {} // static methods only
