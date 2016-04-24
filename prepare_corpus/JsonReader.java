@@ -65,7 +65,7 @@ public class JsonReader {
   }
 
   private void get_entities_from_narrative(){
-    String serializedClassifier = "/home/1546/source/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
+    String serializedClassifier = "/home/1546/source/Stanford/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
 
     try{
         AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
