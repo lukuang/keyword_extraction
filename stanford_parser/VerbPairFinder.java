@@ -389,7 +389,7 @@ class VerbPairFinder {
             if(word_label.contains("VB")){
               verb = word_text; 
               verb_label = word_label;
-              result_tuples.add(new Result_tuple(verb,verb_label))
+              result_tuples.add(new Result_tuple(verb,verb_label));
             }
             
       }
