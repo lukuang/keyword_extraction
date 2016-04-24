@@ -171,7 +171,7 @@ class VerbPairFinder {
       this.verb_label = verb_label;
     }
 
-    public set_sentence(String sentence){
+    public void set_sentence(String sentence){
       this.sentence = sentence;
     }
 
