@@ -133,7 +133,7 @@ class VerbPairFinder {
   }
 
   public static class Clause extends BasicItem{
-    @override
+    
     public Clause(Tree root_node){
       init(root_node);
       clauses.add(leafs);
