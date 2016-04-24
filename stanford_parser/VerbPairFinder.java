@@ -151,6 +151,7 @@ class VerbPairFinder {
   private static final class  Result_tuple{
     private String sentence;
     private String verb;
+    private String verb_label;
     public Result_tuple(String sentence, String verb, String verb_label){
       this.sentence = sentence;
       this.verb = verb;
@@ -199,9 +200,15 @@ class VerbPairFinder {
         List<Result_tuple> result_tuples = find_result_tuple_in_sentences(lp,entity,sentence);
         sub_result.put("instance", sub_data.get("instance"));
         sub_result.put("entity", sub_data.get("entity"));
-        sub_result.put("sentence", result_tuples.get_sentence());
-        sub_result.put("verb", result_tuples.get_verb());
-        sub_result.put("verb_label", result_tuples.get_verb_label());
+        JSONArray result_json_tuples = new JSONArray();
+        for( Result_tuple single_tuple: result_tuples){
+          JSONObject single_result_tuple = new JSONObject();
+          single_result_tuple.put("sentence", result_tuples.get_sentence());
+          single_result_tuple.put("verb", result_tuples.get_verb());
+          single_result_tuple.put("verb_label", result_tuples.get_verb_label());
+          result_json_tuples.add(single_result_tuple);
+        }
+        sub_result.put("result_tuples",result_json_tuples);
         result.put(sentence_index_string,sub_result);
 
         //TODO make return tuple into json and write it out
@@ -299,7 +306,7 @@ class VerbPairFinder {
 
     for(List<Tree> single_clause: clauses){
       if (in_clause(single_clause,entitiy_words)){
-        result_tuples.add(get_result_tuple(single_clause));
+        result_tuples.addAll(get_result_tuples(single_clause));
       }
     }
     return result_tuples;
@@ -336,10 +343,11 @@ class VerbPairFinder {
 
   }
 
-  private Result_tuple get_result_tuple(List<Tree> single_clause){
+  private List< Result_tuple > get_result_tuples(List<Tree> single_clause){
     String sentence_string = "";
     String verb = "";
     String verb_label = "";
+    List< Result_tuple > result_tuples = new ArrayList<Result_tuple> ();
     for(int l=0;l<single_clause.size();l++){
             Tree node = single_clause.get(l);
 
@@ -358,16 +366,18 @@ class VerbPairFinder {
             if(word_label.contains("VB")){
               verb = word_text; 
               verb_label = word_label;
-            }
-            if(l==0){
-              sentence_string = word_text;
-            }
-            else{
-              sentence_string += " " + word_text;
+              if(l==0){
+                sentence_string = word_text;
+              }
+              else{
+                sentence_string += " " + word_text;
+              }
+              result_tuples.add( new Result_tuple(sentence_string,verb, verb_label) );
+
             }
             
       }
-      return ( new Result_tuple(sentence_string,verb, verb_label)) ;
+      return result_tuples;
   }
 
 
