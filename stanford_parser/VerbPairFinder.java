@@ -135,7 +135,7 @@ class BasicItem{
    class Clause extends BasicItem{
     
     public Clause(Tree root_node){
-      VerbPairFinder.super(root_node,true);
+      super(root_node,true);
     }
 
   }
@@ -143,7 +143,7 @@ class BasicItem{
 
   class Phrase extends BasicItem{
     public Phrase(Tree root_node){
-      VerbPairFinder.super(root_node,false);
+      super(root_node,false);
     }
   }  
 
