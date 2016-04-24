@@ -109,7 +109,7 @@ def match_entities(narrative_entities,original_entities,news_entities):
         #     print "original_entities:"
         #     print original_entities[eid]
 
-        if len(news_entities[eid]) == 0 or eid not in news_entities:
+        if eid not in news_entities or len(news_entities[eid]) == 0:
             
             zero_entity_news += 1
             no_news_entities.append(eid)
