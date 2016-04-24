@@ -158,12 +158,21 @@ class VerbPairFinder {
   
   private static final class  Result_tuple{
     private String sentence;
-    private String verb;
+    private String verb ;
     private String verb_label;
     public Result_tuple(String sentence, String verb, String verb_label){
       this.sentence = sentence;
       this.verb = verb;
       this.verb_label = verb_label;
+    }
+
+    public Result_tuple(String verb, String verb_label){
+      this.verb = verb;
+      this.verb_label = verb_label;
+    }
+
+    public set_sentence(String sentence){
+      this.sentence = sentence;
     }
 
     public String get_sentence(){
@@ -371,19 +380,21 @@ class VerbPairFinder {
               System.out.println("the word is: "+word_text);
             }
             String word_label = node.label().value();
+            if(l==0){
+                sentence_string = word_text;
+            }
+            else{
+                sentence_string += " " + word_text;
+            }
             if(word_label.contains("VB")){
               verb = word_text; 
               verb_label = word_label;
-              if(l==0){
-                sentence_string = word_text;
-              }
-              else{
-                sentence_string += " " + word_text;
-              }
-              result_tuples.add( new Result_tuple(sentence_string,verb, verb_label) );
-
+              result_tuples.add(new Result_tuple(verb,verb_label))
             }
             
+      }
+      for(Result_tuple single_tuple: result_tuples){
+        single_tuple.set_sentence(sentence_string);
       }
       return result_tuples;
   }
