@@ -314,7 +314,7 @@ class VerbPairFinder {
 
 
 
-  private boolean in_clause(List<Tree> single_clause, List<String> entitiy_words){
+  private static boolean in_clause(List<Tree> single_clause, List<String> entitiy_words){
       List<String> clause_words = new ArrayList<String>();
 
       for(int l=0;l<single_clause.size();l++){
@@ -343,7 +343,7 @@ class VerbPairFinder {
 
   }
 
-  private List< Result_tuple > get_result_tuples(List<Tree> single_clause){
+  private static List< Result_tuple > get_result_tuples(List<Tree> single_clause){
     String sentence_string = "";
     String verb = "";
     String verb_label = "";
