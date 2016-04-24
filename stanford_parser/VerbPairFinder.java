@@ -17,7 +17,48 @@ import org.json.simple.parser.JSONParser;
 import edu.stanford.nlp.ling.Word;
 
 
+
+
 class BasicItem{
+
+
+        private static final HashMap<String,Integer> clause_label;
+        static{
+              clause_label = new HashMap<String,Integer>();
+              clause_label.put("S",1);
+              clause_label.put("SBAR",1);
+              clause_label.put("SBARQ",1);
+              clause_label.put("SINV",1);
+              clause_label.put("SQ",1);
+
+        }
+
+        private static final HashMap<String,Integer> phrase_label;
+        static{
+              phrase_label = new HashMap<String,Integer>();
+              phrase_label.put("ADJP",1);
+              phrase_label.put("ADVP",1);
+              phrase_label.put("CONJP",1);
+              phrase_label.put("FRAG",1);
+              phrase_label.put("INTJ",1);
+              phrase_label.put("LST",1);
+              phrase_label.put("NAC",1);
+              phrase_label.put("NP",1);
+              phrase_label.put("NX",1);
+              phrase_label.put("PP",1);
+              phrase_label.put("PRN",1);
+              phrase_label.put("PRT",1);
+              phrase_label.put("QP",1);
+              phrase_label.put("RRC",1);
+              phrase_label.put("UCP",1);
+              phrase_label.put("VP",1);
+              phrase_label.put("WHADJP",1);
+              phrase_label.put("WHAVP",1);
+              phrase_label.put("WHNP",1);
+              phrase_label.put("WHPP",1);
+              phrase_label.put("X",1);
+
+        }
         private Tree T;
         private List<Tree> leafs = new ArrayList<Tree> ();
         private List<Tree> phrase_children =new  ArrayList<Tree> ();
@@ -110,43 +151,7 @@ class BasicItem{
 class VerbPairFinder {
 
 
-  private static final HashMap<String,Integer> clause_label;
-  static{
-        clause_label = new HashMap<String,Integer>();
-        clause_label.put("S",1);
-        clause_label.put("SBAR",1);
-        clause_label.put("SBARQ",1);
-        clause_label.put("SINV",1);
-        clause_label.put("SQ",1);
-
-  }
-
-  private static final HashMap<String,Integer> phrase_label;
-  static{
-        phrase_label = new HashMap<String,Integer>();
-        phrase_label.put("ADJP",1);
-        phrase_label.put("ADVP",1);
-        phrase_label.put("CONJP",1);
-        phrase_label.put("FRAG",1);
-        phrase_label.put("INTJ",1);
-        phrase_label.put("LST",1);
-        phrase_label.put("NAC",1);
-        phrase_label.put("NP",1);
-        phrase_label.put("NX",1);
-        phrase_label.put("PP",1);
-        phrase_label.put("PRN",1);
-        phrase_label.put("PRT",1);
-        phrase_label.put("QP",1);
-        phrase_label.put("RRC",1);
-        phrase_label.put("UCP",1);
-        phrase_label.put("VP",1);
-        phrase_label.put("WHADJP",1);
-        phrase_label.put("WHAVP",1);
-        phrase_label.put("WHNP",1);
-        phrase_label.put("WHPP",1);
-        phrase_label.put("X",1);
-
-  }
+  
 
 
   
