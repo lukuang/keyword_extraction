@@ -196,16 +196,18 @@ class VerbPairFinder {
         JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
         String entity = (String)sub_data.get("entity");
         String sentence =  content.get(i);
-        find_clauses_in_sentence(lp, entity, sentence);
+        List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
+        List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, entity);
+
         List<Result_tuple> result_tuples = find_result_tuple_in_sentences(lp,entity,sentence);
         sub_result.put("instance", sub_data.get("instance"));
         sub_result.put("entity", sub_data.get("entity"));
         JSONArray result_json_tuples = new JSONArray();
         for( Result_tuple single_tuple: result_tuples){
           JSONObject single_result_tuple = new JSONObject();
-          single_result_tuple.put("sentence", result_tuples.get_sentence());
-          single_result_tuple.put("verb", result_tuples.get_verb());
-          single_result_tuple.put("verb_label", result_tuples.get_verb_label());
+          single_result_tuple.put("sentence", single_tuple.get_sentence());
+          single_result_tuple.put("verb", single_tuple.get_verb());
+          single_result_tuple.put("verb_label", single_tuple.get_verb_label());
           result_json_tuples.add(single_result_tuple);
         }
         sub_result.put("result_tuples",result_json_tuples);
@@ -272,7 +274,7 @@ class VerbPairFinder {
   /**
   *find the clauses in the sentence that contain the entity
   */
-  public static List<Result_tuple> find_result_tuple_in_sentences(LexicalizedParser lp, String entity, String sentence){
+  public static List< List<Tree> > find_clauses_in_sentences(LexicalizedParser lp, String entity, String sentence){
     List< List<Tree> > required_clauses = new ArrayList< List<Tree> >();
     TokenizerFactory<CoreLabel> tokenizerFactory =
         PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
@@ -283,8 +285,7 @@ class VerbPairFinder {
     Tree root = parse.skipRoot();
     Clause clause_method = new Clause(root);
     List< List<Tree> > clauses = clause_method.get_clauses();
-    List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, entity);
-    return result_tuples;
+    return clauses;
   }
 
 
