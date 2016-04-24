@@ -14,9 +14,162 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
-
+import edu.stanford.nlp.ling.Word;
 
 class VerbPairFinder {
+
+
+  private static final HashMap<String,Integer> clause_label;
+  static{
+        clause_label = new HashMap<String,Integer>();
+        clause_label.put("S",1);
+        clause_label.put("SBAR",1);
+        clause_label.put("SBARQ",1);
+        clause_label.put("SINV",1);
+        clause_label.put("SQ",1);
+
+  }
+
+  private static final HashMap<String,Integer> phrase_label;
+  static{
+        phrase_label = new HashMap<String,Integer>();
+        phrase_label.put("ADJP",1);
+        phrase_label.put("ADVP",1);
+        phrase_label.put("CONJP",1);
+        phrase_label.put("FRAG",1);
+        phrase_label.put("INTJ",1);
+        phrase_label.put("LST",1);
+        phrase_label.put("NAC",1);
+        phrase_label.put("NP",1);
+        phrase_label.put("NX",1);
+        phrase_label.put("PP",1);
+        phrase_label.put("PRN",1);
+        phrase_label.put("PRT",1);
+        phrase_label.put("QP",1);
+        phrase_label.put("RRC",1);
+        phrase_label.put("UCP",1);
+        phrase_label.put("VP",1);
+        phrase_label.put("WHADJP",1);
+        phrase_label.put("WHAVP",1);
+        phrase_label.put("WHNP",1);
+        phrase_label.put("WHPP",1);
+        phrase_label.put("X",1);
+
+  }
+
+
+  public static final class BasicItem{
+        private Tree T;
+        private List<Tree> leafs = new ArrayList<Tree> ();
+        private List<Tree> phrase_children =new  ArrayList<Tree> ();
+        private List<Tree> clause_children = new ArrayList<Tree> ();
+        private List< List<Tree> > clauses = new ArrayList< List<Tree> >();
+        private is_clause;
+
+        public BasicItem(Tree root_node,boolean is_clause){
+                init(root_node);
+                if(is_clause){
+                  clauses.add(leafs);
+                }
+
+        }
+
+        private init(Tree root_node){
+            T = root_node;
+            process();
+        }
+
+        public List< List<Tree> > get_clauses(){
+                return clauses;
+        }
+
+        public List<Tree> get_leafs(){
+                return leafs;
+        }
+
+        private void process(){
+                List<Tree> children = T.getChildrenAsList();
+                for(int i=0; i<children.size();i++){
+                        Tree child = children.get(i); //use a deep copy of the child just to be safe
+                        String label = child.label().toString();
+                        if(clause_label.get(label)==null){
+                                if(phrase_label.get(label)==null){
+                                        leafs.add(child.deepCopy());
+                                }
+                                else{
+                                        phrase_children.add(child);
+                                }
+                        }
+                        else{
+                                //Clause sub_clause = new Clause(child);
+                                clause_children.add(child);
+
+                        }
+
+                }
+
+
+                for(int j=0; j<clause_children.size();j++){
+
+                        Tree clause_child = clause_children.get(j);
+
+                        BasicItem sub_clause = new BasicItem(clause_child,true);
+                        clauses.addAll(sub_clause.get_clauses());
+
+
+                }
+
+                for(int k=0; k<phrase_children.size(); k++){
+                        Tree phrase_child = phrase_children.get(k);
+
+                        BasicItem sub_phrase = new BasicItem(phrase_child,false);
+
+                        leafs.addAll(sub_phrase.get_leafs());
+                        clauses.addAll(sub_phrase.get_clauses());
+
+                }
+
+                
+        }
+  }
+
+  public static final class Clause extends BasicItem{
+    public Clause(Tree root_node){
+      init(root_node);
+      clauses.add(leafs);
+    }
+
+  }
+
+
+  public static final class Phrase extends BasicItem{
+    public Phrase(Tree root_node){
+      init(root_node);
+    }
+  }  
+
+  
+  private static final class  Result_tuple{
+    private sentence;
+    private verb;
+    public Result_tuple(String sentence, String verb){
+      this.sentence = setence;
+      this.verb = verb;
+    }
+
+    public static String get_sentence(){
+      return sentence;
+    }
+
+    public static String get_verb(){
+      return verb;
+    }
+  }
+
+
+
+
+
 
   /**
    * The main method demonstrates the easiest way to load a parser.
@@ -32,19 +185,26 @@ class VerbPairFinder {
       JSONObject entity_content = read_entity_file(args[1]);
       JSONObject result= new JSONObject();
       for (int i=0;i<content.size();i++){
-        Integer temp_int = i+1;
-        String index = temp_int.toString();
-        JSONObject sub_data = (JSONObject) entity_content.get(index);
+        JSONObject sub_result = new JSONObject();
+        Integer sentence_index = i+1;
+        String sentence_index_string = sentence_index.toString();
+        JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
         String entity = (String)sub_data.get("entity");
-        List <String> sentence_verbs = find_verb_pair_in_sentence(lp,entity,content.get(i));
-        JSONArray verb_array = new JSONArray();
-        for(int j=0;j<sentence_verbs.size();j++){
-          verb_array.add(sentence_verbs.get(j));
-        }
-        sub_data.put("verbs",verb_array);
-        result.put(index,sub_data);
+        String sentence =  content.get(i);
+        find_clauses_in_sentence(lp, entity, sentence)
+        List<Result_tuple> result_tuples = find_result_tuple_in_sentences(lp,entity,sentence);
+        sub_result.put("instance") = sub_data.get("instance");
+        sub_result.put("entity") = sub_data.get("entity");
+        sub_result.put("sentence") = result_tuples.get_sentence();
+        sub_result.put("verb") = result_tuples.get_verb();
+        result.put(sentence_index_string,sub_result);
+
+        //TODO make return tuple into json and write it out
       }
+
       System.out.println(result);
+
+
     } else {
       System.out.println("ERROR: use file_name and entity file as input!");
     }
@@ -95,6 +255,111 @@ class VerbPairFinder {
 
     }
     return loaded_obj; 
+  }
+
+  /**
+  *find the clauses in the sentence that contain the entity
+  */
+  public static List<Result_tuple> find_result_tuple_in_sentences(LexicalizedParser lp, String entity, String sentence){
+    List< List<Tree> > required_clauses = new ArrayList< List<Tree> >();
+    TokenizerFactory<CoreLabel> tokenizerFactory =
+        PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
+    Tokenizer<CoreLabel> tok =
+        tokenizerFactory.getTokenizer(new StringReader(sentence));
+    List<CoreLabel> rawWords2 = tok.tokenize();
+    Tree parse = lp.apply(rawWords2);
+    Tree root = parse.skipRoot();
+    Clause clause_method = new Clause(root);
+    List< List<Tree> > clauses = clause_method.get_clauses();
+    List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, String entity);
+    return result_tuples
+  }
+
+
+  private List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, String entity){
+    List <Result_tuple> result_tuples = new ArrayList< List<Result_tuple> >();
+
+    TokenizerFactory<CoreLabel> tokenizerFactory =
+        PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
+    Tokenizer<CoreLabel> tok =
+        tokenizerFactory.getTokenizer(new StringReader(entity));
+    List<CoreLabel> rawWords2 = tok.tokenize();
+
+
+
+    List <String> entitiy_words = new ArrayList<String>();
+    for (CoreLabel w: rawWords2){
+      entitiy_words.add(w.word());
+    }
+
+    for(List<Tree> single_clause: clauses){
+      if (in_clause(single_clause,entitiy_words)){
+        result_tuples.add(get_result_tuple(single_clause));
+      }
+    }
+    return result_tuples;
+  }
+
+
+
+  private boolean in_clause(List<Tree> single_clause, List<String> entitiy_words){
+      List<String> clause_words = new ArrayList<String>();
+
+      for(int l=0;l<single_clause.size();l++){
+            Tree node = single_clause.get(l);
+            List<Word> words = node.yieldWords();
+            String word_text = "";
+            word_text = words.get(0).word();
+            if(words.size()!=1){
+              System.out.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
+
+              for(int k =1; k<words.size(),k++){
+                word_text += " "+words.get(k).word();
+              }
+              System.out.println("the word is: "+word_text);
+            }
+            clause_words.add(word_text);
+            
+      }
+
+      for(String word: entitiy_words){
+        if(!clause_words.contains(word)){
+          return false;
+        }
+      }
+      return true;
+
+  }
+
+  private Result_tuple get_result_tuple(List<Tree> single_clause){
+    String sentence_string = "";
+    String verb = "";
+    for(int l=0;l<single_clause.size();l++){
+            Tree node = single_clause.get(l);
+
+            List<Word> words = node.yieldWords();
+            String word_text = "";
+            word_text = words.get(0).word();
+            if(words.size()!=1){
+              System.out.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
+
+              for(int k =1; k<words.size(),k++){
+                word_text += " "+words.get(k).word();
+              }
+              System.out.println("the word is: "+word_text);
+            }
+            if(node.label().contains("VB")){
+              verb = word_text; 
+            }
+            if(l=0){
+              sentence_string = word_text;
+            }
+            else{
+              sentence_string += " " + word_text;
+            }
+            
+      }
+      return ( new Result_tuple(sentence_string,word_text)) ;
   }
 
 
