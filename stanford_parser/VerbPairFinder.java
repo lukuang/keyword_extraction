@@ -199,7 +199,6 @@ class VerbPairFinder {
         List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
         List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, entity);
 
-        List<Result_tuple> result_tuples = find_result_tuple_in_sentences(lp,entity,sentence);
         sub_result.put("instance", sub_data.get("instance"));
         sub_result.put("entity", sub_data.get("entity"));
         JSONArray result_json_tuples = new JSONArray();
@@ -274,7 +273,7 @@ class VerbPairFinder {
   /**
   *find the clauses in the sentence that contain the entity
   */
-  public static List< List<Tree> > find_clauses_in_sentences(LexicalizedParser lp, String entity, String sentence){
+  public static List< List<Tree> > find_clauses_in_sentence(LexicalizedParser lp, String entity, String sentence){
     List< List<Tree> > required_clauses = new ArrayList< List<Tree> >();
     TokenizerFactory<CoreLabel> tokenizerFactory =
         PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
