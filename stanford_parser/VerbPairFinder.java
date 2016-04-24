@@ -132,7 +132,8 @@ class VerbPairFinder {
         }
   }
 
-  public static final class Clause extends BasicItem{
+  public static class Clause extends BasicItem{
+    @override
     public Clause(Tree root_node){
       init(root_node);
       clauses.add(leafs);
@@ -141,7 +142,7 @@ class VerbPairFinder {
   }
 
 
-  public static final class Phrase extends BasicItem{
+  public static class Phrase extends BasicItem{
     public Phrase(Tree root_node){
       init(root_node);
     }
