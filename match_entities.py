@@ -65,6 +65,7 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name,n
     narrative_entities,original_entities):
     news_entities = {}
     eids = os.walk(news_entity_dir).next()[1]
+    #original_entities.keys()
     for eid in eids:
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
         if eid not in narrative_entities:
@@ -108,6 +109,15 @@ def match_entities(narrative_entities,original_entities,news_entities):
         #     print "original_entities:"
         #     print original_entities[eid]
 
+        if len(news_entities[eid]) == 0 or eid not in news_entities:
+            
+            zero_entity_news += 1
+            no_news_entities.append(eid)
+            positive.pop(eid,None)
+            negative.pop(eid,None)
+
+            continue
+
         positive[eid] = []
         negative[eid] = []
         original_match = 0
@@ -136,12 +146,11 @@ def match_entities(narrative_entities,original_entities,news_entities):
             negative.pop(eid,None)
 
             continue
-        else:
-            if (original_match==0):
-                no_match_original.append(eid)
-                positive.pop(eid,None)
-                negative.pop(eid,None)
-                continue
+        if (original_match==0):
+            no_match_original.append(eid)
+            positive.pop(eid,None)
+            negative.pop(eid,None)
+            continue
 
 
         matched += single_match
