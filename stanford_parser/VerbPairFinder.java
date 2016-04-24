@@ -58,7 +58,7 @@ class VerbPairFinder {
   }
 
 
-  public static class BasicItem{
+  public class BasicItem{
         private Tree T;
         private List<Tree> leafs = new ArrayList<Tree> ();
         private List<Tree> phrase_children =new  ArrayList<Tree> ();
@@ -132,7 +132,7 @@ class VerbPairFinder {
         }
   }
 
-  public static class Clause extends BasicItem{
+  public class Clause extends BasicItem{
     
     public Clause(Tree root_node){
       init(root_node);
@@ -142,7 +142,7 @@ class VerbPairFinder {
   }
 
 
-  public static class Phrase extends BasicItem{
+  public class Phrase extends BasicItem{
     public Phrase(Tree root_node){
       init(root_node);
     }
