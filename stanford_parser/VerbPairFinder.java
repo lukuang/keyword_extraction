@@ -64,7 +64,6 @@ class VerbPairFinder {
         private List<Tree> phrase_children =new  ArrayList<Tree> ();
         private List<Tree> clause_children = new ArrayList<Tree> ();
         private List< List<Tree> > clauses = new ArrayList< List<Tree> >();
-        private is_clause;
 
         public BasicItem(Tree root_node,boolean is_clause){
                 init(root_node);
@@ -74,7 +73,7 @@ class VerbPairFinder {
 
         }
 
-        private init(Tree root_node){
+        private void init(Tree root_node){
             T = root_node;
             process();
         }
@@ -150,8 +149,8 @@ class VerbPairFinder {
 
   
   private static final class  Result_tuple{
-    private sentence;
-    private verb;
+    private String sentence;
+    private String verb;
     public Result_tuple(String sentence, String verb){
       this.sentence = setence;
       this.verb = verb;
@@ -191,7 +190,7 @@ class VerbPairFinder {
         JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
         String entity = (String)sub_data.get("entity");
         String sentence =  content.get(i);
-        find_clauses_in_sentence(lp, entity, sentence)
+        find_clauses_in_sentence(lp, entity, sentence);
         List<Result_tuple> result_tuples = find_result_tuple_in_sentences(lp,entity,sentence);
         sub_result.put("instance") = sub_data.get("instance");
         sub_result.put("entity") = sub_data.get("entity");
@@ -271,8 +270,8 @@ class VerbPairFinder {
     Tree root = parse.skipRoot();
     Clause clause_method = new Clause(root);
     List< List<Tree> > clauses = clause_method.get_clauses();
-    List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, String entity);
-    return result_tuples
+    List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, entity);
+    return result_tuples;
   }
 
 
@@ -313,7 +312,7 @@ class VerbPairFinder {
             if(words.size()!=1){
               System.out.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
 
-              for(int k =1; k<words.size(),k++){
+              for(int k =1; k<words.size();k++){
                 word_text += " "+words.get(k).word();
               }
               System.out.println("the word is: "+word_text);
@@ -343,7 +342,7 @@ class VerbPairFinder {
             if(words.size()!=1){
               System.out.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
 
-              for(int k =1; k<words.size(),k++){
+              for(int k =1; k<words.size();k++){
                 word_text += " "+words.get(k).word();
               }
               System.out.println("the word is: "+word_text);
