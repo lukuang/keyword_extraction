@@ -288,7 +288,7 @@ class VerbPairFinder {
   }
 
 
-  private List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, String entity){
+  private static List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, String entity){
     List <Result_tuple> result_tuples = new ArrayList<Result_tuple> ();
 
     TokenizerFactory<CoreLabel> tokenizerFactory =
