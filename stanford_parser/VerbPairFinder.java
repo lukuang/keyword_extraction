@@ -132,7 +132,7 @@ class VerbPairFinder {
         }
   }
 
-  private class Clause extends BasicItem{
+  private static class Clause extends BasicItem{
     
     public Clause(Tree root_node){
       super(root_node,true);
@@ -141,7 +141,7 @@ class VerbPairFinder {
   }
 
 
-  private class Phrase extends BasicItem{
+  private static class Phrase extends BasicItem{
     public Phrase(Tree root_node){
       super(root_node,false);
     }
@@ -151,17 +151,22 @@ class VerbPairFinder {
   private static final class  Result_tuple{
     private String sentence;
     private String verb;
-    public Result_tuple(String sentence, String verb){
-      this.sentence = setence;
+    public Result_tuple(String sentence, String verb, String verb_label){
+      this.sentence = sentence;
       this.verb = verb;
+      this.verb_label = verb_label;
     }
 
-    public static String get_sentence(){
+    public String get_sentence(){
       return sentence;
     }
 
-    public static String get_verb(){
+    public String get_verb(){
       return verb;
+    }
+
+    public String get_verb_label(){
+      return verb_label;
     }
   }
 
@@ -192,10 +197,11 @@ class VerbPairFinder {
         String sentence =  content.get(i);
         find_clauses_in_sentence(lp, entity, sentence);
         List<Result_tuple> result_tuples = find_result_tuple_in_sentences(lp,entity,sentence);
-        sub_result.put("instance") = sub_data.get("instance");
-        sub_result.put("entity") = sub_data.get("entity");
-        sub_result.put("sentence") = result_tuples.get_sentence();
-        sub_result.put("verb") = result_tuples.get_verb();
+        sub_result.put("instance", sub_data.get("instance"));
+        sub_result.put("entity", sub_data.get("entity"));
+        sub_result.put("sentence", result_tuples.get_sentence());
+        sub_result.put("verb", result_tuples.get_verb());
+        sub_result.put("verb_label", result_tuples.get_verb_label());
         result.put(sentence_index_string,sub_result);
 
         //TODO make return tuple into json and write it out
@@ -276,7 +282,7 @@ class VerbPairFinder {
 
 
   private List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, String entity){
-    List <Result_tuple> result_tuples = new ArrayList< List<Result_tuple> >();
+    List <Result_tuple> result_tuples = new ArrayList<Result_tuple> ();
 
     TokenizerFactory<CoreLabel> tokenizerFactory =
         PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
@@ -333,6 +339,7 @@ class VerbPairFinder {
   private Result_tuple get_result_tuple(List<Tree> single_clause){
     String sentence_string = "";
     String verb = "";
+    String verb_label = "";
     for(int l=0;l<single_clause.size();l++){
             Tree node = single_clause.get(l);
 
@@ -347,10 +354,12 @@ class VerbPairFinder {
               }
               System.out.println("the word is: "+word_text);
             }
-            if(node.label().contains("VB")){
+            String word_label = node.label().value();
+            if(word_label.contains("VB")){
               verb = word_text; 
+              verb_label = word_label;
             }
-            if(l=0){
+            if(l==0){
               sentence_string = word_text;
             }
             else{
@@ -358,7 +367,7 @@ class VerbPairFinder {
             }
             
       }
-      return ( new Result_tuple(sentence_string,word_text)) ;
+      return ( new Result_tuple(sentence_string,verb, verb_label)) ;
   }
 
 
