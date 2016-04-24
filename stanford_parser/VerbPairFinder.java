@@ -58,7 +58,7 @@ class VerbPairFinder {
   }
 
 
-  public static final class BasicItem{
+  public static class BasicItem{
         private Tree T;
         private List<Tree> leafs = new ArrayList<Tree> ();
         private List<Tree> phrase_children =new  ArrayList<Tree> ();
