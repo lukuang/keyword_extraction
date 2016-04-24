@@ -135,7 +135,7 @@ class VerbPairFinder {
   private static class Clause extends BasicItem{
     
     public Clause(Tree root_node){
-      super(root_node,true);
+      VerbPairFinder.super(root_node,true);
     }
 
   }
@@ -143,7 +143,7 @@ class VerbPairFinder {
 
   private static class Phrase extends BasicItem{
     public Phrase(Tree root_node){
-      super(root_node,false);
+      VerbPairFinder.super(root_node,false);
     }
   }  
 
