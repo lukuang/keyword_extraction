@@ -213,8 +213,8 @@ class VerbPairFinder {
           int gap = file_size/run_num;
           int start = (file_index-1)*gap;
           int end = file_index*gap;
-          System.err.println("gap: "+gap.toString()+" file size: "+file_size.ti_string);
-          System.err.println("start: "+start.toString()+", end: "+end.toString());
+          System.err.println("gap: "+gap+" file size: "+file_size);
+          System.err.println("start: "+start+", end: "+end);
           
           //check file writting
           try {
@@ -227,7 +227,7 @@ class VerbPairFinder {
           } catch (IOException e) {
               e.printStackTrace();
           }
-          for (int i=0;i<content.size();i++){
+          for (int i=start;i<end;i++){
             if (i%100==0){
               System.err.println("Processed "+i+" sentences");
             }
