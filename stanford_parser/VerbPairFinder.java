@@ -223,6 +223,8 @@ class VerbPairFinder {
           for (int i=start;i<end;i++){
             int processed = i-start+1;
             if (processed%100==0){
+              System.gc();
+              System.gc();
               System.err.println("Processed "+processed+" sentences");
             }
             JSONObject sub_result = new JSONObject();
