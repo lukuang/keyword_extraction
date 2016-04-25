@@ -207,6 +207,9 @@ class VerbPairFinder {
       JSONObject entity_content = read_entity_file(args[1]);
       JSONObject result= new JSONObject();
       for (int i=0;i<content.size();i++){
+        if (i%100==0){
+          System.err.println("Processed "+i+" sentences");
+        }
         JSONObject sub_result = new JSONObject();
         Integer sentence_index = i+1;
         String sentence_index_string = sentence_index.toString();
@@ -236,7 +239,7 @@ class VerbPairFinder {
 
 
     } else {
-      System.out.println("ERROR: use file_name and entity file as input!");
+      System.err.println("ERROR: use file_name and entity file as input!");
     }
   }
 
@@ -253,8 +256,8 @@ class VerbPairFinder {
       
     }
     catch(FileNotFoundException fe){
-        System.out.println("Cannot find file "+file_name);
-        System.out.println(fe);
+        System.err.println("Cannot find file "+file_name);
+        System.err.println(fe);
 
     }catch(IOException e){
       e.printStackTrace();
@@ -276,12 +279,12 @@ class VerbPairFinder {
     }
     catch(ParseException pe){
 
-         System.out.println("position: " + pe.getPosition());
-         System.out.println(pe);
+         System.err.println("position: " + pe.getPosition());
+         System.err.println(pe);
     }
     catch(FileNotFoundException fe){
-        System.out.println("Cannot find file "+file_path);
-        System.out.println(fe);
+        System.err.println("Cannot find file "+file_path);
+        System.err.println(fe);
 
     }
     return loaded_obj; 
@@ -340,12 +343,12 @@ class VerbPairFinder {
             String word_text = "";
             word_text = words.get(0).word();
             if(words.size()!=1){
-              System.out.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
+              System.err.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
 
               for(int k =1; k<words.size();k++){
                 word_text += " "+words.get(k).word();
               }
-              System.out.println("the word is: "+word_text);
+              System.err.println("the word is: "+word_text);
             }
             clause_words.add(word_text);
             
@@ -372,12 +375,12 @@ class VerbPairFinder {
             String word_text = "";
             word_text = words.get(0).word();
             if(words.size()!=1){
-              System.out.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
+              System.err.println("WARRNIGN: WORD SIZE BIGGER THAN 2!!");
 
               for(int k =1; k<words.size();k++){
                 word_text += " "+words.get(k).word();
               }
-              System.out.println("the word is: "+word_text);
+              System.err.println("the word is: "+word_text);
             }
             String word_label = node.label().value();
             if(l==0){
