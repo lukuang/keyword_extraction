@@ -213,6 +213,9 @@ class VerbPairFinder {
           int gap = file_size/run_num;
           int start = (file_index-1)*gap;
           int end = file_index*gap;
+          if (end >file_size){
+            end = file_size;
+          }
           System.err.println("gap: "+gap+" file size: "+file_size);
           System.err.println("start: "+start+", end: "+end);
           
