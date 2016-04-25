@@ -198,44 +198,60 @@ class VerbPairFinder {
    */
   public static void main(String[] args) {
 
+    
+    if (args.length == 3) {
+      try{
+          String parserModel = "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
 
-    if (args.length == 2) {
-      String parserModel = "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
+          LexicalizedParser lp = LexicalizedParser.loadModel(parserModel);
+          List <String> content = read_file(args[0]);
+          JSONObject entity_content = read_entity_file(args[1]);
+          JSONObject result= new JSONObject();
+          String file_index = args[2];
+          for (int i=0;i<content.size();i++){
+            if (i%100==0){
+              System.err.println("Processed "+i+" sentences");
+            }
+            JSONObject sub_result = new JSONObject();
+            Integer sentence_index = i+1;
+            String sentence_index_string = sentence_index.toString();
+            JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
+            String entity = (String)sub_data.get("entity");
+            String sentence =  content.get(i);
+            List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
+            List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, entity);
 
-      LexicalizedParser lp = LexicalizedParser.loadModel(parserModel);
-      List <String> content = read_file(args[0]);
-      JSONObject entity_content = read_entity_file(args[1]);
-      JSONObject result= new JSONObject();
-      for (int i=0;i<content.size();i++){
-        if (i%100==0){
-          System.err.println("Processed "+i+" sentences");
-        }
-        JSONObject sub_result = new JSONObject();
-        Integer sentence_index = i+1;
-        String sentence_index_string = sentence_index.toString();
-        JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
-        String entity = (String)sub_data.get("entity");
-        String sentence =  content.get(i);
-        List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
-        List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, entity);
+            sub_result.put("instance", sub_data.get("instance"));
+            sub_result.put("entity", sub_data.get("entity"));
+            JSONArray result_json_tuples = new JSONArray();
+            for( Result_tuple single_tuple: result_tuples){
+              JSONObject single_result_tuple = new JSONObject();
+              single_result_tuple.put("sentence", single_tuple.get_sentence());
+              single_result_tuple.put("verb", single_tuple.get_verb());
+              single_result_tuple.put("verb_label", single_tuple.get_verb_label());
+              result_json_tuples.add(single_result_tuple);
+            }
+            sub_result.put("result_tuples",result_json_tuples);
+            result.put(sentence_index_string,sub_result);
 
-        sub_result.put("instance", sub_data.get("instance"));
-        sub_result.put("entity", sub_data.get("entity"));
-        JSONArray result_json_tuples = new JSONArray();
-        for( Result_tuple single_tuple: result_tuples){
-          JSONObject single_result_tuple = new JSONObject();
-          single_result_tuple.put("sentence", single_tuple.get_sentence());
-          single_result_tuple.put("verb", single_tuple.get_verb());
-          single_result_tuple.put("verb_label", single_tuple.get_verb_label());
-          result_json_tuples.add(single_result_tuple);
-        }
-        sub_result.put("result_tuples",result_json_tuples);
-        result.put(sentence_index_string,sub_result);
+          }
+          try {
 
-        //TODO make return tuple into json and write it out
+              FileWriter file = new FileWriter("out_"+file_index);
+              file.write(result.toJSONString());
+              file.flush();
+              file.close();
+
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+
+          System.out.println(result);
+          System.out.println("finished!");
+      } catch (Exception e){
+          System.out.println(e);
+          e.printStackTrace();
       }
-
-      System.out.println(result);
 
 
     } else {
