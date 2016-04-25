@@ -219,20 +219,11 @@ class VerbPairFinder {
           System.err.println("gap: "+gap+" file size: "+file_size);
           System.err.println("start: "+start+", end: "+end);
           
-          //check file writting
-          try {
-
-              FileWriter file = new FileWriter(dir_name+"/"+file_index);
-              file.write("Success!");
-              file.flush();
-              file.close();
-
-          } catch (IOException e) {
-              e.printStackTrace();
-          }
+          
           for (int i=start;i<end;i++){
-            if (i%100==0){
-              System.err.println("Processed "+i+" sentences");
+            int processed = i-start+1;
+            if (i%processed==0){
+              System.err.println("Processed "+processed+" sentences");
             }
             JSONObject sub_result = new JSONObject();
             Integer sentence_index = i+1;
