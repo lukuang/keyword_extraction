@@ -259,7 +259,7 @@ class VerbPairFinder {
               e.printStackTrace();
           }
 
-          System.out.println(result);
+          //System.out.println(result);
           System.out.println("finished!");
       } catch (Exception e){
           System.out.println(e);
