@@ -344,7 +344,7 @@ class VerbPairFinder {
     parse = lp.apply(rawWords2);
     
     Tree root = parse.skipRoot();
-    if (root.label().value().equals("XX"){
+    if (root.label().value().equals("XX")){
       System.out.println("FOUND XX Tree");
     }
     else{
