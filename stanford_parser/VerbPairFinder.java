@@ -242,7 +242,7 @@ class VerbPairFinder {
             List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
-              
+              System.err.println(clauses);
               result_tuples = find_result_tuple_in_clauses(clauses, entity);
             }
             else{
