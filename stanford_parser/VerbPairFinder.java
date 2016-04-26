@@ -340,8 +340,9 @@ class VerbPairFinder {
         tokenizerFactory.getTokenizer(new StringReader(sentence));
     List<CoreLabel> rawWords2 = tok.tokenize();
     boolean success = true;
+    Tree parse;
     try{
-      Tree parse = lp.apply(rawWords2);
+      parse = lp.apply(rawWords2);
     }
     catch(UnsupportedOperationException ue){
       System.out.println("Sentence is too long:\n"+sentence+"\n");
