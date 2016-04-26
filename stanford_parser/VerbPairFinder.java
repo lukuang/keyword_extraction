@@ -230,7 +230,7 @@ class VerbPairFinder {
             System.err.println("write to:"+dir_name+"/sub_"+file_index);
           }
           else{
-            int file_size = content.size();
+            file_size = content.size();
             start = (file_index-1)*gap;
             end = file_index*gap;
             if(file_index == run_num){
