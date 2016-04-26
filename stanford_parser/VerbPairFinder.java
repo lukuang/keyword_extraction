@@ -199,7 +199,7 @@ class VerbPairFinder {
   public static void main(String[] args) {
 
     Integer run_num = 80;
-    if (args.length == 4) {
+    if (args.length == 6) {
       try{
           String parserModel = "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
 
@@ -209,16 +209,20 @@ class VerbPairFinder {
           JSONObject result= new JSONObject();
           String dir_name = args[2];
           int file_index = Integer.parseInt(args[3]);
-          int file_size = content.size();
+          //int file_size = content.size();
+
+          int all_start = Integer.parseInt(args[4]);
+          int all_end = Integer.parseInt(args[5]);
+          int file_size = all_end - all_start +1;
           int gap = file_size/run_num;
-          int start = (file_index-1)*gap;
-          int end = file_index*gap;
+          int start = (file_index-1)*gap + all_start;
+          int end = file_index*gap + all_start;
           if (file_index == run_num){
             end = file_size;
           }
           System.err.println("gap: "+gap+" file size: "+file_size);
           System.err.println("start: "+start+", end: "+end);
-          
+          System.err.println("write to:"+dir_name+"/sub_"+file_index);
           
           for (int i=start;i<end;i++){
             int processed = i-start+1;
@@ -252,7 +256,7 @@ class VerbPairFinder {
           }
           try {
 
-              FileWriter file = new FileWriter(dir_name+"/"+file_index);
+              FileWriter file = new FileWriter(dir_name+"/sub_"+file_index);
               file.write(result.toJSONString());
               file.flush();
               file.close();
