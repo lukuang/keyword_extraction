@@ -347,8 +347,11 @@ class VerbPairFinder {
     Tree root = parse.skipRoot();
     if (root.label().value().equals("X")){
       System.err.println("Skip X Tree");
+<<<<<<< HEAD
       List< List<Tree> > clauses = new ArrayList< List<Tree> >();
       return clauses;
+=======
+>>>>>>> 0b060ec09476cff0ca19ca9dbf6f1b114502ddd0
     }
   
     Clause clause_method = new Clause(root);
