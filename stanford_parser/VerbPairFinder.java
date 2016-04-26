@@ -240,7 +240,7 @@ class VerbPairFinder {
             String entity = (String)sub_data.get("entity");
             String sentence =  content.get(i);
             List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
-            List<Result_tuple> result_tuples;
+            List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
               result_tuples = find_result_tuple_in_clauses(clauses, entity);
             }
@@ -347,7 +347,7 @@ class VerbPairFinder {
     catch(UnsupportedOperationException ue){
       System.out.println("Sentence is too long:\n"+sentence+"\n");
       System.err.println("return empty clause list");
-      List < List<Tree> > clauses;
+      List < List<Tree> > clauses = new ArrayList< List<Tree> >();
       return clauses;
     }
     
@@ -487,7 +487,7 @@ class VerbPairFinder {
     catch(UnsupportedOperationException ue){
         System.out.println("Sentence is too long:\n"+sentence+"\n");
         System.err.println("return empty verb list");
-        List <String> verbs;
+        List <String> verbs = new ArrayList<String>();
         return verbs;
     }
   }
