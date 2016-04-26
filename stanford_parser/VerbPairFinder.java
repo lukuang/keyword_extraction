@@ -344,12 +344,10 @@ class VerbPairFinder {
     parse = lp.apply(rawWords2);
     
     Tree root = parse.skipRoot();
-    if (root.label().value().equals("XX")){
-      System.out.println("FOUND XX Tree");
+    if (root.label().value().equals("X")){
+      System.err.println("Skip X Tree");
     }
-    else{
-      System.out.println("label is "+root.label().value() );
-    }
+  
     Clause clause_method = new Clause(root);
     List< List<Tree> > clauses = clause_method.get_clauses();
     return clauses;
