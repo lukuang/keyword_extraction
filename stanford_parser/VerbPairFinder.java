@@ -199,7 +199,7 @@ class VerbPairFinder {
   public static void main(String[] args) {
 
     Integer run_num = 80;
-    if (args.length == 6) {
+    if (args.length == 6 || args.length == 4) {
       try{
           String parserModel = "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
           String[] options = { "-maxLength", "40"};
@@ -210,17 +210,32 @@ class VerbPairFinder {
           JSONObject result= new JSONObject();
           String dir_name = args[2];
           int file_index = Integer.parseInt(args[3]);
+          int file_size;
+          int gap;
+          int start;
+          int end;
+          if (args.length == 6){
           //int file_size = content.size();
 
-          int all_start = Integer.parseInt(args[4]);
-          int all_end = Integer.parseInt(args[5]);
-          int file_size = all_end - all_start +1;
-          int gap = file_size/run_num;
-          int start = (file_index-1)*gap + all_start;
-          int end = file_index*gap + all_start;
-          if (file_index == run_num){
-            //end = file_size;
-            end = all_end;
+            int all_start = Integer.parseInt(args[4]);
+            int all_end = Integer.parseInt(args[5]);
+            file_size = all_end - all_start +1;
+            gap = file_size/run_num;
+            start = (file_index-1)*gap + all_start;
+            end = file_index*gap + all_start;
+            if (file_index == run_num){
+              //end = file_size;
+              end = all_end;
+            }
+          }
+          else{
+            int file_size = content.size();
+            start = (file_index-1)*gap;
+            end = file_index*gap;
+            if(file_index == run_num){
+              //end = file_size;
+              end = file_size;
+            }
           }
           System.err.println("gap: "+gap+" file size: "+file_size);
           System.err.println("start: "+start+", end: "+end);
