@@ -227,6 +227,7 @@ class VerbPairFinder {
               //end = file_size;
               end = all_end;
             }
+            System.err.println("write to:"+dir_name+"/sub_"+file_index);
           }
           else{
             int file_size = content.size();
@@ -236,10 +237,11 @@ class VerbPairFinder {
               //end = file_size;
               end = file_size;
             }
+            System.err.println("write to:"+dir_name+"/"+file_index);
           }
           System.err.println("gap: "+gap+" file size: "+file_size);
           System.err.println("start: "+start+", end: "+end);
-          System.err.println("write to:"+dir_name+"/sub_"+file_index);
+          
           
           for (int i=start;i<end;i++){
             int processed = i-start+1;
@@ -275,7 +277,7 @@ class VerbPairFinder {
           }
           try {
 
-              FileWriter file = new FileWriter(dir_name+"/sub_"+file_index);
+              FileWriter file = new FileWriter(dir_name+"/"+file_index);
               file.write(result.toJSONString());
               file.flush();
               file.close();
