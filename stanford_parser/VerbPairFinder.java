@@ -202,8 +202,9 @@ class VerbPairFinder {
     if (args.length == 6) {
       try{
           String parserModel = "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
+          String[] options = { "-maxLength", "40"};
+          LexicalizedParser lp = LexicalizedParser.loadModel(parserModel,options);
 
-          LexicalizedParser lp = LexicalizedParser.loadModel(parserModel);
           List <String> content = read_file(args[0]);
           JSONObject entity_content = read_entity_file(args[1]);
           JSONObject result= new JSONObject();
@@ -239,8 +240,10 @@ class VerbPairFinder {
             String entity = (String)sub_data.get("entity");
             String sentence =  content.get(i);
             List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
-            List<Result_tuple> result_tuples = find_result_tuple_in_clauses(clauses, entity);
-
+            List<Result_tuple> result_tuples;
+            if(clauses.size()!=0){
+              result_tuples = find_result_tuple_in_clauses(clauses, entity);
+            }
             sub_result.put("instance", sub_data.get("instance"));
             sub_result.put("entity", sub_data.get("entity"));
             JSONArray result_json_tuples = new JSONArray();
@@ -336,7 +339,17 @@ class VerbPairFinder {
     Tokenizer<CoreLabel> tok =
         tokenizerFactory.getTokenizer(new StringReader(sentence));
     List<CoreLabel> rawWords2 = tok.tokenize();
-    Tree parse = lp.apply(rawWords2);
+    boolean success = true;
+    try{
+      Tree parse = lp.apply(rawWords2);
+    }
+    catch(UnsupportedOperationException ue){
+      System.out.println("Sentence is too long:\n"+sentence+"\n");
+      System.err.println("return empty clause list");
+      List < List<Tree> > clauses;
+      return clauses;
+    }
+    
     Tree root = parse.skipRoot();
     Clause clause_method = new Clause(root);
     List< List<Tree> > clauses = clause_method.get_clauses();
@@ -454,18 +467,28 @@ class VerbPairFinder {
     Tokenizer<CoreLabel> tok =
         tokenizerFactory.getTokenizer(new StringReader(sentence));
     List<CoreLabel> rawWords2 = tok.tokenize();
-    Tree parse = lp.apply(rawWords2);
+    try{
+      Tree parse = lp.apply(rawWords2);
+    
+    
 
-    TreebankLanguagePack tlp = lp.treebankLanguagePack(); // PennTreebankLanguagePack for English
-    GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
-    GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
-    List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
+      TreebankLanguagePack tlp = lp.treebankLanguagePack(); // PennTreebankLanguagePack for English
+      GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
+      GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
+      List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
 
-    List <String> verbs = find_verb_pair_in_denpendencies(tdl,entity);
-    // You can also use a TreePrint object to print trees and dependencies
-    //TreePrint tp = new TreePrint("penn,typedDependenciesCollapsed");
-    //tp.printTree(parse);
-    return verbs;
+      List <String> verbs = find_verb_pair_in_denpendencies(tdl,entity);
+      // You can also use a TreePrint object to print trees and dependencies
+      //TreePrint tp = new TreePrint("penn,typedDependenciesCollapsed");
+      //tp.printTree(parse);
+      return verbs;
+    }
+    catch(UnsupportedOperationException ue){
+        System.out.println("Sentence is too long:\n"+sentence+"\n");
+        System.err.println("return empty verb list");
+        List <String> verbs;
+        return verbs;
+    }
   }
 
   public static List <String> find_verb_pair_in_denpendencies(List<TypedDependency> tdl, String entity){
