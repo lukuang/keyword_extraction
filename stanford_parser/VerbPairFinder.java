@@ -231,6 +231,7 @@ class VerbPairFinder {
           }
           else{
             file_size = content.size();
+            gap = file_size/run_num;
             start = (file_index-1)*gap;
             end = file_index*gap;
             if(file_index == run_num){
