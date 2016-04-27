@@ -66,7 +66,11 @@ public class JsonReader {
 
   private void get_entities_from_narrative(){
     String serializedClassifier = "/home/1546/source/Stanford/stanford-ner-2015-12-09/classifiers/english.all.3class.distsim.crf.ser.gz";
-
+    HashMap<String, Integer> KNOWN_NEGATIVE = new HashMap<String,Integer>();
+    KNOWN_NEGATIVE.put("National Weather Service",1);
+    KNOWN_NEGATIVE.put("U.S.",1);
+    KNOWN_NEGATIVE.put("US",1);
+    KNOWN_NEGATIVE.put("NWS",1);
     try{
         AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
         List<Triple<String, Integer, Integer>> list;
@@ -78,7 +82,9 @@ public class JsonReader {
                 String entitiy_type = item.first();
                 String entity = narrative.substring(item.second(), item.third());
                 if(entitiy_type.equals("LOCATION") || entitiy_type.equals("ORGANIZATION") ){
-                    narrative_entitiy_map.doublePut(eid,entity);
+                    if(KNOWN_NEGATIVE.get(entity)==null){
+                        narrative_entitiy_map.doublePut(eid,entity);
+                    }
                 }
             }
         }
