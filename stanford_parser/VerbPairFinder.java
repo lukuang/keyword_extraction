@@ -262,7 +262,7 @@ class VerbPairFinder {
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
-              System.out.println("Sentence is:\n"+sentence);
+              //System.out.println("Sentence is:\n"+sentence);
               List<String> candidates = find_verb_pair_in_sentence(lp, entity, sentence);
               result_tuples = find_result_tuple_in_clauses(clauses, entity,candidates);
             }
@@ -531,8 +531,8 @@ class VerbPairFinder {
         String g_tag = tdl.get(i).gov().tag();
         String d_word = tdl.get(i).dep().originalText();
         String g_word = tdl.get(i).gov().originalText();
-        System.out.println("original pair:"+tdl.get(i).dep().word()+", "+tdl.get(i).gov().word());
-        System.out.println("new pair:"+g_word+", "+d_word);
+        //System.out.println("original pair:"+tdl.get(i).dep().word()+", "+tdl.get(i).gov().word());
+        //System.out.println("new pair:"+g_word+", "+d_word);
         if(g_word.equals(entity) ){
             if (d_tag.contains("VB") ){
                 //System.out.println("Found!");
