@@ -24,7 +24,7 @@ def main():
 
     args=parser.parse_args()
     data = combine_verbpairfinder_output(args.s_dir)
-    with open(args.dest_file,'w','utf-8') as f:
+    with codecs.open(args.dest_file,'w','utf-8') as f:
         f.write(data)
 
 
