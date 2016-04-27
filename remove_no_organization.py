@@ -19,6 +19,7 @@ def main():
 
     negative_candidates = json.load(open(args.negative_candidate_file))
     for eid in negative_candidates:
+        print "for",eid
         episode_entities = json.load(open(os.path.join(args.news_entity_dir,eid,args.required_file_name)))
         organization_entities = episode_entities["ORGANIZATION"]
         sub_negative =  negative_candidates[eid]
