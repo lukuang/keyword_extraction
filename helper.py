@@ -26,12 +26,12 @@ def count_entities(file_name,count_only=False):
         print "the number is %d" %c
 
 if __name__ == "__main__":
-    if(len(sys.args)==2):
-        count_entities(sys.args[1])
-    elif(len(sys.args)==3):
+    if(len(sys.argv)==2):
+        count_entities(sys.argv[1])
+    elif(len(sys.argv)==3):
         if sys.argv[2]=='y':
-            count_entities(sys.args[1],True)
+            count_entities(sys.argv[1],True)
         else:
-            count_entities(sys.args[1],False)
+            count_entities(sys.argv[1],False)
     else:
         print "Too many arguments"
