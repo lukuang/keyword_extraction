@@ -258,10 +258,11 @@ class VerbPairFinder {
             String entity = (String)sub_data.get("entity");
             String sentence =  content.get(i);
             List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
-            List<String> candidates = find_verb_pair_in_sentence(lp, entity, sentence);
+            
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
+              List<String> candidates = find_verb_pair_in_sentence(lp, entity, sentence);
               result_tuples = find_result_tuple_in_clauses(clauses, entity,candidates);
             }
             sub_result.put("instance", sub_data.get("instance"));
