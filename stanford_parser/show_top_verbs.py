@@ -64,13 +64,13 @@ def main():
 
     print "negative:"
     negative_remap_tuples = remap_tuples(args.negative_temp)
-    with open(args.negative_file,'w','utf-8') as f:
+    with codecs.open(args.negative_file,'w','utf-8') as f:
         f.write(json.dumps(negative_remap_tuples))
     negative_verbs = get_verbs(negative_remap_tuples)
     show_top(negative_verbs,args.top)
     print "positive"
     positive_remap_tuples = remap_tuples(args.positive_temp)
-    with open(args.positive_file,'w','utf-8') as f:
+    with codecs.open(args.positive_file,'w','utf-8') as f:
         f.write(json.dumps(positive_remap_tuples))
     positive_verbs = get_verbs(positive_remap_tuples)
     show_top(positive_remap_tuples,args.top)
