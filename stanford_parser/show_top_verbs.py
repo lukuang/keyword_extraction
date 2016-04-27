@@ -47,7 +47,7 @@ def get_all_words(tuple_results):
     for identifier in tuple_results:
         word_model = Model(True)
         for single_tuple in tuple_results[identifier]:
-            word_model += Sentence(single_tuple['sentence'],remove_stopwords=True).stemmed_model
+            word_model += Sentence(single_tuple['sentence'],remove_stopwords=True,need_stem=True).stemmed_model
 
         word_model.normalize()
         for word in word_model.model:
