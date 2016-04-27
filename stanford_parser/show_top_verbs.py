@@ -73,7 +73,7 @@ def main():
     with codecs.open(args.positive_file,'w','utf-8') as f:
         f.write(json.dumps(positive_remap_tuples))
     positive_verbs = get_verbs(positive_remap_tuples)
-    show_top(positive_remap_tuples,args.top)
+    show_top(positive_verbs,args.top)
 
 
 if __name__=="__main__":
