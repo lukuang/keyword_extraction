@@ -258,9 +258,11 @@ class VerbPairFinder {
             String entity = (String)sub_data.get("entity");
             String sentence =  content.get(i);
             List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
+            List<String> candidates = find_verb_pair_in_sentence(lp, entity, sentence);
+
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
-              result_tuples = find_result_tuple_in_clauses(clauses, entity);
+              result_tuples = find_result_tuple_in_clauses(clauses, entity,candidates);
             }
             sub_result.put("instance", sub_data.get("instance"));
             sub_result.put("entity", sub_data.get("entity"));
@@ -377,7 +379,7 @@ class VerbPairFinder {
   }
 
 
-  private static List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, String entity){
+  private static List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, String entity, List<String> candidates){
     List <Result_tuple> result_tuples = new ArrayList<Result_tuple> ();
 
     TokenizerFactory<CoreLabel> tokenizerFactory =
@@ -395,7 +397,7 @@ class VerbPairFinder {
 
     for(List<Tree> single_clause: clauses){
       if (in_clause(single_clause,entitiy_words)){
-        result_tuples.addAll(get_result_tuples(single_clause));
+        result_tuples.addAll(get_result_tuples(single_clause, candidates));
       }
     }
     return result_tuples;
@@ -432,7 +434,7 @@ class VerbPairFinder {
 
   }
 
-  private static List< Result_tuple > get_result_tuples(List<Tree> single_clause){
+  private static List< Result_tuple > get_result_tuples(List<Tree> single_clause, List<String> candidates){
     String sentence_string = "";
     String verb = "";
     String verb_label = "";
@@ -460,8 +462,10 @@ class VerbPairFinder {
             }
             if(word_label.contains("VB")){
               verb = word_text; 
-              verb_label = word_label;
-              result_tuples.add(new Result_tuple(verb,verb_label));
+              if( candidates.contains(verb) ){
+                verb_label = word_label;
+                result_tuples.add(new Result_tuple(verb,verb_label));
+              }
             }
             
       }
