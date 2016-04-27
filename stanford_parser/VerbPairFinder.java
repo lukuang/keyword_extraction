@@ -540,6 +540,7 @@ class VerbPairFinder {
                 verbs.add(d_word);
             } 
             else{
+                System.out.println("add "+d_word+" to dependencies");
                 denpendent_words.add(d_word);
             }
         }
@@ -550,6 +551,7 @@ class VerbPairFinder {
                 verbs.add(g_word);
             }
             else{
+                System.out.println("add "+g_word+" to dependencies");
                 denpendent_words.add(g_word);
 
             }
