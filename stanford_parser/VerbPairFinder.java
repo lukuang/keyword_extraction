@@ -562,7 +562,7 @@ class VerbPairFinder {
     else{
       List<String> old_words = new ArrayList<String>();
       old_words.add(entity);
-      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,denpendent_words,old_words),0 );
+      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,denpendent_words,old_words,0) );
     }
   }
 
@@ -631,7 +631,7 @@ class VerbPairFinder {
       return remove_duplicate(verbs);
     }
     else{
-      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,new_denpendent_words,old_words) );
+      return remove_duplicate(find_verb_pair_in_denpendencies(tdl,new_denpendent_words,old_words,0) );
       
     }
 
