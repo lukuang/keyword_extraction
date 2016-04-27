@@ -46,7 +46,7 @@ def show_top(verbs,top):
     sorted_verbs =  sorted(verbs.items(),key = lambda x:x[1],reverse=True)
     i = 0
     for (k,v) in sorted_verbs:
-        print "\t%s: %d" %(k,v)
+        print "\t%s: %f" %(k,v)
         i += 1
         if i==top:
             print "-"*20
