@@ -44,9 +44,9 @@ def get_verbs(tuple_result):
 
 def get_all_words(tuple_results):
     words = {}
-    for identifier in tuple_result:
+    for identifier in tuple_results:
         word_model = Model(True)
-        for single_tuple in tuple_result[identifier]:
+        for single_tuple in tuple_results[identifier]:
             word_model += Sentence(single_tuple['sentence'],remove_stopwords=True).stemmed_model
 
         word_model.normalize()
