@@ -25,7 +25,7 @@ def count_entities(file_name,count_only=False):
             c += len(data[i])
         print "the number is %d" %c
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     if(len(sys.args)==2):
         count_entities(sys.args[1])
     elif(len(sys.args)==3):
