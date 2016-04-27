@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 
-NO_NEED = ['were','was','is','has','are','have','had']
+NO_NEED = ['were','was','is','has','are','have','had','been','be']
 
 def get_verbs(tuple_file):
     tuples = json.load(open(tuple_file))
