@@ -529,9 +529,9 @@ class VerbPairFinder {
         }
         String d_tag = tdl.get(i).dep().tag();
         String g_tag = tdl.get(i).gov().tag();
-        String d_word = tdl.get(i).dep().originalText() ;
-        String g_word = tdl.get(i).gov().originalText() ;
-        System.out.println("original pair:"+tdl.get(i).dep().word()+", "tdl.get(i).gov().word());
+        String d_word = tdl.get(i).dep().originalText();
+        String g_word = tdl.get(i).gov().originalText();
+        System.out.println("original pair:"+tdl.get(i).dep().word()+", "+tdl.get(i).gov().word());
         System.out.println("new pair:"+g_word+", "+d_word);
         if(g_word.equals(entity) ){
             if (d_tag.contains("VB") ){
