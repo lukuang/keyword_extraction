@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 import codecs
-from myUtility.corpus import  Model
+from myUtility.corpus import Sentence, Model
 
 NO_NEED = ['were','was','is','has','are','have','had','been','be']
 
