@@ -8,17 +8,22 @@ import sys
 import re
 import argparse
 
+NO_NEED = ['were','was','is','has','are','have','had']
 
 def get_verbs(tuple_file):
     tuples = json.load(open(tuple_file))
     verbs = {}
     for line_index in tuples:
         sub_tuples = tuples[line_index]["result_tuples"]
+        sub_verbs = []
         for sinlge_tuple in sub_tuples:
-            verb = sinlge_tuple["verb"]
+            verb = sub_verbs["verb"]
+            if verb in NO_NEED:
+                continue
             if verb not in verbs: 
                 verbs[verb] = 0
             verbs[verb] += 1
+
     return verbs
 
 def show_top(verbs,top):
