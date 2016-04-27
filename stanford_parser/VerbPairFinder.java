@@ -562,6 +562,8 @@ class VerbPairFinder {
     }
     if (verbs.size()!=0){
       return verbs;
+    }else if(denpendent_words.size()==0){
+      return verbs;
     }
     else{
       List<String> old_words = new ArrayList<String>();
