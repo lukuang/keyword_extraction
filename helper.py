@@ -6,7 +6,7 @@ import os
 import json
 import sys
 
-
+##count number of entities in candidate files
 def count_entities(file_name,count_only=False):
     data = json.load(open(file_name) )
 
