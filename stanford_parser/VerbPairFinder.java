@@ -262,6 +262,7 @@ class VerbPairFinder {
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
+              System.out.println("Sentence is:\n"+sentence);
               List<String> candidates = find_verb_pair_in_sentence(lp, entity, sentence);
               result_tuples = find_result_tuple_in_clauses(clauses, entity,candidates);
             }
@@ -570,6 +571,11 @@ class VerbPairFinder {
                     List <String> old_words){
     List <String> verbs = new ArrayList<String>();
     List <String> new_denpendent_words = new ArrayList<String>();
+    System.out.println("old:");
+    System.out.println(old_words);
+    System.out.println("new_denpendent_words:");
+    System.out.println(denpendent_words);
+
     for(int j =0; j<denpendent_words.size(); j++){
       String entity = denpendent_words.get(j);
       for (int i=0;i<tdl.size();i++){
