@@ -22,7 +22,9 @@ def combine_verbpairfinder_output(s_dir):
             result_tuples = temp_data[i]["result_tuples"]
             if len(result_tuples)==0:
                 continue
+            print "length",len(result_tuples)
             for j  in range(len(result_tuples) ):
+                print j
                 single_tuple = result_tuples[j]
                 verb  = single_tuple["verb"]
                 if verb in NO_NEED:
