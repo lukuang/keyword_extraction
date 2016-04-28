@@ -70,7 +70,7 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
             all_verb_frames[identifier].append(verb_frames)
 
             i+=1
-    print "there are %d sentence frmaes" %(len(data))
+    print "there are %d sentence frmaes" %(len(all_verb_frames))
     return all_verb_frames
 
 
