@@ -26,6 +26,7 @@ def combine_verbpairfinder_output(s_dir):
                 print result_tuples
                 for single_tuple in result_tuples:
                     verb  = single_tuple["verb"]
+                    print verb
                     if verb  in NO_NEED:
                         print "no need word",verb
                         temp_data[i]["result_tuples"].remove(single_tuple)
