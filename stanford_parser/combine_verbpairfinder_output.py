@@ -21,6 +21,19 @@ def combine_verbpairfinder_output(s_dir):
         for i in temp_data:
             result_tuples = temp_data[i]["result_tuples"]
             new_tuples = []
+            if i == "10897":
+                print "found!"
+                print result_tuples
+                for single_tuple in result_tuples:
+                    verb  = single_tuple["verb"]
+                    if verb  in NO_NEED:
+                        print "no need word",verb
+                        temp_data[i]["result_tuples"].remove(single_tuple)
+                print "result afterwords"
+                print result_tuples
+                    
+            else:
+                continue
             for single_tuple in result_tuples:
                 verb  = single_tuple["verb"]
                 if verb not in NO_NEED:
