@@ -193,14 +193,14 @@ def main():
 
     all_verbs = set()
     entities = set()
-    negative_verbs,negative_entities,negative_features 
-             = process_result_tuple(args.negative_file,args.verb_size)
+    negative_verbs,negative_entities,negative_features = 
+            process_result_tuple(args.negative_file,args.verb_size)
 
     all_verbs.update(negative_verbs)
     entities.update(negative_entities)
 
-    positive_verbs,positive_entities,positive_features 
-             = process_result_tuple(args.positive_file,args.verb_size)
+    positive_verbs,positive_entities,positive_features =
+            process_result_tuple(args.positive_file,args.verb_size)
 
     all_verbs.update(positive_verbs)
     entities.update(positive_entities)
