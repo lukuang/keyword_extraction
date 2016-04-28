@@ -23,7 +23,7 @@ def get_verb_frame(output,entity,verbs,line_num):
                     single_frame['core_text'] = core_text
                     single_frame['verb_label'] = verbs[core_text]
                     single_frame['name'] = frame['target']['name']
-                    single_frame['elements'] = {}
+                    single_frame['elements'] = []
                     single_frame['text'] = []
                     frame_text = ""
                     for annotation in frame['annotationSets'][i]['frameElements']:    
@@ -38,7 +38,7 @@ def get_verb_frame(output,entity,verbs,line_num):
                         else:
                             single_frame['text'].append(frame_text)  
                             single_frame['elements'][element_name] =element_text
-                            verb_frames.append(single_frame)
+                    verb_frames.append(single_frame)
     except Exception as e:
         print "error at %s" %line_num
         print e
