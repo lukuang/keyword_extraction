@@ -24,7 +24,7 @@ def get_verb_frame(output,entity,verbs,line_num):
                     single_frame['core_text'] = core_text
                     single_frame['verb_label'] = verbs[core_text]
                     single_frame['name'] = frame['target']['name']
-                    single_frame['elements'] = []
+                    single_frame['elements'] = {}
                     single_frame['text'] = ""
                     for annotation in frame['annotationSets'][i]['frameElements']:    
                         element_name = annotation['name']
