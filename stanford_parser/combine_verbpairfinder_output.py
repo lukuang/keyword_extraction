@@ -18,7 +18,7 @@ def combine_verbpairfinder_output(s_dir):
     for f in os.walk(s_dir).next()[2]:
         f = os.path.join(s_dir,f)
         temp_data = json.load(open(f))
-        for i in temp_data:
+        for i in temp_data.keys():
             result_tuples = temp_data[i]["result_tuples"]
             new_tuples = []
             for single_tuple in result_tuples:
