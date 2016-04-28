@@ -63,6 +63,7 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
     with open(semafor_output_file) as f:
         for line in f:
             line_index = str(i)
+            i+=1
             if line_index not in indexed_tuples:
                 continue
             sentence_semafor = json.loads(line.rstrip())
@@ -84,7 +85,7 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
                 all_verb_frames[identifier] += verb_frames
                 valid_verb_frames += len(verb_frames)
 
-            i+=1
+            
     print "there are %d sentence frames" %(all_frames)
     print "%d of them are valid" %(valid_verb_frames)
     return all_verb_frames
