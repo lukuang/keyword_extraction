@@ -39,7 +39,6 @@ def get_verb_frame(output,entity,verbs,line_num):
                             single_frame['text'].append(frame_text)  
                             single_frame['elements'][element_name] =element_text
                     verb_frames.append(single_frame)
-            line_num += 1    
     except Exception as e:
         print "error at %s" %line_num
         print e
