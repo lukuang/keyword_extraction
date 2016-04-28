@@ -12,10 +12,11 @@ import traceback
 
 def get_verb_frame(output,entity,verbs,line_num):
     verb_frames = []
+    num_of_frames = 0
     try:
         for frame in output["frames"]:
             for i in range(0,len(frame['target']['spans'])):
-                
+                num_of_frames += 1
                 core_text = frame['target']['spans'][i]['text']
                 if (core_text not in verbs):
                     continue
@@ -50,7 +51,7 @@ def get_verb_frame(output,entity,verbs,line_num):
 
         #print output
         sys.exit(-1)
-    return verb_frames
+    return verb_frames, num_of_frames
 
 
 
@@ -58,6 +59,7 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
     all_verb_frames = {}
     i=1
     valid_verb_frames = 0
+    all_frames = 0
     with open(semafor_output_file) as f:
         for line in f:
             line_index = str(i)
@@ -70,8 +72,9 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
                 verbs[single_tuple["verb"]] = single_tuple["verb_label"]
 
 
-            verb_frames = get_verb_frame(sentence_semafor,entity,verbs,line_index)
+            verb_frames,num_of_frames = get_verb_frame(sentence_semafor,entity,verbs,line_index)
             identifier = instance+'/'+entity
+            all_frames += num_of_frames
             if len(verb_frames)!=0:
                 if identifier not in all_verb_frames:
                     all_verb_frames[identifier] = []
@@ -80,7 +83,8 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
                 valid_verb_frames += len(verb_frames)
 
             i+=1
-    print "there are %d sentence frmaes" %(len(all_verb_frames))
+    print "there are %d sentence frames" %(all_frames)
+    print "%d of them are valid" %(valid_verb_frames)
     return all_verb_frames
 
 
