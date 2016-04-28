@@ -28,7 +28,7 @@ def process_result_tuple(result_tuple_files,verb_size):
             sys.exit(-1)
 
         verb_model = Model(True)
-        for single_tuple in tuple_result[identifier]:
+        for single_tuple in result_tuples[identifier]:
             verb = single_tuple['verb']
             verb_model.update(text_list=[verb])
         verb_model.normalize()
