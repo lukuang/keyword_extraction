@@ -63,6 +63,8 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
     with open(semafor_output_file) as f:
         for line in f:
             line_index = str(i)
+            if line_index not in indexed_tuples:
+                continue
             sentence_semafor = json.loads(line.rstrip())
             sentence_result_tuples = indexed_tuples[line_index]["result_tuples"]
             instance = indexed_tuples[line_index]["instance"]
@@ -97,8 +99,8 @@ def main():
     parser.add_argument("indexed_tuple_file")
     parser.add_argument("output_file")
     args=parser.parse_args()
-    indexed_tuple = json_load(args.indexed_tuple_file)
-    all_verb_frames = map_verb_frames(args.semafor_output_file,indexed_tuple)
+    indexed_tuples = json_load(args.indexed_tuple_file)
+    all_verb_frames = map_verb_frames(args.semafor_output_file,indexed_tuples)
     with codecs.open(args.output_file,'w','utf-8') as f:
         f.write(json.dumps(all_verb_frames))
 
