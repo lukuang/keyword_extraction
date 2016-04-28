@@ -35,7 +35,7 @@ def get_verb_frame(output,entity,verbs,line_num):
         
                          
                         single_frame['elements'][element_name] =element_text
-                    if (frame_text.find(entity) == -1):
+                    if (single_frame['text'].find(entity) == -1):
                             continue
                     else:
                         #single_frame['text'] = frame_text
