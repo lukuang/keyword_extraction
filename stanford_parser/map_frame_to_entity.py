@@ -8,6 +8,7 @@ import sys
 import re
 import argparse
 import codecs
+import traceback
 
 def get_verb_frame(output,entity,verbs,line_num):
     verb_frames = []
@@ -43,6 +44,10 @@ def get_verb_frame(output,entity,verbs,line_num):
     except Exception as e:
         print "error at %s" %line_num
         print e
+        print '-'*60
+        traceback.print_exc(file=sys.stdout)
+        print '-'*60
+
         #print output
         sys.exit(-1)
     return verb_frames
