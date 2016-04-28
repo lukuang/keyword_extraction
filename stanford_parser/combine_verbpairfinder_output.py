@@ -9,11 +9,23 @@ import re
 import argparse
 import codecs
 
+
+NO_NEED = ['were','was','is','has','are','have','had','been','be']
+
+
 def combine_verbpairfinder_output(s_dir):
     data = {}
     for f in os.walk(s_dir).next()[2]:
         f = os.path.join(s_dir,f)
-        data.update(json.load(open(f)))
+        temp_data = json.load(open(f))
+        for i in temp_data:
+            result_tuples = temp_data[i]["result_tuples"]
+            for single_tuple in result_tuples:
+                verb  = single_tuple["verb"]
+                if verb in NO_NEED:
+                    temp_data[i]["result_tuples"].remove(single_tuple)
+
+        data.update(temp_data)
     return data
 
 
