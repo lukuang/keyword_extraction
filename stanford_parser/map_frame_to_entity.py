@@ -49,10 +49,10 @@ def get_verb_frame(output,entity,verbs,line_num):
 
 
 
-def map_verb_frames(semafor_output,indexed_tuples):
+def map_verb_frames(semafor_output_file,indexed_tuples):
     all_verb_frames = {}
     i=1
-    with open(semafor_output) as f:
+    with open(semafor_output_file) as f:
         for line in f:
             line_index = str(i)
             sentence_semafor = json.loads(line.rstrip())
@@ -84,9 +84,8 @@ def main():
     parser.add_argument("indexed_tuple_file")
     parser.add_argument("output_file")
     args=parser.parse_args()
-    semafor_output = json_load(args.semafor_output_file)
     indexed_tuple = json_load(args.indexed_tuple_file)
-    all_verb_frames = map_verb_frames(semafor_output,indexed_tuple)
+    all_verb_frames = map_verb_frames(args.semafor_output_file,indexed_tuple)
     with codecs.open(args.output_file,'w','utf-8') as f:
         f.write(json.dumsp(all_verb_frames))
 
