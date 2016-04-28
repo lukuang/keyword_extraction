@@ -206,7 +206,7 @@ def main():
     entities.update(positive_entities)
 
     all_features = list(all_verbs)
-    cate_info = get_cate_info(pure_entities,args.cate_info_file)
+    cate_info = get_cate_info(entities,args.cate_info_file)
     
     
 
