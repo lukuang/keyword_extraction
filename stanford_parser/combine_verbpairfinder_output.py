@@ -26,7 +26,11 @@ def combine_verbpairfinder_output(s_dir):
                 if verb not in NO_NEED:
                     #temp_data[i]["result_tuples"].remove(single_tuple)
                     new_tuples.append(single_tuple)
-            temp_data[i]["result_tuples"] = new_tuples
+            if len(new_tuples)==0:
+                temp_data.pop(i,None)
+            else:
+
+                temp_data[i]["result_tuples"] = new_tuples
 
 
         data.update(temp_data)
