@@ -152,7 +152,7 @@ def get_cate_feature_vector(entity,cate_info,all_cates):
                 cate_feature_vector.append(0)
             else:
                 cate_feature_vector.append(1)
-     else:
+    else:
         cate_feature_vector += [0]*len(all_cates)
 
     return cate_feature_vector
