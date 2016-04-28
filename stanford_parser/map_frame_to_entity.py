@@ -66,8 +66,8 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
             verb_frames = get_verb_frame(sentence_semafor,entity,verbs,line_index)
             identifier = instance+'/'+entity
             if identifier not in data:
-                data[identifier] = []
-            data[identifier].append(verb_frames)
+                all_verb_frames[identifier] = []
+            all_verb_frames[identifier].append(verb_frames)
 
             i+=1
     print "there are %d sentence frmaes" %(len(data))
