@@ -33,7 +33,7 @@ def get_verb_frame(output,entity,verbs,line_num):
                         for span in annotation['spans']:
                             element_text.append(span['text'])
                             frame_text += " "+span['text']
-                        if (frame_text.find(entity) != -1):
+                        if (frame_text.find(entity) == -1):
                             continue
                         else:
                             single_frame['text'].append(frame_text)  
