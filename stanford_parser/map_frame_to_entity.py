@@ -86,7 +86,7 @@ def main():
     indexed_tuple = json_load(args.indexed_tuple_file)
     all_verb_frames = map_verb_frames(args.semafor_output_file,indexed_tuple)
     with codecs.open(args.output_file,'w','utf-8') as f:
-        f.write(json.dumsp(all_verb_frames))
+        f.write(json.dumps(all_verb_frames))
 
 
 if __name__=="__main__":
