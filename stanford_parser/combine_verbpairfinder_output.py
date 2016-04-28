@@ -20,10 +20,14 @@ def combine_verbpairfinder_output(s_dir):
         temp_data = json.load(open(f))
         for i in temp_data:
             result_tuples = temp_data[i]["result_tuples"]
+            new_tuples = []
             for single_tuple in result_tuples:
                 verb  = single_tuple["verb"]
-                if verb in NO_NEED:
-                    temp_data[i]["result_tuples"].remove(single_tuple)
+                if verb not in NO_NEED:
+                    #temp_data[i]["result_tuples"].remove(single_tuple)
+                    new_tuples.append(single_tuple)
+            temp_data[i]["result_tuples"] = new_tuples
+
 
         data.update(temp_data)
     return data
