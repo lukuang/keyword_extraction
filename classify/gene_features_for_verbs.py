@@ -205,7 +205,11 @@ def main():
     all_verbs.update(positive_verbs)
     entities.update(positive_entities)
 
-    all_features = list(all_verbs)
+
+    all_verbs = list(all_verbs)
+    entities = list(entities)
+
+    all_features = all_verbs
     cate_info = get_cate_info(entities,args.cate_info_file)
     
     
