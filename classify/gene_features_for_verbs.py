@@ -162,18 +162,18 @@ def get_cate_feature_vector(entity,cate_info,all_cates):
 
 def output(all_verbs,all_cates,judgement_vector,feature_vector,dest_dir):
 
-    with codecs.open(os.path.join(dest_dir,"all_verbs")) as f:
+    with codecs.open(os.path.join(dest_dir,"all_verbs"),"w",'utf-8') as f:
         f.write(json.dumps(all_verbs))
 
-    with codecs.open(os.path.join(dest_dir,"all_cates")) as f:
+    with codecs.open(os.path.join(dest_dir,"all_cates"),"w",'utf-8') as f:
         f.write(json.dumps(all_cates))
 
 
-    with codecs.open(os.path.join(dest_dir,"judgement_vector")) as f:
+    with codecs.open(os.path.join(dest_dir,"judgement_vector"),"w",'utf-8') as f:
         f.write(json.dumps(judgement_vector))
 
 
-    with codecs.open(os.path.join(dest_dir,"feature_vector")) as f:
+    with codecs.open(os.path.join(dest_dir,"feature_vector"),"w",'utf-8') as f:
         f.write(json.dumps(feature_vector))
 
 
