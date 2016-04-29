@@ -104,9 +104,9 @@ def get_cate_features(cate_info, cate_feature_size):
 def add_data_to_set(feature_data,all_verbs,all_cates,judgement_vector,feature_vector,cate_info,is_positive):
     for identifier in feature_data:
         if is_positive:
-            feature_vector.append(1)
+            judgement_vector.append(1)
         else:
-            feature_vector.append(0)
+            judgement_vector.append(0)
 
         entity = feature_data[identifier]["entity"]
         verbs = feature_data[identifier]["verbs"]
