@@ -108,8 +108,8 @@ def add_data_to_set(feature_data,all_verbs,all_cates,judgement_vector,feature_ve
         else:
             feature_vector.append(0)
 
-        entity = feature_data["entity"]
-        verbs = feature_data["verbs"]
+        entity = feature_data[identifier]["entity"]
+        verbs = feature_data[identifier]["verbs"]
 
         single_feature_vector = get_single_feature_vector(verbs,entity,all_verbs,all_cates,cate_info)
 
