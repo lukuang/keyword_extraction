@@ -53,7 +53,7 @@ def main():
         """)
     args=parser.parse_args()
     X,y,entities = load_data_set(args.data_dir)
-    classifier = get_classifier(args.method)
+    clf = get_classifier(args.method)
     predicted = cross_validation.cross_val_predict(clf,X,y,cv=5)
     accuracy = metrics.accuracy_score(y,predicted)
     f1 = metrics.f1_score(y,predicted)
