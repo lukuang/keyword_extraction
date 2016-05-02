@@ -16,9 +16,9 @@ METHOD = ['linear_svc','logistic_regression',"naive_bayes"]
 def load_data_set(data_dir):
     features = json.load(open(os.path.join(data_dir,"feature_vector")))
     judgements = json.load(open(os.path.join(data_dir,"judgement_vector")))
-    entities = json.load(open(os.path.join(data_dir,"all_entities")))
+    all_entities = json.load(open(os.path.join(data_dir,"all_entities")))
 
-    return features,judgements,entities
+    return features,judgements,all_entities
 
 
 
@@ -78,7 +78,7 @@ def main():
     parser.add_argument("--need_positive","-np",action='store_true')
 
     args=parser.parse_args()
-    X,y,entities = load_data_set(args.data_dir)
+    X,y,all_entities = load_data_set(args.data_dir)
     clf = get_classifier(args.method)
     predicted = cross_validation.cross_val_predict(clf,X,y,cv=5)
     accuracy = metrics.accuracy_score(y,predicted)
