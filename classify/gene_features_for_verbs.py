@@ -76,11 +76,9 @@ def get_cate_info(pure_entities,cate_info_file):
             f.write(json.dumps(cate_info)) 
     return cate_info
 
-
-def get_cate_features(cate_info, cate_feature_size):
-    all_cates = []
+def get_top_cate_for_single_entity_type(cate_info,entities,cate_feature_size):
     cate_hash = {}
-    for entity in cate_info:
+    for entity in entities:
         if cate_info[entity]:
             for cate in cate_info[entity]:
                 if cate not in cate_hash:
@@ -88,14 +86,25 @@ def get_cate_features(cate_info, cate_feature_size):
                 cate_hash[cate] += 1
     sorted_cates = sorted(cate_hash.items(),key = lambda x : x[1],reverse=True)
     i = 0
+    all_cates = []
     for (k,v) in sorted_cates:
         all_cates.append(k)
         i += 1
         if i==cate_feature_size:
-            print "break when i is",i
+            #print "break when i is",i
             break
-    print "return %d category features" %(len(all_cates) )
+    #print "return %d category features" %(len(all_cates) )
     return all_cates
+
+
+def get_cate_features(cate_info, cate_feature_size,negative_entities, positive_entities):
+    all_cates = set()
+
+    all_cates.update(get_top_cate_for_single_entity_type(cate_info,negative_entities,cate_feature_size))
+    all_cates.update(get_top_cate_for_single_entity_type(cate_info,positive_entities,cate_feature_size))
+    
+    print "return %d category features" %(len(all_cates) )
+    return list(all_cates)
 
 
 
@@ -218,7 +227,7 @@ def main():
     
     
 
-    all_cates = get_cate_features(cate_info,args.cate_feature_size)
+    all_cates = get_cate_features(cate_info,args.cate_feature_size,negative_entities,positive_entities)
     all_features += all_cates
 
     judgement_vector = []
