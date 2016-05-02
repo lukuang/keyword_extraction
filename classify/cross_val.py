@@ -40,9 +40,32 @@ def get_classifier(method):
 
     return classifier
 
+
+def get_top_entities(all_entities,predicted,top_size,need_positive):
+    
+    if need_positive:
+        label = 1
+    else:
+        label = 0
+
+    needed_entities = {}
+    for i in range(len(predicted)):
+        if predicted[i] == label:
+            entity = all_entities[i]
+            if entity not in needed_entities:
+                needed_entities[entity] = 0
+            needed_entities += 1
+
+    sorted_entities = sorted(needed_entities.items(),key=lambda x:x[1],reverse=True)
+
+    print "top %d entities:" %(top_size)
+    for i in range(top_size):
+        print "\t%s: %d" %(sorted_entities[i][0],sorted_entities[i][1])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data_dir","-tr",default = "/home/1546/code/keyword_extraction/stanford_parser/no_location_features")
+    parser.add_argument("--data_dir","-dr",default = "/home/1546/code/keyword_extraction/stanford_parser/no_location_features")
     parser.add_argument('--method','-m',type=int,default=0,choices=range(4),
         help=
         """chose mthods from:
@@ -51,6 +74,9 @@ def main():
                 2:naive bayes
                 3:decision  tree
         """)
+    parser.add_argument("--top_size","-ts",type=int,default = 20)
+    parser.add_argument("--need_positive","-np",action='store_true')
+
     args=parser.parse_args()
     X,y,entities = load_data_set(args.data_dir)
     clf = get_classifier(args.method)
@@ -59,6 +85,8 @@ def main():
     f1 = metrics.f1_score(y,predicted)
     print "performance:"
     print "accuracy: %f, f1: %f" %(accuracy,f1)
+
+    get_top_entities(all_entities,predicted,args.top_size,args.need_positive)
 
 if __name__=="__main__":
     main()
