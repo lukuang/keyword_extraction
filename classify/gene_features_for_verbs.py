@@ -101,7 +101,7 @@ def get_cate_features(cate_info, cate_feature_size):
 
 
 
-def add_data_to_set(feature_data,all_verbs,all_cates,judgement_vector,feature_vector,cate_info,is_positive):
+def add_data_to_set(feature_data,all_verbs,all_cates,judgement_vector,feature_vector,all_entities,cate_info,is_positive):
     for identifier in feature_data:
         if is_positive:
             judgement_vector.append(1)
@@ -110,6 +110,8 @@ def add_data_to_set(feature_data,all_verbs,all_cates,judgement_vector,feature_ve
 
         entity = feature_data[identifier]["entity"]
         verbs = feature_data[identifier]["verbs"]
+
+        all_entities.append(entity)
 
         single_feature_vector = get_single_feature_vector(verbs,entity,all_verbs,all_cates,cate_info)
 
@@ -160,7 +162,7 @@ def get_cate_feature_vector(entity,cate_info,all_cates):
 
 
 
-def output(all_verbs,all_cates,judgement_vector,feature_vector,dest_dir):
+def output(all_verbs,all_cates,judgement_vector,feature_vector,all_entities,dest_dir):
 
     with codecs.open(os.path.join(dest_dir,"all_verbs"),"w",'utf-8') as f:
         f.write(json.dumps(all_verbs))
@@ -176,6 +178,8 @@ def output(all_verbs,all_cates,judgement_vector,feature_vector,dest_dir):
     with codecs.open(os.path.join(dest_dir,"feature_vector"),"w",'utf-8') as f:
         f.write(json.dumps(feature_vector))
 
+    with codecs.open(os.path.join(dest_dir,"all_entities"),"w",'utf-8') as f:
+        f.write(json.dumps(all_entities))
 
 
 
@@ -219,12 +223,12 @@ def main():
 
     judgement_vector = []
     feature_vector = []
+    all_entities = []
 
+    add_data_to_set(negative_features,all_verbs,all_cates,judgement_vector,feature_vector,all_entities,cate_info,False)
+    add_data_to_set(positive_features,all_verbs,all_cates,judgement_vector,feature_vector,all_entities,cate_info,True)
 
-    add_data_to_set(negative_features,all_verbs,all_cates,judgement_vector,feature_vector,cate_info,False)
-    add_data_to_set(positive_features,all_verbs,all_cates,judgement_vector,feature_vector,cate_info,True)
-
-    output(all_verbs,all_cates,judgement_vector,feature_vector,args.dest_dir)
+    output(all_verbs,all_cates,judgement_vector,feature_vector,all_entities,args.dest_dir)
 
 
 
