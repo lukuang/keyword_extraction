@@ -54,7 +54,7 @@ def get_top_entities(all_entities,predicted,top_size,need_positive):
             entity = all_entities[i]
             if entity not in needed_entities:
                 needed_entities[entity] = 0
-            needed_entities += 1
+            needed_entities[entity] += 1
 
     sorted_entities = sorted(needed_entities.items(),key=lambda x:x[1],reverse=True)
 
