@@ -12,7 +12,7 @@ from myUtility.corpus import Sentence, Model
 from get_entity_cate import get_cate_for_entity_list
 from nltk.stem.wordnet import WordNetLemmatizer
 
-def process_result_tuple(result_tuple_files,word_feature_size):
+def process_result_tuple(result_tuple_files,word_feature_size,use_words):
     all_word_features = {}
     entities = set()
     feature_data = {}
@@ -27,13 +27,17 @@ def process_result_tuple(result_tuple_files,word_feature_size):
             print "Wrong identifier!"
             sys.exit(-1)
 
-        word_feature_model = Model(True)
-        for single_tuple in result_tuples[identifier]:
-            word = single_tuple['verb']
-            if single_tuple['verb_label'] != 'VB':
-                word = WordNetLemmatizer().lemmatize(word,'v')
-            word_feature_model.update(text_list=[word])
-        word_feature_model.normalize()
+        # word_feature_model = Model(True)
+        # for single_tuple in result_tuples[identifier]:
+        #     word = single_tuple['verb']
+        #     if single_tuple['verb_label'] != 'VB':
+        #         word = WordNetLemmatizer().lemmatize(word,'v')
+        #     word_feature_model.update(text_list=[word])
+        # word_feature_model.normalize()
+        if use_words:
+            word_feature_model = get_all_words(result_tuples[identifier])
+        else:
+            word_feature_model = get_all_verbs(result_tuples[identifier])
 
         feature_data[identifier] = {
             "entity":entity,
@@ -50,19 +54,32 @@ def process_result_tuple(result_tuple_files,word_feature_size):
     return top_word_features,entities,feature_data
 
 
-def get_all_words(tuple_results):
-    words = {}
-    for identifier in tuple_results:
-        word_model = Model(True,need_stem=True)
-        for single_tuple in tuple_results[identifier]:
-            word_model += Sentence(single_tuple['sentence'],remove_stopwords=True).stemmed_model
 
-        word_model.normalize()
-        for word in word_model.model:
-            if word not in words:
-                words[word] = 0
-            words[word] += word_model.model[word]
-    return words
+def get_all_verbs(example_result_tuples):
+    verb_model = Model(True)
+
+    for single_tuple in example_result_tuples:
+        word = single_tuple['verb']
+        if single_tuple['verb_label'] != 'VB':
+            word = WordNetLemmatizer().lemmatize(word,'v')
+        verb_model.update(text_list=[word])
+    verb_model.normalize()
+
+    return verb_model
+
+
+
+
+def get_all_words(example_result_tuples):
+    
+    word_model = Model(True,need_stem=True)
+
+    for single_tuple in example_result_tuples:
+        word_model += Sentence(single_tuple['sentence'],remove_stopwords=True).stemmed_model
+
+    word_model.normalize()
+
+    return word_model
 
 
 
@@ -215,8 +232,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--positive_file","-pf",default="positive_result_tuples")
     parser.add_argument("--negative_file","-nf",default="negative_result_tuples")
-    parser.add_argument("cate_info_file")
+    #parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
+    parser.add_argument("--use_words","-u",action='store_true')
     parser.add_argument("--word_feature_size","-wz",type=int,default=20)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=20)
 
@@ -225,13 +243,13 @@ def main():
     all_word_features = set()
     entities = set()
     negative_word_features,negative_entities,negative_features =\
-            process_result_tuple(args.negative_file,args.word_feature_size)
+            process_result_tuple(args.negative_file,args.word_feature_size,args.use_words)
 
     all_word_features.update(negative_word_features)
     entities.update(negative_entities)
 
     positive_word_features,positive_entities,positive_features =\
-            process_result_tuple(args.positive_file,args.word_feature_size)
+            process_result_tuple(args.positive_file,args.word_feature_size,args.use_words)
 
     all_word_features.update(positive_word_features)
     entities.update(positive_entities)
@@ -241,7 +259,8 @@ def main():
     entities = list(entities)
 
     all_features = all_word_features[:]
-    cate_info = get_cate_info(entities,args.cate_info_file)
+    cate_info_file = os.path.join(args.dest_dir,"cate_info.json")
+    cate_info = get_cate_info(entities,cate_info_file)
     
     
 
