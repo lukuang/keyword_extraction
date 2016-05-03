@@ -232,7 +232,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--positive_file","-pf",default="positive_result_tuples")
     parser.add_argument("--negative_file","-nf",default="negative_result_tuples")
-    #parser.add_argument("cate_info_file")
+    parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
     parser.add_argument("--use_words","-u",action='store_true')
     parser.add_argument("--word_feature_size","-wz",type=int,default=20)
@@ -259,8 +259,8 @@ def main():
     entities = list(entities)
 
     all_features = all_word_features[:]
-    cate_info_file = os.path.join(args.dest_dir,"cate_info.json")
-    cate_info = get_cate_info(entities,cate_info_file)
+    #cate_info_file = os.path.join(args.dest_dir,"cate_info.json")
+    cate_info = get_cate_info(entities,args.cate_info_file)
     
     
 
