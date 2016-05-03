@@ -11,7 +11,7 @@ from myUtility.corpus import Sentence, Model
 from get_entity_cate import get_cate_for_entity_list
 from nltk.stem.wordnet import WordNetLemmatizer
 
-def process_result_tuple(verb_frame_file,word_feature_size,use_words):
+def process_result_tuple(verb_frame_file,word_feature_size):
     all_word_features = {}
     entities = set()
     feature_data = {}
@@ -240,13 +240,13 @@ def main():
     all_word_features = set()
     entities = set()
     negative_word_features,negative_entities,negative_features =\
-            process_result_tuple(args.negative_file,args.word_feature_size,args.use_words)
+            process_result_tuple(args.negative_file,args.word_feature_size)
 
     all_word_features.update(negative_word_features)
     entities.update(negative_entities)
 
     positive_word_features,positive_entities,positive_features =\
-            process_result_tuple(args.positive_file,args.word_feature_size,args.use_words)
+            process_result_tuple(args.positive_file,args.word_feature_size)
 
     all_word_features.update(positive_word_features)
     entities.update(positive_entities)
