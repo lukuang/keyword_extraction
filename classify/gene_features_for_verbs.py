@@ -236,8 +236,8 @@ def main():
     parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
     parser.add_argument("--use_words","-u",action='store_true')
-    parser.add_argument("--word_feature_size","-wz",type=int,default=20)
-    parser.add_argument("--cate_feature_size","-cz",type=int,default=20)
+    parser.add_argument("--word_feature_size","-wz",type=int,default=50)
+    parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
 
     args=parser.parse_args()
 

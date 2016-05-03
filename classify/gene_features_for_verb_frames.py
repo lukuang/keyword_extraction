@@ -232,8 +232,8 @@ def main():
         default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/src/stanford_parser/data/negative_verb_frames")
     parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
-    parser.add_argument("--word_feature_size","-wz",type=int,default=20)
-    parser.add_argument("--cate_feature_size","-cz",type=int,default=20)
+    parser.add_argument("--word_feature_size","-wz",type=int,default=50)
+    parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
 
     args=parser.parse_args()
 
