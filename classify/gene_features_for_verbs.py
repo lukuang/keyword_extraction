@@ -240,7 +240,7 @@ def main():
     all_word_features = list(all_word_features)
     entities = list(entities)
 
-    all_features = all_word_features
+    all_features = all_word_features[:]
     cate_info = get_cate_info(entities,args.cate_info_file)
     
     
