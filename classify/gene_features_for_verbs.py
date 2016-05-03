@@ -10,7 +10,7 @@ import argparse
 import codecs
 from myUtility.corpus import Sentence, Model
 from get_entity_cate import get_cate_for_entity_list
-
+from nltk.stem.wordnet import WordNetLemmatizer
 
 def process_result_tuple(result_tuple_files,verb_size):
     verbs = {}
@@ -30,12 +30,14 @@ def process_result_tuple(result_tuple_files,verb_size):
         verb_model = Model(True)
         for single_tuple in result_tuples[identifier]:
             verb = single_tuple['verb']
+            if single_tuple['verb_label'] != 'VB':
+                verb = WordNetLemmatizer().lemmatize(verb,'v')
             verb_model.update(text_list=[verb])
         verb_model.normalize()
 
         feature_data[identifier] = {
             "entity":entity,
-            "verbs":verb_model.model
+            "word_features":verb_model.model
         }
 
         for verb in verb_model.model:
@@ -46,6 +48,22 @@ def process_result_tuple(result_tuple_files,verb_size):
     top_verbs =  get_top_verbs(verbs,verb_size)
 
     return top_verbs,entities,feature_data
+
+
+def get_all_words(tuple_results):
+    words = {}
+    for identifier in tuple_results:
+        word_model = Model(True,need_stem=True)
+        for single_tuple in tuple_results[identifier]:
+            word_model += Sentence(single_tuple['sentence'],remove_stopwords=True).stemmed_model
+
+        word_model.normalize()
+        for word in word_model.model:
+            if word not in words:
+                words[word] = 0
+            words[word] += word_model.model[word]
+    return words
+
 
 
 def get_top_verbs(verbs,verb_size):
@@ -118,7 +136,7 @@ def add_data_to_set(feature_data,all_verbs,all_cates,judgement_vector,feature_ve
             judgement_vector.append(0)
 
         entity = feature_data[identifier]["entity"]
-        verbs = feature_data[identifier]["verbs"]
+        verbs = feature_data[identifier]["word_features"]
 
         all_entities.append(entity)
 
