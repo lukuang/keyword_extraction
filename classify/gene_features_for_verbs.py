@@ -222,7 +222,7 @@ def main():
 
     args=parser.parse_args()
 
-    negative_word_features = set()
+    all_word_features = set()
     entities = set()
     negative_word_features,negative_entities,negative_features =\
             process_result_tuple(args.negative_file,args.word_feature_size)
