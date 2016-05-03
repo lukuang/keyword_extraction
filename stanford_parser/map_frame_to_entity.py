@@ -60,6 +60,7 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
     i=1
     valid_verb_frames = 0
     all_frames = 0
+    all_entities = {}
     with open(semafor_output_file) as f:
         for line in f:
             line_index = str(i)
@@ -77,6 +78,8 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
 
             verb_frames,num_of_frames = get_verb_frame(sentence_semafor,entity,verbs,line_index)
             identifier = instance+'/'+entity
+            if identifier not in all_entities:
+                all_entities[identifier] = 0
             all_frames += num_of_frames
             if len(verb_frames)!=0:
                 if identifier not in all_verb_frames:
@@ -88,6 +91,7 @@ def map_verb_frames(semafor_output_file,indexed_tuples):
             
     print "there are %d sentence frames" %(all_frames)
     print "%d of them are valid" %(valid_verb_frames)
+    print "%d out of %d entities have valid frames" %(len(all_verb_frames),len(all_entities) )
     return all_verb_frames
 
 
