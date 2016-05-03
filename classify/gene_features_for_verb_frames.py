@@ -1,7 +1,6 @@
 """
-get verb and category features for result tuple data
+use frames as features 
 """
-
 import os
 import json
 import sys
@@ -12,13 +11,13 @@ from myUtility.corpus import Sentence, Model
 from get_entity_cate import get_cate_for_entity_list
 from nltk.stem.wordnet import WordNetLemmatizer
 
-def process_result_tuple(result_tuple_files,word_feature_size,use_words):
+def process_result_tuple(verb_frame_file,word_feature_size,use_words):
     all_word_features = {}
     entities = set()
     feature_data = {}
-    result_tuples = json.load(open(result_tuple_files))
+    all_verb_frames = json.load(open(verb_frame_file))
 
-    for identifier in result_tuples:
+    for identifier in all_verb_frames:
         m = re.search('\d+/(\w+)', identifier)
         if m is not None:
             entity = m.group(1)
@@ -28,26 +27,26 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_words):
             sys.exit(-1)
 
         # word_feature_model = Model(True)
-        # for single_tuple in result_tuples[identifier]:
+        # for single_tuple in verb_frames[identifier]:
         #     word = single_tuple['verb']
         #     if single_tuple['verb_label'] != 'VB':
         #         word = WordNetLemmatizer().lemmatize(word,'v')
         #     word_feature_model.update(text_list=[word])
         # word_feature_model.normalize()
-        if use_words:
-            word_feature_model = get_all_words(result_tuples[identifier])
-        else:
-            word_feature_model = get_all_verbs(result_tuples[identifier])
+        
+
+        verb_frames = get_all_frames(all_verb_frames[identifier],entity)
+        
 
         feature_data[identifier] = {
             "entity":entity,
-            "word_features":word_feature_model.model
+            "word_features":verb_frames
         }
 
-        for word in word_feature_model.model:
+        for word in verb_frames:
             if word not in all_word_features:
                 all_word_features[word] = 0
-            all_word_features[word] += word_feature_model.model[word]
+            all_word_features[word] += verb_frames[word]
 
     top_word_features =  get_top_word_features(all_word_features,word_feature_size)
 
@@ -55,32 +54,27 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_words):
 
 
 
-def get_all_verbs(example_result_tuples):
-    verb_model = Model(True,need_stem=True)
-
-    for single_tuple in example_result_tuples:
-        word = single_tuple['verb']
-        if single_tuple['verb_label'] != 'VB':
-            word = WordNetLemmatizer().lemmatize(word,'v')
-        verb_model.update(text_list=[word])
-    verb_model.normalize()
-
-    return verb_model
 
 
 
 
-
-def get_all_words(example_result_tuples):
+def get_all_frames(example_verb_frames,entity):
     
-    word_model = Model(True,need_stem=True)
+    
+    verb_frames = {}
 
-    for single_tuple in example_result_tuples:
-        word_model += Sentence(single_tuple['sentence'],remove_stopwords=True).stemmed_model
+    for frame in example_verb_frames:
+        name = frame['name']
+        elements = frame['elements']
+        for e_name in elements:
+            for text in elements[e_name]:
+                if text.find(entity)!=-1:
+                    frame_combo = name+"/"+e_name
+                    if frame_combo not in verb_frames:
+                        verb_frames[frame_combo] = 0
+                    verb_frames[frame_combo] += 1
 
-    word_model.normalize()
-
-    return word_model
+    return verb_frames
 
 
 
@@ -229,13 +223,15 @@ def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entit
 
 
 
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--positive_file","-pf",default="positive_result_tuples")
-    parser.add_argument("--negative_file","-nf",default="negative_result_tuples")
+    parser.add_argument("--positive_file","-pf",
+        default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/src/stanford_parser/data/positive_verb_frames")
+    parser.add_argument("--negative_file","-nf",
+        default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/src/stanford_parser/data/negative_verb_frames")
     parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
-    parser.add_argument("--use_words","-u",action='store_true')
     parser.add_argument("--word_feature_size","-wz",type=int,default=20)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=20)
 
@@ -282,4 +278,3 @@ def main():
 
 if __name__=="__main__":
     main()
-
