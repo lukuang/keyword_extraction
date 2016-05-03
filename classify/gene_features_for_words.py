@@ -100,7 +100,7 @@ def get_all_sentence_windows(documents,candidates,word_feature_size):
         for entity in candidates[instance]:
             try:
                 temp_windows[entity].normalize()
-                identifier = instance+"/"+w
+                identifier = instance+"/"+entity
                 feature_data[identifier] = {
                     "entity": entity,
                     "word_features": temp_windows[entity].model
