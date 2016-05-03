@@ -7,6 +7,7 @@ import sys
 import re
 import argparse
 import codecs
+import math
 from myUtility.corpus import Sentence, Model
 from get_entity_cate import get_cate_for_entity_list
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -37,7 +38,7 @@ def process_result_tuple(verb_frame_file,word_feature_size):
 
         verb_frames = get_all_frames(all_verb_frames[identifier],entity)
         
-
+        normalize(verb_frames)
         feature_data[identifier] = {
             "entity":entity,
             "word_features":verb_frames
@@ -56,6 +57,15 @@ def process_result_tuple(verb_frame_file,word_feature_size):
 
 
 
+def normalize(verb_frames):
+    norm = 0
+    for verb in verb_frames:
+        norm += verb_frames[verb]*verb_frames[verb]
+
+    norm  = math.sqrt(norm)
+
+    for verb in verb_frames:
+        verb_frames[verb] /= 1.0*norm
 
 
 def get_all_frames(example_verb_frames,entity):
