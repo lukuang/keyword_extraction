@@ -272,6 +272,7 @@ def main():
     parser.add_argument("--text_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/clean_text/noaa')
     parser.add_argument("positive_candidate_file")
     parser.add_argument("negative_candidate_file")
+    parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
