@@ -1,5 +1,5 @@
 """
-get the feature vectors of entities
+get the feature vectors of entities according to judgement file 
 """
 
 import os
