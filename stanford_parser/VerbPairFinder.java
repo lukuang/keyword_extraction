@@ -339,7 +339,7 @@ class VerbPairFinder {
       System.err.println("Clauses:");
       for(List<Tree> clause: clauses){
           //List<Tree> leafs = clause.skipRoot().getLeaves();
-          String clause_text = get_single_clause_text(clause)
+          String clause_text = get_single_clause_text(clause);
           System.err.println("\t"+clause_text);
       }
 
