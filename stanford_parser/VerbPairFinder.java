@@ -452,7 +452,7 @@ class VerbPairFinder {
   }
 
 
-  private static List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, List<String> entitiy_words, List<String> candidates){
+  private static List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, List<String> entitiy_words, HashSet<String> candidates){
     List <Result_tuple> result_tuples = new ArrayList<Result_tuple> ();
 
     
@@ -500,7 +500,7 @@ class VerbPairFinder {
 
   }
 
-  private static List< Result_tuple > get_result_tuples(List<Tree> single_clause, List<String> candidates){
+  private static List< Result_tuple > get_result_tuples(List<Tree> single_clause, HashSet<String> candidates){
     String sentence_string = "";
     String verb = "";
     String verb_label = "";
