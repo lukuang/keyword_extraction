@@ -257,11 +257,11 @@ class VerbPairFinder {
             JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
             String entity = (String)sub_data.get("entity");
             String sentence =  content.get(i);
-            
+
             if(entity.equals("National Weather Service")){
-              System.err.println('found entity!');
-              System.err.println('sentence index'+sentence_index_string);
-              System.err.println('sentence text:'+sentence);
+              System.err.println("found entity!");
+              System.err.println("sentence index"+sentence_index_string);
+              System.err.println("sentence text:"+sentence);
             }else{
               continue;
             }
