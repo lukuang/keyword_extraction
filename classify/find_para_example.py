@@ -30,7 +30,7 @@ tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],
                      'C': [1, 10, 100, 1000]},
                     {'kernel': ['linear'], 'C': [1, 10, 100, 1000]}]
 
-scores = ['f1_weighted', 'accuracy']
+scores = ['precision', 'recall']
 
 for score in scores:
     print("# Tuning hyper-parameters for %s" % score)
