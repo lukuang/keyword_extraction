@@ -6,11 +6,14 @@ from __future__ import print_function
 
 from sklearn import datasets
 from sklearn.cross_validation import train_test_split
+from sklearn.cross_validation import StratifiedShuffleSplit
 from sklearn.grid_search import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.svm import SVC
+import numpy as np
 import sys
 import json
+
 
 print(__doc__)
 
@@ -23,13 +26,24 @@ n_samples = len(digits.images)
 if len(sys.argv)==3:
     X = json.load(open(sys.argv[1]))
     y = json.load(open(sys.argv[2]))
+    train = []
+    test = []
+    sss = StratifiedShuffleSplit(y, 1, test_size=0.5, random_state=0)
+    for tr, te in sss:
+        train = tr
+        test = te
+    X_train = np.asarray([ X[j]   for j in train  ])
+    X_test = np.asarray([ X[j]   for j in test ])
+    y_train = np.asarray([y[i] for i in train])
+    y_test = np.asarray([y[i] for i in test])
+
 else:
     X = digits.images.reshape((n_samples, -1))
     y = digits.target
+    # Split the dataset in two equal parts
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.5, random_state=0)
 
-# Split the dataset in two equal parts
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.5, random_state=0)
 
 # Set the parameters by cross-validation
 tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],
