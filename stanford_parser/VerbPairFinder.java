@@ -279,7 +279,7 @@ class VerbPairFinder {
               List<String> entitiy_words= get_entity_words(entity);
 
               //System.out.println("Sentence is:\n"+sentence);
-              List<String> candidates = new ArrayList<String>();
+              HashSet<String> candidates = new HashSet<String>();
               for(String single_word : entitiy_words){
                   candidates.addAll(find_verb_pair_in_sentence(lp, single_word, sentence));
               }
