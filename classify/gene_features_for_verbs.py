@@ -63,7 +63,7 @@ def get_all_verbs(example_result_tuples):
         if single_tuple['verb_label'] != 'VB':
             word = WordNetLemmatizer().lemmatize(word,'v')
         try:
-            verb_model.update(text_list=[word])
+            verb_model.update(text_list=[str(word)])
         except TypeError:
             print "Wrong Word!"
             print word
