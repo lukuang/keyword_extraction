@@ -319,8 +319,8 @@ class VerbPairFinder {
 
   private static void print_clauses(List< List<Tree> > clauses){
       System.err.println("Clauses:");
-      for(List<Tree> clause: clauses){
-          List<Tree> leafs = clause.skipRoot().getLeaves();
+      for(List<Tree> leafs: clauses){
+          //List<Tree> leafs = clause.skipRoot().getLeaves();
           String clause_text = "";
           for(Tree leaf: leafs){
             List<Word> words = leaf.yieldWords();
