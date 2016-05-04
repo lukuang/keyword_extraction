@@ -264,15 +264,15 @@ class VerbPairFinder {
             String entity = (String)sub_data.get("entity");
             String sentence =  content.get(i);
 
-            if(entity.equals("National Weather Service")){
-              System.err.println("found entity!");
-              System.err.println("sentence index"+sentence_index_string);
-              System.err.println("sentence text:"+sentence);
-            }else{
-              continue;
-            }
+            // if(entity.equals("National Weather Service")){
+            //   System.err.println("found entity!");
+            //   System.err.println("sentence index"+sentence_index_string);
+            //   System.err.println("sentence text:"+sentence);
+            // }else{
+            //   continue;
+            // }
             List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
-            print_clauses(clauses);
+            //print_clauses(clauses);
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
@@ -284,10 +284,10 @@ class VerbPairFinder {
                   candidates.addAll(find_verb_pair_in_sentence(lp, single_word, sentence));
               }
               
-              System.err.println("candidates are:");
-              for(String candidate_verb: candidates){
-                System.err.println(candidate_verb);
-              }
+              // System.err.println("candidates are:");
+              // for(String candidate_verb: candidates){
+              //   System.err.println(candidate_verb);
+              // }
               result_tuples = find_result_tuple_in_clauses(clauses, entitiy_words,candidates);
             }
             sub_result.put("instance", sub_data.get("instance"));
@@ -460,8 +460,8 @@ class VerbPairFinder {
     for(List<Tree> single_clause: clauses){
       if (in_clause(single_clause,entitiy_words)){
         String clause_text = get_single_clause_text(single_clause);
-        System.out.println("found valid clause:");
-        System.out.println("\t" + clause_text);
+        //System.out.println("found valid clause:");
+        //System.out.println("\t" + clause_text);
 
         result_tuples.addAll(get_result_tuples(single_clause, candidates));
       }
@@ -603,7 +603,7 @@ class VerbPairFinder {
                 verbs.add(d_word);
             } 
             else{
-                System.out.println("add "+d_word+" to dependencies");
+                //System.out.println("add "+d_word+" to dependencies");
                 denpendent_words.add(d_word);
             }
         }
@@ -614,7 +614,7 @@ class VerbPairFinder {
                 verbs.add(g_word);
             }
             else{
-                System.out.println("add "+g_word+" to dependencies");
+                //System.out.println("add "+g_word+" to dependencies");
                 denpendent_words.add(g_word);
 
             }
@@ -641,10 +641,10 @@ class VerbPairFinder {
     List <String> verbs = new ArrayList<String>();
     List <String> new_denpendent_words = new ArrayList<String>();
 
-    System.out.println("old:");
-    System.out.println(old_words);
-    System.out.println("new_denpendent_words:");
-    System.out.println(denpendent_words);
+    // System.out.println("old:");
+    // System.out.println(old_words);
+    // System.out.println("new_denpendent_words:");
+    // System.out.println(denpendent_words);
 
 
     for(int j =0; j<denpendent_words.size(); j++){
