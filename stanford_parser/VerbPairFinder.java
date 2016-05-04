@@ -97,36 +97,42 @@ class BasicItem{
                                 }
                                 else{
                                         phrase_children.add(child);
+                                        BasicItem sub_phrase = new BasicItem(child,false);
+
+                                        leafs.addAll(sub_phrase.get_leafs());
+                                        clauses.addAll(sub_phrase.get_clauses());
                                 }
                         }
                         else{
                                 //Clause sub_clause = new Clause(child);
                                 clause_children.add(child);
+                                BasicItem sub_clause = new BasicItem(child,true);
+                                clauses.addAll(sub_clause.get_clauses());
 
                         }
 
                 }
 
 
-                for(int j=0; j<clause_children.size();j++){
+                // for(int j=0; j<clause_children.size();j++){
 
-                        Tree clause_child = clause_children.get(j);
+                //         Tree clause_child = clause_children.get(j);
 
-                        BasicItem sub_clause = new BasicItem(clause_child,true);
-                        clauses.addAll(sub_clause.get_clauses());
+                //         BasicItem sub_clause = new BasicItem(clause_child,true);
+                //         clauses.addAll(sub_clause.get_clauses());
 
 
-                }
+                // }
 
-                for(int k=0; k<phrase_children.size(); k++){
-                        Tree phrase_child = phrase_children.get(k);
+                // for(int k=0; k<phrase_children.size(); k++){
+                //         Tree phrase_child = phrase_children.get(k);
 
-                        BasicItem sub_phrase = new BasicItem(phrase_child,false);
+                //         BasicItem sub_phrase = new BasicItem(phrase_child,false);
 
-                        leafs.addAll(sub_phrase.get_leafs());
-                        clauses.addAll(sub_phrase.get_clauses());
+                //         leafs.addAll(sub_phrase.get_leafs());
+                //         clauses.addAll(sub_phrase.get_clauses());
 
-                }
+                // }
 
                 
         }
