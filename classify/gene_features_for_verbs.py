@@ -21,7 +21,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_words):
     result_tuples = json.load(open(result_tuple_files))
 
     for identifier in result_tuples:
-        m = re.search('\d+/(\w+)', identifier)
+        m = re.search('\d+/(.+)$', identifier)
         if m is not None:
             entity = m.group(1)
             entities.add(entity)
