@@ -15,7 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
 import edu.stanford.nlp.ling.Word;
-
+import java.nio.charset.Charset
 
 
 
@@ -203,6 +203,9 @@ class VerbPairFinder {
    * The main method demonstrates the easiest way to load a parser.
    */
   public static void main(String[] args) {
+
+    //print default character set
+    System.out.println("default character set is:"+ Charset.defaultCharset());
 
     Integer run_num = 80;
     if (args.length == 6 || args.length == 4) {
