@@ -19,7 +19,7 @@ def process_result_tuple(verb_frame_file,word_feature_size):
     all_verb_frames = json.load(open(verb_frame_file))
 
     for identifier in all_verb_frames:
-        m = re.search('\d+/(\w+)', identifier)
+        m = re.search('\d+/(.+)$', identifier)
         if m is not None:
             entity = m.group(1)
             entities.add(entity)
