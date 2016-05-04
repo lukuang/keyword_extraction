@@ -202,7 +202,7 @@ class VerbPairFinder {
     if (args.length == 6 || args.length == 4) {
       try{
           String parserModel = "edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
-          String[] options = { "-maxLength", "40"};
+          String[] options = { "-maxLength", "80"};
           LexicalizedParser lp = LexicalizedParser.loadModel(parserModel,options);
 
           List <String> content = read_file(args[0]);
@@ -316,26 +316,30 @@ class VerbPairFinder {
     }
   }
 
+  private static String get_single_clause_text(List<Tree> clause){
+    String clause_text = "";
+    for(Tree leaf: clause){
+      List<Word> words = leaf.yieldWords();
+      String word_text = "";
+      word_text = words.get(0).word();
+      if(words.size()!=1){
+        
+        for(int k =1; k<words.size();k++){
+          word_text += " "+words.get(k).word();
+        }
+
+      }
+      clause_text += " "+word_text;
+
+    }
+    return clause_text;
+  }
 
   private static void print_clauses(List< List<Tree> > clauses){
       System.err.println("Clauses:");
-      for(List<Tree> leafs: clauses){
+      for(List<Tree> clause: clauses){
           //List<Tree> leafs = clause.skipRoot().getLeaves();
-          String clause_text = "";
-          for(Tree leaf: leafs){
-            List<Word> words = leaf.yieldWords();
-            String word_text = "";
-            word_text = words.get(0).word();
-            if(words.size()!=1){
-              
-              for(int k =1; k<words.size();k++){
-                word_text += " "+words.get(k).word();
-              }
-
-            }
-            clause_text += " "+word_text;
-
-          }
+          String clause_text = get_single_clause_text(clause)
           System.err.println("\t"+clause_text);
       }
 
@@ -436,6 +440,10 @@ class VerbPairFinder {
 
     for(List<Tree> single_clause: clauses){
       if (in_clause(single_clause,entitiy_words)){
+        String clause_text = get_single_clause_text(single_clause);
+        System.out.println("found valid clause:");
+        System.out.println("\t" + clause_text);
+
         result_tuples.addAll(get_result_tuples(single_clause, candidates));
       }
     }
@@ -520,11 +528,10 @@ class VerbPairFinder {
    * and return the verb-entity back 
    */
   public static List <String> find_verb_pair_in_sentence(LexicalizedParser lp, String entity, String sentence) {
-    // This option shows parsing a list of correctly tokenized words
     
 
 
-    // This option shows loading and using an explicit tokenizer
+    
     TokenizerFactory<CoreLabel> tokenizerFactory =
         PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
     Tokenizer<CoreLabel> tok =
