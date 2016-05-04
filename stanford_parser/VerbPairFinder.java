@@ -61,8 +61,8 @@ class BasicItem{
         }
         private Tree T;
         private List<Tree> leafs = new ArrayList<Tree> ();
-        private List<Tree> phrase_children =new  ArrayList<Tree> ();
-        private List<Tree> clause_children = new ArrayList<Tree> ();
+        //private List<Tree> phrase_children =new  ArrayList<Tree> ();
+        //private List<Tree> clause_children = new ArrayList<Tree> ();
         private List< List<Tree> > clauses = new ArrayList< List<Tree> >();
 
         public BasicItem(Tree root_node,boolean is_clause){
@@ -96,7 +96,7 @@ class BasicItem{
                                         leafs.add(child.deepCopy());
                                 }
                                 else{
-                                        phrase_children.add(child);
+                                        //phrase_children.add(child);
                                         BasicItem sub_phrase = new BasicItem(child,false);
 
                                         leafs.addAll(sub_phrase.get_leafs());
@@ -105,7 +105,7 @@ class BasicItem{
                         }
                         else{
                                 //Clause sub_clause = new Clause(child);
-                                clause_children.add(child);
+                                //clause_children.add(child);
                                 BasicItem sub_clause = new BasicItem(child,true);
                                 clauses.addAll(sub_clause.get_clauses());
 
@@ -276,13 +276,19 @@ class VerbPairFinder {
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
+              List<String> entitiy_words= get_entity_words(entity);
+
               //System.out.println("Sentence is:\n"+sentence);
-              List<String> candidates = find_verb_pair_in_sentence(lp, entity, sentence);
+              List<String> candidates;
+              for(String single_word : entitiy_words){
+                  candidates.addAll(find_verb_pair_in_sentence(lp, single_word, sentence));
+              }
+              
               System.err.println("candidates are:");
               for(String candidate_verb: candidates){
                 System.err.println(candidate_verb);
               }
-              result_tuples = find_result_tuple_in_clauses(clauses, entity,candidates);
+              result_tuples = find_result_tuple_in_clauses(clauses, entitiy_words,candidates);
             }
             sub_result.put("instance", sub_data.get("instance"));
             sub_result.put("entity", sub_data.get("entity"));
@@ -350,6 +356,24 @@ class VerbPairFinder {
       }
 
   }
+
+
+  private static List<String> get_entity_words(String entity){
+    TokenizerFactory<CoreLabel> tokenizerFactory =
+        PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
+    Tokenizer<CoreLabel> tok =
+        tokenizerFactory.getTokenizer(new StringReader(entity));
+    List<CoreLabel> rawWords2 = tok.tokenize();
+
+
+
+    List <String> entitiy_words = new ArrayList<String>();
+    for (CoreLabel w: rawWords2){
+      entitiy_words.add(w.word());
+    }
+    return entitiy_words;
+  }
+
 
   public static List <String> read_file(String file_name){
     List <String> content = new ArrayList<String>();
@@ -428,21 +452,10 @@ class VerbPairFinder {
   }
 
 
-  private static List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, String entity, List<String> candidates){
+  private static List<Result_tuple> find_result_tuple_in_clauses(List< List<Tree> > clauses, List<String> entitiy_words, List<String> candidates){
     List <Result_tuple> result_tuples = new ArrayList<Result_tuple> ();
 
-    TokenizerFactory<CoreLabel> tokenizerFactory =
-        PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
-    Tokenizer<CoreLabel> tok =
-        tokenizerFactory.getTokenizer(new StringReader(entity));
-    List<CoreLabel> rawWords2 = tok.tokenize();
-
-
-
-    List <String> entitiy_words = new ArrayList<String>();
-    for (CoreLabel w: rawWords2){
-      entitiy_words.add(w.word());
-    }
+    
 
     for(List<Tree> single_clause: clauses){
       if (in_clause(single_clause,entitiy_words)){
@@ -533,7 +546,7 @@ class VerbPairFinder {
    * find_verb_pair_in_sentence takes a sentence and an entity as input,
    * and return the verb-entity back 
    */
-  public static List <String> find_verb_pair_in_sentence(LexicalizedParser lp, String entity, String sentence) {
+  public static List <String> find_verb_pair_in_sentence(LexicalizedParser lp, String single_word, String sentence) {
     
 
 
@@ -553,7 +566,7 @@ class VerbPairFinder {
       GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
       List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
 
-      List <String> verbs = find_verb_pair_in_denpendencies(tdl,entity);
+      List <String> verbs = find_verb_pair_in_denpendencies(tdl,single_word);
       // You can also use a TreePrint object to print trees and dependencies
       //TreePrint tp = new TreePrint("penn,typedDependenciesCollapsed");
       //tp.printTree(parse);
@@ -567,7 +580,7 @@ class VerbPairFinder {
     }
   }
 
-  public static List <String> find_verb_pair_in_denpendencies(List<TypedDependency> tdl, String entity){
+  public static List <String> find_verb_pair_in_denpendencies(List<TypedDependency> tdl, String single_word){
     List <String> verbs = new ArrayList<String>();
     List <String> denpendent_words = new ArrayList<String>();
     for (int i=0;i<tdl.size();i++){
@@ -583,7 +596,7 @@ class VerbPairFinder {
         String g_word = tdl.get(i).gov().originalText();
         //System.out.println("original pair:"+tdl.get(i).dep().word()+", "+tdl.get(i).gov().word());
         //System.out.println("new pair:"+g_word+", "+d_word);
-        if(g_word.equals(entity) ){
+        if(g_word.equals(single_word) ){
             if (d_tag.contains("VB") ){
                 //System.out.println("Found!");
                 //System.out.println(d_word+" "+g_word+" "+rel);
@@ -594,7 +607,7 @@ class VerbPairFinder {
                 denpendent_words.add(d_word);
             }
         }
-        else if(d_word.equals(entity) ){
+        else if(d_word.equals(single_word) ){
             if (g_tag.contains("VB") ){
                 //System.out.println("Found!");
                 //System.out.println(d_word+" "+g_word+" "+rel);
@@ -617,7 +630,7 @@ class VerbPairFinder {
     }
     else{
       List<String> old_words = new ArrayList<String>();
-      old_words.add(entity);
+      old_words.add(single_word);
       return remove_duplicate(find_verb_pair_in_denpendencies(tdl,denpendent_words,old_words) );
     }
   }
