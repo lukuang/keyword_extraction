@@ -67,6 +67,7 @@ def get_all_verbs(example_result_tuples):
         except TypeError:
             print "Wrong Word!"
             print word
+            print type(word)
             print single_tuple
             sys.exit(0)
     verb_model.normalize()
