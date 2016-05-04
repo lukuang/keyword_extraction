@@ -15,7 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.json.simple.parser.JSONParser;
 import edu.stanford.nlp.ling.Word;
-import java.nio.charset.Charset
+import java.nio.charset.Charset;
 
 
 
