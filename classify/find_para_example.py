@@ -9,6 +9,8 @@ from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.svm import SVC
+import sys
+import json
 
 print(__doc__)
 
@@ -18,8 +20,12 @@ digits = datasets.load_digits()
 # To apply an classifier on this data, we need to flatten the image, to
 # turn the data in a (samples, feature) matrix:
 n_samples = len(digits.images)
-X = digits.images.reshape((n_samples, -1))
-y = digits.target
+if len(sys.argv)==3:
+    X = json.load(open(sys.argv[1]))
+    y = json.load(open(sys.argv[2]))
+else:
+    X = digits.images.reshape((n_samples, -1))
+    y = digits.target
 
 # Split the dataset in two equal parts
 X_train, X_test, y_train, y_test = train_test_split(
