@@ -1,5 +1,5 @@
 """
-get verb and category features for result tuple data
+get verb/clause words and category features for result tuple data
 """
 
 import os
@@ -14,7 +14,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-def process_result_tuple(result_tuple_files,word_feature_size,use_words):
+def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words):
     all_word_features = {}
     entities = set()
     feature_data = {}
@@ -36,7 +36,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_words):
         #         word = WordNetLemmatizer().lemmatize(word,'v')
         #     word_feature_model.update(text_list=[word])
         # word_feature_model.normalize()
-        if use_words:
+        if use_clause_words:
             word_feature_model = get_all_words(result_tuples[identifier])
         else:
             word_feature_model = get_all_verbs(result_tuples[identifier])
@@ -244,7 +244,7 @@ def main():
     parser.add_argument("--negative_file","-nf",default="negative_result_tuples")
     parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
-    parser.add_argument("--use_words","-u",action='store_true')
+    parser.add_argument("--use_clause_words","-uc",action='store_true')
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
 
@@ -253,13 +253,13 @@ def main():
     all_word_features = set()
     entities = set()
     negative_word_features,negative_entities,negative_features =\
-            process_result_tuple(args.negative_file,args.word_feature_size,args.use_words)
+            process_result_tuple(args.negative_file,args.word_feature_size,args.use_clause_words)
 
     all_word_features.update(negative_word_features)
     entities.update(negative_entities)
 
     positive_word_features,positive_entities,positive_features =\
-            process_result_tuple(args.positive_file,args.word_feature_size,args.use_words)
+            process_result_tuple(args.positive_file,args.word_feature_size,args.use_clause_words)
 
     all_word_features.update(positive_word_features)
     entities.update(positive_entities)
