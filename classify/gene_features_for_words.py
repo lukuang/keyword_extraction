@@ -310,7 +310,7 @@ def main():
     
 
     all_cates = get_cate_features(cate_info,args.cate_feature_size,negative_entities,positive_entities)
-    all_features += all_cates
+    #all_features += all_cates
 
     judgement_vector = []
     feature_vector = []
