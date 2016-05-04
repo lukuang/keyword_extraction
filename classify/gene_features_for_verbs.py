@@ -11,6 +11,8 @@ import codecs
 from myUtility.corpus import Sentence, Model
 from get_entity_cate import get_cate_for_entity_list
 from nltk.stem.wordnet import WordNetLemmatizer
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 def process_result_tuple(result_tuple_files,word_feature_size,use_words):
     all_word_features = {}
