@@ -257,13 +257,25 @@ class VerbPairFinder {
             JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
             String entity = (String)sub_data.get("entity");
             String sentence =  content.get(i);
-            List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
             
+            if(entity.equals("National Weather Service")){
+              System.err.println('found entity!');
+              System.err.println('sentence index'+sentence_index_string);
+              System.err.println('sentence text:'+sentence);
+            }else{
+              continue;
+            }
+            List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
+            print_clauses(clauses);
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
             if(clauses.size()!=0){
               //System.out.println("Sentence is:\n"+sentence);
               List<String> candidates = find_verb_pair_in_sentence(lp, entity, sentence);
+              System.err.println("candidates are:");
+              for(String candidate_verb: candidates){
+                System.err.println(candidate_verb);
+              }
               result_tuples = find_result_tuple_in_clauses(clauses, entity,candidates);
             }
             sub_result.put("instance", sub_data.get("instance"));
@@ -302,6 +314,31 @@ class VerbPairFinder {
     } else {
       System.err.println("ERROR: use file_name and entity file as input!");
     }
+  }
+
+
+  private static void print_clauses(List<Tree> clauses){
+      System.err.println("Clauses:");
+      for(Tree clause: clauses){
+          List<Tree> leafs = clause.getLeaves();
+          String clause_text = "";
+          for(Tree leaf: leafs){
+            List<Word> words = leaf.yieldWords();
+            String word_text = "";
+            word_text = words.get(0).word();
+            if(words.size()!=1){
+              
+              for(int k =1; k<words.size();k++){
+                word_text += " "+words.get(k).word();
+              }
+
+            }
+            clause_text += " "+word_text;
+
+          }
+          System.err.println("\t"+clause_text);
+      }
+
   }
 
   public static List <String> read_file(String file_name){
@@ -362,13 +399,13 @@ class VerbPairFinder {
         tokenizerFactory.getTokenizer(new StringReader(sentence));
     List<CoreLabel> rawWords2 = tok.tokenize();
     boolean success = true;
-    System.err.println("The sentence length is "+rawWords2.size());
+    // System.err.println("The sentence length is "+rawWords2.size());
     Tree parse;
     parse = lp.apply(rawWords2);
     
     Tree root = parse.skipRoot();
     if (root.label().value().equals("X")){
-      System.err.println("Skip X Tree");
+      // System.err.println("Skip X Tree");
 
       List< List<Tree> > clauses = new ArrayList< List<Tree> >();
       return clauses;
