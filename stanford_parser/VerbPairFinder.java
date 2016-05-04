@@ -317,10 +317,10 @@ class VerbPairFinder {
   }
 
 
-  private static void print_clauses(List<Tree> clauses){
+  private static void print_clauses(List< List<Tree> > clauses){
       System.err.println("Clauses:");
-      for(Tree clause: clauses){
-          List<Tree> leafs = clause.getLeaves();
+      for(List<Tree> clause: clauses){
+          List<Tree> leafs = clause.skipRoot().getLeaves();
           String clause_text = "";
           for(Tree leaf: leafs){
             List<Word> words = leaf.yieldWords();
