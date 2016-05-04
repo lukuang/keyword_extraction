@@ -36,6 +36,15 @@ if len(sys.argv)==3:
     X_test = np.asarray([ X[j]   for j in test ])
     y_train = np.asarray([y[i] for i in train])
     y_test = np.asarray([y[i] for i in test])
+    pos_train = 0 
+    pos_test = 0 
+    for i in y_test:
+        if i==1:
+            pos_test += 1
+    for i in y_train:
+        if i==1:
+            pos_train += 1
+    print ("%d pos in train and %d pos in test" %(pos_train, pos_test))
 
 else:
     X = digits.images.reshape((n_samples, -1))
