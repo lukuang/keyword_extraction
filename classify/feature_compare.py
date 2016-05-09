@@ -61,7 +61,7 @@ def compare_features(features1,features2,feature_dir1,feature_dir2):
     unique2 = set()
 
     for f in features1:
-        if f in features2
+        if f in features2:
             common.update(f)
         else:
             unique1.update(f)
