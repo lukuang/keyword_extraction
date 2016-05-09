@@ -26,32 +26,15 @@ n_samples = len(digits.images)
 if len(sys.argv)==3:
     X = json.load(open(sys.argv[1]))
     y = json.load(open(sys.argv[2]))
-    train = []
-    test = []
-    sss = StratifiedShuffleSplit(y, 1, test_size=0.5, random_state=0)
-    for tr, te in sss:
-        train = tr
-        test = te
-    X_train = np.asarray([ X[j]   for j in train  ])
-    X_test = np.asarray([ X[j]   for j in test ])
-    y_train = np.asarray([y[i] for i in train])
-    y_test = np.asarray([y[i] for i in test])
-    pos_train = 0 
-    pos_test = 0 
-    for i in y_test:
-        if i==1:
-            pos_test += 1
-    for i in y_train:
-        if i==1:
-            pos_train += 1
-    print ("%d pos in train and %d pos in test" %(pos_train, pos_test))
+    
 
 else:
     X = digits.images.reshape((n_samples, -1))
     y = digits.target
-    # Split the dataset in two equal parts
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.5, random_state=0)
+    
+# Split the dataset in two equal parts  
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.5, random_state=0,stratify=y)
 
 
 # Set the parameters by cross-validation
@@ -59,7 +42,7 @@ tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],
                      'C': [1, 10, 100, 1000]},
                     {'kernel': ['linear'], 'C': [1, 10, 100, 1000]}]
 
-scores = ['f1']
+scores = ['precision','recall']
 
 for score in scores:
     print("# Tuning hyper-parameters for %s" % score)
