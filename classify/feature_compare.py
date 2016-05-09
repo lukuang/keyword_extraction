@@ -36,7 +36,7 @@ def get_support(X,y):
 def select_feature_from_support(all_features,X_support):
     selected_features = []
 
-    for i in range(X_support.shape[0])
+    for i in range(X_support.shape[0]):
         if X_support[i]:
             selected_features.append(all_features[i])
 
