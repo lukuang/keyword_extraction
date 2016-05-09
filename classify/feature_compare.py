@@ -60,6 +60,8 @@ def compare_features(features1,features2,feature_dir1,feature_dir2):
     unique1 = set()
     unique2 = set()
 
+    print features1
+    print features2
     for f in features1:
         if f in features2:
             common.update(f)
@@ -91,9 +93,7 @@ def main():
     args=parser.parse_args()
 
     features1 = select_features(args.feature_dir1)
-    print features1
     features2 = select_features(args.feature_dir2)
-    print features2
     compare_features(features1,features2,args.feature_dir1,args.feature_dir2)
 
 if __name__=="__main__":
