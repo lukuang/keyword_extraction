@@ -64,13 +64,13 @@ def compare_features(features1,features2,feature_dir1,feature_dir2):
     print features2
     for f in features1:
         if f in features2:
-            common.update(f)
+            common.add(f)
         else:
-            unique1.update(f)
+            unique1.add(f)
 
     for f in features2:
         if f not in features1:
-            unique2.update(f)
+            unique2.add(f)
 
     print "comparison result:"
     print "there are %d features in %s and %d features in %s"\
