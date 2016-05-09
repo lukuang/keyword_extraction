@@ -42,14 +42,14 @@ tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],
                      'C': [1, 10, 100, 1000]},
                     {'kernel': ['linear'], 'C': [1, 10, 100, 1000]}]
 
-scores = ['precision','recall']
+scores = ['f1']
 
 for score in scores:
     print("# Tuning hyper-parameters for %s" % score)
     print()
 
     clf = GridSearchCV(SVC(C=1), tuned_parameters, cv=5,
-                       scoring='%s_weighted' % score)
+                       scoring='%s' % score)
     clf.fit(X_train, y_train)
 
     print("Best parameters set found on development set:")
