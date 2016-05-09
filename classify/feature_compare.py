@@ -71,8 +71,8 @@ def compare_features(features1,features2,feature_dir1,feature_dir2):
             unique2.update(f)
 
     print "comparison result:"
-    print "there are %d features in %s and %d features in %s" 
-            %(len(features1),os.path.basename(feature_dir1),
+    print "there are %d features in %s and %d features in %s"\
+            %(len(features1),os.path.basename(feature_dir1),\
                 len(features2),os.path.basename(feature_dir2))
 
     print "%d common features" %(len(common))
