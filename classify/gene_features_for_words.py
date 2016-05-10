@@ -23,7 +23,7 @@ def read_single_file(file_path, required_entity_types):
             else:
                 m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
-                    data[tag].append(m.group(1))
+                    data[tag].append( unicode(m.group(1)) )
 
     single_type_mapping = {}
     for tag in required_entity_types:
