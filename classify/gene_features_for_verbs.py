@@ -30,6 +30,8 @@ def read_single_file(file_path, required_entity_types):
                 if m is not None:
                     data[tag].append(m.group(1))
 
+    if show:
+        print data
     single_type_mapping = {}
     for tag in required_entity_types:
         try:
@@ -39,7 +41,8 @@ def read_single_file(file_path, required_entity_types):
                 single_type_mapping[entity].append(tag)
         except KeyError:
             pass
-
+    if show:
+        print single_type_mapping
     return single_type_mapping
 
 def get_entity_type_mapping(news_entity_dir,required_entity_types,required_file_name):
@@ -48,7 +51,11 @@ def get_entity_type_mapping(news_entity_dir,required_entity_types,required_file_
     #original_entities.keys()
     for eid in eids:
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
-        entity_type_mapping[eid] = read_single_file(entity_file, required_entity_types)
+        if eid == "54807":
+            show = True
+        else:
+            show = False
+        entity_type_mapping[eid] = read_single_file(entity_file, required_entity_types,show)
     return entity_type_mapping
 
 
