@@ -67,7 +67,12 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,e
             instance = m.group(1)
             entity = m.group(2)
             entities.add(entity)
-            one_type_mapping.append(entity_type_mapping[instance][entity])
+            try:
+                one_type_mapping.append(entity_type_mapping[instance][entity])
+            except KeyError:
+                print "cannot find entity!"
+                print "instance: %s, entity: %s"
+                sys.exists(-1)
         else:
             print "Wrong identifier!"
             sys.exit(-1)
