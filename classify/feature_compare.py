@@ -26,8 +26,8 @@ def load_data_from_json(file_path):
 
 
 
-def get_support(X,y):
-    lsvc = LinearSVC(C=0.1, penalty="l1", dual=False).fit(X, y)
+def get_support(X,y,C):
+    lsvc = LinearSVC(C=C, penalty="l1", dual=False).fit(X, y)
     model = SelectFromModel(lsvc, prefit=True)
     X_support = model.get_support()
     return X_support
@@ -43,11 +43,11 @@ def select_feature_from_support(all_features,X_support):
     return selected_features
 
 
-def select_features(feature_dir):
+def select_features(feature_dir,C):
     
     X,y,all_features = load_required_data_from_dir(feature_dir)
 
-    X_support = get_support(X,y)
+    X_support = get_support(X,y,C)
 
     
     selected_features = select_feature_from_support(all_features,X_support)
@@ -90,10 +90,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("feature_dir1")
     parser.add_argument("feature_dir2")
+    parser.add_argument("--C",'-C',type=float,default=0.1)
     args=parser.parse_args()
 
-    features1 = select_features(args.feature_dir1)
-    features2 = select_features(args.feature_dir2)
+    features1 = select_features(args.feature_dir1,C)
+    features2 = select_features(args.feature_dir2,C)
     compare_features(features1,features2,args.feature_dir1,args.feature_dir2)
 
 if __name__=="__main__":
