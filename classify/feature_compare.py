@@ -93,8 +93,8 @@ def main():
     parser.add_argument("--C",'-C',type=float,default=0.1)
     args=parser.parse_args()
 
-    features1 = select_features(args.feature_dir1,C)
-    features2 = select_features(args.feature_dir2,C)
+    features1 = select_features(args.feature_dir1,args.C)
+    features2 = select_features(args.feature_dir2,args.C)
     compare_features(features1,features2,args.feature_dir1,args.feature_dir2)
 
 if __name__=="__main__":
