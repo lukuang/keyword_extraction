@@ -28,11 +28,9 @@ def read_single_file(file_path, required_entity_types,show):
             else:
                 m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
-                    #data[tag].append(unicode(m.group(1) ) )
-                    data[tag].append(m.group(1) )
+                    data[tag].append(unicode(m.group(1) ) )
 
-    if show:
-        print data
+
     single_type_mapping = {}
     for tag in required_entity_types:
         try:
@@ -40,13 +38,9 @@ def read_single_file(file_path, required_entity_types,show):
                 if entity not in single_type_mapping:
                     single_type_mapping[entity] = []
                 single_type_mapping[entity].append(tag)
-                if show:
-                    print type(entity)
-                    show = False
         except KeyError:
             pass
-    if show:
-        print single_type_mapping
+
     return single_type_mapping
 
 def get_entity_type_mapping(news_entity_dir,required_entity_types,required_file_name):
@@ -78,9 +72,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,e
             instance = m.group(1)
             #entity = unicode(m.group(2) )
             entity = m.group(2)
-            print type(entity) 
             entities.add(entity)
-            print type(entity)
             try:
                 one_type_mapping.append(entity_type_mapping[instance][entity])
             except KeyError:
