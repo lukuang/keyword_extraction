@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 import codecs
-from collection import Counter
+from collections import Counter
 
 def load_required_data_from_dir(feature_dir):
     X = load_data_from_json(os.path.join(feature_dir,"feature_vector"))
