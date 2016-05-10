@@ -72,7 +72,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,e
             except KeyError:
                 print "cannot find entity!"
                 print "instance: %s, entity: %s"
-                sys.exists(-1)
+                sys.exit(-1)
         else:
             print "Wrong identifier!"
             sys.exit(-1)
