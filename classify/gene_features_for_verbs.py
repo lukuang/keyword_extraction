@@ -28,7 +28,7 @@ def read_single_file(file_path, required_entity_types,show):
             else:
                 m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
-                    data[tag].append(m.group(1))
+                    data[tag].append(unicode(m.group(1) ) )
 
     if show:
         print data
@@ -72,7 +72,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,e
         m = re.search('(\d+)/(.+)$', identifier)
         if m is not None:
             instance = m.group(1)
-            entity = m.group(2)
+            entity = unicode(m.group(2) )
             entities.add(entity)
             try:
                 one_type_mapping.append(entity_type_mapping[instance][entity])
