@@ -27,10 +27,13 @@ def read_single_file(file_path, required_entity_types):
 
     single_type_mapping = {}
     for tag in required_entity_types:
-        for entity in data[tag]:
-            if entity not in single_type_mapping:
-                single_type_mapping[entity] = []
-            single_type_mapping[entity].append(tag)
+        try:
+            for entity in data[tag]:
+                if entity not in single_type_mapping:
+                    single_type_mapping[entity] = []
+                single_type_mapping[entity].append(tag)
+        except KeyError:
+            pass
 
     return single_type_mapping
 
