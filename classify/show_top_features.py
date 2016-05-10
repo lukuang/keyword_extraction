@@ -50,6 +50,7 @@ def show_top_features(X,y,all_features,\
 
     for i in range(len(y)):
         temp_dict = dict( zip(all_features,X[i]) )
+        print temp_dict
         if y[i] == 0:
             negative_word_features.update({ k:v for (k,v) in temp_dict if k in all_word_features })
             negative_cate_features.update({ k:v for (k,v) in temp_dict if k in all_cates })
