@@ -14,17 +14,60 @@ from nltk.stem.wordnet import WordNetLemmatizer
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words):
+
+
+def read_single_file(file_path, required_entity_types):
+    data = {}
+    with open(file_path,"r") as f:
+        for line in f:
+            line = line.rstrip()
+            m = re.search("^(\w+):$",line)
+            if m is not None:
+                tag = m.group(1)
+                data[tag] = []
+            else:
+                m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
+                if m is not None:
+                    data[tag].append(m.group(1))
+
+    single_type_mapping = {}
+    for tag in required_entity_types:
+        try:
+            for entity in data[tag]:
+                if entity not in single_type_mapping:
+                    single_type_mapping[entity] = []
+                single_type_mapping[entity].append(tag)
+        except KeyError:
+            pass
+
+    return single_type_mapping
+
+def get_entity_type_mapping(news_entity_dir,required_entity_types,required_file_name):
+    entity_type_mapping = {}
+    eids = os.walk(news_entity_dir).next()[1]
+    #original_entities.keys()
+    for eid in eids:
+        entity_file = os.path.join(news_entity_dir,eid,required_file_name)
+        entity_type_mapping[eid] = read_single_file(entity_file, required_entity_types)
+    return entity_type_mapping
+
+
+
+def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,entity_type_mapping):
     all_word_features = {}
     entities = set()
     feature_data = {}
+    one_type_mapping = []
     result_tuples = json.load(open(result_tuple_files))
 
+
     for identifier in result_tuples:
-        m = re.search('\d+/(.+)$', identifier)
+        m = re.search('(\d+)/(.+)$', identifier)
         if m is not None:
-            entity = m.group(1)
+            instance = m.group(1)
+            entity = m.group(2)
             entities.add(entity)
+            one_type_mapping.append(entity_type_mapping[instance][entity])
         else:
             print "Wrong identifier!"
             sys.exit(-1)
@@ -53,7 +96,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words):
 
     top_word_features =  get_top_word_features(all_word_features,word_feature_size)
 
-    return top_word_features,entities,feature_data
+    return top_word_features,entities,feature_data,one_type_mapping
 
 
 
@@ -216,7 +259,7 @@ def get_cate_feature_vector(entity,cate_info,all_cates):
 
 
 
-def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,dest_dir):
+def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,dest_dir,all_type_mapping):
 
     with codecs.open(os.path.join(dest_dir,"all_word_features"),"w",'utf-8') as f:
         f.write(json.dumps(all_word_features))
@@ -234,6 +277,10 @@ def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entit
 
     with codecs.open(os.path.join(dest_dir,"all_entities"),"w",'utf-8') as f:
         f.write(json.dumps(all_entities))
+        
+
+    with codecs.open(os.path.join(dest_dir,"all_type_mapping"),"w",'utf-8') as f:
+        f.write(json.dumps(all_type_mapping))
 
 
 
@@ -247,22 +294,32 @@ def main():
     parser.add_argument("--use_clause_words","-uc",action='store_true')
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
+    parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
+    parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
+    parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
+
 
     args=parser.parse_args()
 
     all_word_features = set()
     entities = set()
-    negative_word_features,negative_entities,negative_features =\
-            process_result_tuple(args.negative_file,args.word_feature_size,args.use_clause_words)
+    entity_type_mapping = get_entity_type_mapping(args.news_entity_dir,args.required_entity_types,args.required_file_name)
+    all_type_mapping = []
+
+
+    negative_word_features,negative_entities,negative_features,negative_type_mapping =\
+            process_result_tuple(args.negative_file,args.word_feature_size,args.use_clause_words,entity_type_mapping)
 
     all_word_features.update(negative_word_features)
     entities.update(negative_entities)
+    all_type_mapping += negative_type_mapping
 
-    positive_word_features,positive_entities,positive_features =\
-            process_result_tuple(args.positive_file,args.word_feature_size,args.use_clause_words)
+    positive_word_features,positive_entities,positive_features,positive_type_mapping =\
+            process_result_tuple(args.positive_file,args.word_feature_size,args.use_clause_words,entity_type_mapping)
 
     all_word_features.update(positive_word_features)
     entities.update(positive_entities)
+    all_type_mapping += positive_type_mapping
 
 
     all_word_features = list(all_word_features)
@@ -284,7 +341,7 @@ def main():
     add_data_to_set(negative_features,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,False)
     add_data_to_set(positive_features,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,True)
 
-    output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,args.dest_dir)
+    output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,args.dest_dir,all_type_mapping)
 
 
 
