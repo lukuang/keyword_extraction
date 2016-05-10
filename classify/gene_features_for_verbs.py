@@ -28,7 +28,8 @@ def read_single_file(file_path, required_entity_types,show):
             else:
                 m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
-                    data[tag].append(unicode(m.group(1) ) )
+                    #data[tag].append(unicode(m.group(1) ) )
+                    data[tag].append(m.group(1) )
 
     if show:
         print data
