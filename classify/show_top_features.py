@@ -28,9 +28,9 @@ def get_top_features(X,y,all_features,top_size):
 
     for i in range(len(y)):
         if y[i] == 0:
-            negative_features.update(X[i])
+            negative_features.update(dict( zip(all_features,X[i]) ) )
         else:
-            positive_features.update(X[i])
+            positive_features.update(dict( zip(all_features,X[i]) ) )
 
 
     return positive_features.most_common(top_size),\
