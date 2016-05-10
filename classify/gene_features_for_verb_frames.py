@@ -11,7 +11,8 @@ import math
 from myUtility.corpus import Sentence, Model
 from get_entity_cate import get_cate_for_entity_list
 from nltk.stem.wordnet import WordNetLemmatizer
-
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 def read_single_file(file_path, required_entity_types):
     data = {}

@@ -10,6 +10,8 @@ import argparse
 import codecs
 from myUtility.corpus import Sentence, Document, Model
 from get_entity_cate import get_cate_for_entity_list
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 def read_single_file(file_path, required_entity_types):
     data = {}
