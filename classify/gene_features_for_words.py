@@ -116,7 +116,7 @@ def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_
     all_word_features = {}
     entities = set()
     feature_data = {}
-
+    one_type_mapping = []
     for instance in documents:
         print "%s:" %instance
         # if instance!='59890':
