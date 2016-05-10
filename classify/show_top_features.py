@@ -52,11 +52,11 @@ def show_top_features(X,y,all_features,\
         temp_dict = dict( zip(all_features,X[i]) )
         print temp_dict
         if y[i] == 0:
-            negative_word_features.update({ k:v for (k,v) in temp_dict if k in all_word_features })
-            negative_cate_features.update({ k:v for (k,v) in temp_dict if k in all_cates })
+            negative_word_features.update({ k:temp_dict[k] for k in temp_dict if k in all_word_features })
+            negative_cate_features.update({ k:temp_dict[k] for k in temp_dict if k in all_cates })
         else:
-            positive_word_features.update({ k:v for (k,v) in temp_dict if k in all_word_features })
-            positive_cate_features.update({ k:v for (k,v) in temp_dict if k in all_cates })
+            positive_word_features.update({ k:temp_dict[k] for k in temp_dict if k in all_word_features })
+            positive_cate_features.update({ k:temp_dict[k] for k in temp_dict if k in all_cates })
 
     print "top positive features:"
     print_all_features(positive_word_features.most_common(top_word_size),\
