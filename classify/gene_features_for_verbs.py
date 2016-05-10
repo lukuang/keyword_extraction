@@ -71,7 +71,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,e
                 one_type_mapping.append(entity_type_mapping[instance][entity])
             except KeyError:
                 print "cannot find entity!"
-                print "instance: %s, entity: %s"
+                print "instance: %s, entity: %s" %(instance,entity)
                 sys.exit(-1)
         else:
             print "Wrong identifier!"
