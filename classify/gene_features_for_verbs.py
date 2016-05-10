@@ -16,7 +16,7 @@ sys.setdefaultencoding("utf-8")
 
 
 
-def read_single_file(file_path, required_entity_types):
+def read_single_file(file_path, required_entity_types,show):
     data = {}
     with open(file_path,"r") as f:
         for line in f:
