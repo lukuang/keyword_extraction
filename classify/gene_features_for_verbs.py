@@ -39,6 +39,9 @@ def read_single_file(file_path, required_entity_types,show):
                 if entity not in single_type_mapping:
                     single_type_mapping[entity] = []
                 single_type_mapping[entity].append(tag)
+                if show:
+                    print type(entity)
+                    show = False
         except KeyError:
             pass
     if show:
@@ -72,13 +75,15 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,e
         m = re.search('(\d+)/(.+)$', identifier)
         if m is not None:
             instance = m.group(1)
-            entity = unicode(m.group(2) )
+            #entity = unicode(m.group(2) )
+            entity = m.group(2) 
             entities.add(entity)
             try:
                 one_type_mapping.append(entity_type_mapping[instance][entity])
             except KeyError:
                 print "cannot find entity!"
                 print "instance: %s, entity: %s" %(instance,entity)
+                print type(entity)
                 sys.exit(-1)
         else:
             print "Wrong identifier!"
