@@ -77,8 +77,10 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words,e
         if m is not None:
             instance = m.group(1)
             #entity = unicode(m.group(2) )
-            entity = m.group(2) 
+            entity = m.group(2)
+            print type(entity) 
             entities.add(entity)
+            print type(entity)
             try:
                 one_type_mapping.append(entity_type_mapping[instance][entity])
             except KeyError:
