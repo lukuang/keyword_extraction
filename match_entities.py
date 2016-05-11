@@ -71,12 +71,13 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name,n
     narrative_entities,original_entities):
     news_entities = {}
     eids = os.walk(news_entity_dir).next()[1]
+    show = False
     #original_entities.keys()
     for eid in eids:
-        if eid != "37771":
-            continue
-        else:
-            show = True
+        # if eid != "37771":
+        #     continue
+        # else:
+        #     show = True
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
         if eid not in narrative_entities:
             print "NO NARA"
@@ -110,16 +111,16 @@ def match_entities(narrative_entities,original_entities,news_entities):
     no_news_entities = []
     for eid in original_entities:
 
-        if eid == '37771':
+        # if eid == '37771':
             
-            print "narrative_entities:"
-            print narrative_entities[eid]
+        #     print "narrative_entities:"
+        #     print narrative_entities[eid]
 
-            print "news_entities:"
-            print news_entities[eid]
+        #     print "news_entities:"
+        #     print news_entities[eid]
 
-            print "original_entities:"
-            print original_entities[eid]
+        #     print "original_entities:"
+        #     print original_entities[eid]
 
         if eid not in news_entities or len(news_entities[eid]) == 0:
             
@@ -147,8 +148,8 @@ def match_entities(narrative_entities,original_entities,news_entities):
         single_match = narrative_match + original_match
         
 
-        print positive[eid]
-        print negative[eid]
+        #print positive[eid]
+        #print negative[eid]
 
 
 
