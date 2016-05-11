@@ -13,7 +13,7 @@ sys.setdefaultencoding('UTF8')
 
 
 def read_single_file(file_path, required_entity_types,no_single_appearance,
-    narrative_entities,original_entities):
+    narrative_entities,original_entities,show):
     # print "process file %s" %file_path
     data = {}
     with open(file_path,"r") as f:
@@ -42,7 +42,9 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
                     #print "line did not match:"
                     #print line
     returned_data = []
-
+    if show:
+        print data
+        sys.exit(-1)
     for tag in required_entity_types:
         if tag in data:
             returned_data += data[tag]
@@ -69,13 +71,18 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name,n
     eids = os.walk(news_entity_dir).next()[1]
     #original_entities.keys()
     for eid in eids:
+        if eid != "37771":
+            continue
+        else:
+            show = True
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
         if eid not in narrative_entities:
             print "NO NARA"
         if eid not in original_entities:
             print "NO ORI"
         narrative_entities[eid],original_entities[eid]
-        news_entities[eid] = read_single_file(entity_file, required_entity_types,no_single_appearance,narrative_entities[eid],original_entities[eid])
+
+        news_entities[eid] = read_single_file(entity_file, required_entity_types,no_single_appearance,narrative_entities[eid],original_entities[eid],show)
     return news_entities
 
 
