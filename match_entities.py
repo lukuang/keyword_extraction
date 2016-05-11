@@ -49,7 +49,7 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
     if show:
         print data
         print returned_data
-        #sys.exit(-1)
+        sys.exit(-1)
     return returned_data
 
 
@@ -74,10 +74,10 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name,n
     show = False
     #original_entities.keys()
     for eid in eids:
-        # if eid != "37771":
-        #     continue
-        # else:
-        #     show = True
+        if eid != "37771":
+            continue
+        else:
+            show = True
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
         if eid not in narrative_entities:
             print "NO NARA"
