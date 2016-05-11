@@ -67,7 +67,7 @@ def get_files(a_dir):
 def get_documents(instance_names,text_dir):
     documents = {}
     for instance in instance_names:
-        print "for %s" %instance
+        #print "for %s" %instance
         source_dir = os.path.join(text_dir,instance)
         
         sub_dirs = os.walk(source_dir).next()[1]
@@ -120,7 +120,7 @@ def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_
     feature_data = {}
     one_type_mapping = []
     for instance in documents:
-        print "%s:" %instance
+        #print "%s:" %instance
         # if instance!='59890':
         #     continue
         words = set()
@@ -132,7 +132,7 @@ def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_
 
         temp_windows = {}
         for single_file in documents[instance]:
-            print "process file %s" %single_file
+            #print "process file %s" %single_file
             for sentence in documents[instance][single_file].sentences:
                 get_sentence_window(entity_map,sentence.text,temp_windows)
 
@@ -160,6 +160,8 @@ def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_
 
     top_word_features =  get_top_word_features(all_word_features,word_feature_size)
 
+    print "feature data size: %d" %(len(feature_data))
+    print "type mapping size: %d" %(len(one_type_mapping))
         
     return top_word_features,entities,feature_data, one_type_mapping
 
