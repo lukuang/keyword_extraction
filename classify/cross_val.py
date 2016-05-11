@@ -82,7 +82,7 @@ def show_performance_on_entity_types(y,predicted,all_type_mapping):
                 correct_predicted.neg.update(entity_type_list)
 
     print "show performance in terms of entity types:"
-    print "There are %d entities"
+    print "There are %d entities" %(len(y))
     print "In positive example:"
     for k in type_size.pos.keys():
         print "\tThere are %d %s entities, %d are predicted correctly"\
