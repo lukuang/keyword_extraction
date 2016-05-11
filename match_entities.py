@@ -46,6 +46,7 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
     for tag in required_entity_types:
         if tag in data:
             returned_data += data[tag]
+    returned_data = list( set(returned_data) )
     if show:
         print data
         print returned_data
