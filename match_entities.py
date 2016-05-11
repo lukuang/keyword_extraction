@@ -42,12 +42,14 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
                     #print "line did not match:"
                     #print line
     returned_data = []
-    if show:
-        print data
-        sys.exit(-1)
+    
     for tag in required_entity_types:
         if tag in data:
             returned_data += data[tag]
+    if show:
+        print data
+        print returned_data
+        sys.exit(-1)
     return returned_data
 
 
