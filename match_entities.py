@@ -49,7 +49,7 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
     if show:
         print data
         print returned_data
-        sys.exit(-1)
+        #sys.exit(-1)
     return returned_data
 
 
@@ -109,16 +109,17 @@ def match_entities(narrative_entities,original_entities,news_entities):
     no_match_original = []
     no_news_entities = []
     for eid in original_entities:
-        # if eid == '60534':
+
+        if eid == '37771':
             
-        #     print "narrative_entities:"
-        #     print narrative_entities[eid]
+            print "narrative_entities:"
+            print narrative_entities[eid]
 
-        #     print "news_entities:"
-        #     print news_entities[eid]
+            print "news_entities:"
+            print news_entities[eid]
 
-        #     print "original_entities:"
-        #     print original_entities[eid]
+            print "original_entities:"
+            print original_entities[eid]
 
         if eid not in news_entities or len(news_entities[eid]) == 0:
             
