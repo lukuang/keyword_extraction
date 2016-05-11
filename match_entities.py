@@ -165,6 +165,10 @@ def match_entities(narrative_entities,original_entities,news_entities):
             continue
 
 
+        print positive[eid]
+        print negative[eid]
+
+
         matched += single_match
         total_narrative += len(narrative_entities[eid])
         total_original += len(original_entities[eid])
