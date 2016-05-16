@@ -1,5 +1,6 @@
 """
-Select features with SelectFromModel and print the comparison\nof features
+Select features with SelectFromModel and print the comparison
+of features
 """
 
 import os
