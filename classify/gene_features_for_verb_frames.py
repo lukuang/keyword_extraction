@@ -50,11 +50,10 @@ def get_entity_type_mapping(news_entity_dir,required_entity_types,required_file_
     return entity_type_mapping
 
 
-def process_result_tuple(verb_frame_file,word_feature_size,entity_type_mapping):
+def process_result_tuple(verb_frame_file,word_feature_size):
     all_word_features = {}
     entities = set()
     feature_data = {}
-    one_type_mapping = []
 
     all_verb_frames = json.load(open(verb_frame_file))
 
@@ -65,7 +64,6 @@ def process_result_tuple(verb_frame_file,word_feature_size,entity_type_mapping):
 
             entity = unicode(m.group(2))
             entities.add(entity)
-            one_type_mapping.append(entity_type_mapping[instance][entity])
         else:
             print "Wrong identifier!"
             sys.exit(-1)
@@ -84,6 +82,7 @@ def process_result_tuple(verb_frame_file,word_feature_size,entity_type_mapping):
         normalize(verb_frames)
         feature_data[identifier] = {
             "entity":entity,
+            "instance": instance
             "word_features":verb_frames
         }
 
@@ -94,7 +93,7 @@ def process_result_tuple(verb_frame_file,word_feature_size,entity_type_mapping):
 
     top_word_features =  get_top_word_features(all_word_features,word_feature_size)
 
-    return top_word_features,entities,feature_data,one_type_mapping
+    return top_word_features,entities,feature_data
 
 
 
@@ -193,7 +192,7 @@ def get_cate_features(cate_info, cate_feature_size,negative_entities, positive_e
 
 
 
-def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,is_positive):
+def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,is_positive):
     for identifier in feature_data:
         if is_positive:
             judgement_vector.append(1)
@@ -201,9 +200,16 @@ def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,fe
             judgement_vector.append(0)
 
         entity = feature_data[identifier]["entity"]
+        instance = feature_data[identifier]["instance"]
         words = feature_data[identifier]["word_features"]
 
-        all_entities.append(entity)
+        single_entity_info = {
+            "instance":instance,
+            "entity":entity,
+            "type": entity_type_mapping[instance][entity]
+        }
+
+        entity_info.append(single_entity_info)
 
         single_feature_vector = get_single_feature_vector(words,entity,all_word_features,all_cates,cate_info)
 
@@ -254,7 +260,7 @@ def get_cate_feature_vector(entity,cate_info,all_cates):
 
 
 
-def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,dest_dir,all_type_mapping):
+def output(all_word_features,all_cates,judgement_vector,feature_vector,entity_info,dest_dir):
 
     with codecs.open(os.path.join(dest_dir,"all_word_features"),"w",'utf-8') as f:
         f.write(json.dumps(all_word_features))
@@ -270,11 +276,10 @@ def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entit
     with codecs.open(os.path.join(dest_dir,"feature_vector"),"w",'utf-8') as f:
         f.write(json.dumps(feature_vector))
 
-    with codecs.open(os.path.join(dest_dir,"all_entities"),"w",'utf-8') as f:
-        f.write(json.dumps(all_entities))
-        
-    with codecs.open(os.path.join(dest_dir,"all_type_mapping"),"w",'utf-8') as f:
-        f.write(json.dumps(all_type_mapping))
+    with codecs.open(os.path.join(dest_dir,"entity_info"),"w",'utf-8') as f:
+        f.write(json.dumps(entity_info))
+
+    
 
 
 
@@ -300,26 +305,23 @@ def main():
 
     all_word_features = set()
     entities = set()
-    all_type_mapping = []
 
 
     entity_type_mapping = get_entity_type_mapping(args.news_entity_dir,args.required_entity_types,args.required_file_name)
 
 
 
-    negative_word_features,negative_entities,negative_features,negative_type_mapping =\
-            process_result_tuple(args.negative_file,args.word_feature_size,entity_type_mapping)
+    negative_word_features,negative_entities,negative_features =\
+            process_result_tuple(args.negative_file,args.word_feature_size)
 
     all_word_features.update(negative_word_features)
     entities.update(negative_entities)
-    all_type_mapping += negative_type_mapping
 
-    positive_word_features,positive_entities,positive_features,positive_type_mapping =\
-            process_result_tuple(args.positive_file,args.word_feature_size,entity_type_mapping)
+    positive_word_features,positive_entities,positive_features =\
+            process_result_tuple(args.positive_file,args.word_feature_size)
 
     all_word_features.update(positive_word_features)
     entities.update(positive_entities)
-    all_type_mapping += positive_type_mapping
 
 
     all_word_features = list(all_word_features)
@@ -336,12 +338,12 @@ def main():
 
     judgement_vector = []
     feature_vector = []
-    all_entities = []
+    entity_info = []
 
-    add_data_to_set(negative_features,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,False)
-    add_data_to_set(positive_features,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,True)
+    add_data_to_set(negative_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,False)
+    add_data_to_set(positive_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,True)
 
-    output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,args.dest_dir,all_type_mapping)
+    output(all_word_features,all_cates,judgement_vector,feature_vector,entity_info,args.dest_dir)
 
 
 
