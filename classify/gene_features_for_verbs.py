@@ -90,7 +90,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words):
             word_feature_model = get_all_verbs(result_tuples[identifier])
 
         feature_data[identifier] = {
-            "instance": instance
+            "instance": instance,
             "entity":entity,
             "word_features":word_feature_model.model
         }
