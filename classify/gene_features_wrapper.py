@@ -14,6 +14,7 @@ METHOD = ['words','clasue_words',"verbs","frames"]
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--no_organization","-no",action="store_true")
     parser.add_argument('--method','-m',type=int,default=0,choices=range(4),
         help=
