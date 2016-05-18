@@ -305,7 +305,7 @@ def get_cate_feature_vector(entity,cate_info,all_cates):
 
 
 
-def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,dest_dir):
+def output(all_word_features,all_cates,judgement_vector,feature_vector,entity_info,dest_dir):
 
     with codecs.open(os.path.join(dest_dir,"all_word_features"),"w",'utf-8') as f:
         f.write(json.dumps(all_word_features))
@@ -321,8 +321,8 @@ def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entit
     with codecs.open(os.path.join(dest_dir,"feature_vector"),"w",'utf-8') as f:
         f.write(json.dumps(feature_vector))
 
-    with codecs.open(os.path.join(dest_dir,"single_entity_info"),"w",'utf-8') as f:
-        f.write(json.dumps(single_entity_info))
+    with codecs.open(os.path.join(dest_dir,"entity_info"),"w",'utf-8') as f:
+        f.write(json.dumps(entity_info))
 
 
 
