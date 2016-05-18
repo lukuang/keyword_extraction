@@ -114,11 +114,10 @@ def get_nochange_map(words):
 
 
 
-def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_mapping):
+def get_all_sentence_windows(documents,candidates,word_feature_size):
     all_word_features = {}
     entities = set()
     feature_data = {}
-    one_type_mapping = []
     for instance in documents:
         #print "%s:" %instance
         # if instance!='59890':
@@ -143,6 +142,7 @@ def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_
                 identifier = instance+"/"+entity
                 feature_data[identifier] = {
                     "entity": entity,
+                    "instance":instance,
                     "word_features": temp_windows[entity].model
 
                 }
@@ -152,7 +152,6 @@ def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_
                     all_word_features[w] += temp_windows[entity].model[w]
 
                 entities.add(entity)
-                one_type_mapping.append(entity_type_mapping[instance][entity])
 
             except KeyError:
                 print "cannot find entity %s" %(w)
@@ -161,9 +160,8 @@ def get_all_sentence_windows(documents,candidates,word_feature_size,entity_type_
     top_word_features =  get_top_word_features(all_word_features,word_feature_size)
 
     print "feature data size: %d" %(len(feature_data))
-    print "type mapping size: %d" %(len(one_type_mapping))
         
-    return top_word_features,entities,feature_data, one_type_mapping
+    return top_word_features,entities,feature_data
 
 
 def get_top_word_features(all_word_features,word_feature_size):
@@ -228,7 +226,7 @@ def get_cate_features(cate_info, cate_feature_size,negative_entities, positive_e
 
 
 
-def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,is_positive):
+def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,is_positive):
     for identifier in feature_data:
         if is_positive:
             judgement_vector.append(1)
@@ -236,9 +234,17 @@ def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,fe
             judgement_vector.append(0)
 
         entity = feature_data[identifier]["entity"]
+        instance = feature_data[identifier]["instance"]
         words = feature_data[identifier]["word_features"]
 
-        all_entities.append(entity)
+        single_entity_info = {
+            "entity": entity,
+            "instance": instance,
+            "type":entity_type_mapping[instance]["entity"]
+        }
+
+
+        entity_info.append(single_entity_info)
 
         single_feature_vector = get_single_feature_vector(words,entity,all_word_features,all_cates,cate_info)
 
@@ -305,11 +311,9 @@ def output(all_word_features,all_cates,judgement_vector,feature_vector,all_entit
     with codecs.open(os.path.join(dest_dir,"feature_vector"),"w",'utf-8') as f:
         f.write(json.dumps(feature_vector))
 
-    with codecs.open(os.path.join(dest_dir,"all_entities"),"w",'utf-8') as f:
-        f.write(json.dumps(all_entities))
+    with codecs.open(os.path.join(dest_dir,"single_entity_info"),"w",'utf-8') as f:
+        f.write(json.dumps(single_entity_info))
 
-    with codecs.open(os.path.join(dest_dir,"all_type_mapping"),"w",'utf-8') as f:
-        f.write(json.dumps(all_type_mapping))
 
 
 
@@ -344,21 +348,18 @@ def main():
 
     all_word_features = set()
     entities = set()
-    all_type_mapping = []
 
-    negative_word_features,negative_entities,negative_features, negative_type_mapping =\
-            get_all_sentence_windows(negative_documents,negative_candidates,args.word_feature_size,entity_type_mapping)
+    negative_word_features,negative_entities,negative_features =\
+            get_all_sentence_windows(negative_documents,negative_candidates,args.word_feature_size)
 
     all_word_features.update(negative_word_features)
     entities.update(negative_entities)
-    all_type_mapping += negative_type_mapping
 
-    positive_word_features,positive_entities,positive_features, positive_type_mapping =\
-            get_all_sentence_windows(positive_documents,positive_candidates,args.word_feature_size,entity_type_mapping)
+    positive_word_features,positive_entities,positive_features =\
+            get_all_sentence_windows(positive_documents,positive_candidates,args.word_feature_size)
 
     all_word_features.update(positive_word_features)
     entities.update(positive_entities)
-    all_type_mapping += positive_type_mapping
 
 
     cate_info = get_cate_info(entities,args.cate_info_file)
@@ -370,12 +371,12 @@ def main():
 
     judgement_vector = []
     feature_vector = []
-    all_entities = []
+    entity_info = []
 
-    add_data_to_set(negative_features,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,False)
-    add_data_to_set(positive_features,all_word_features,all_cates,judgement_vector,feature_vector,all_entities,cate_info,True)
+    add_data_to_set(negative_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,False)
+    add_data_to_set(positive_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,True)
 
-    output(all_word_features,all_cates,judgement_vector,feature_vector,all_entities,args.dest_dir,all_type_mapping)
+    output(all_word_features,all_cates,judgement_vector,feature_vector,entity_info,args.dest_dir)
 
 
 
