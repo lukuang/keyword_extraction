@@ -249,7 +249,7 @@ def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,fe
         single_entity_info = {
             "entity": entity,
             "instance": instance,
-            "type":entity_type_mapping[instance]["entity"],
+            "type":entity_type_mapping[instance][entity],
             "year": year
         }
 
