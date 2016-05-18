@@ -26,7 +26,7 @@ def main():
         """)
     parser.add_argument("--candidate_dir","-cd",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/candidates/all_year/new/no_single")
     parser.add_argument("--input_dir","-ind",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/src/stanford_parser/data/")
-    parser.add_argument("--feature_dir","-fd","/home/1546/code/keyword_extraction/stanford_parser/data/classify")
+    parser.add_argument("--feature_dir","-fd",default="/home/1546/code/keyword_extraction/stanford_parser/data/classify")
 
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
