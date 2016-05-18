@@ -57,6 +57,14 @@ def get_entity_type_mapping(news_entity_dir,required_entity_types,required_file_
     return entity_type_mapping
 
 
+def get_year_mapping(query_file):
+    year_mapping = {}
+    data = json.load(open(query_file))
+    for q in data:
+        year_mapping[unicode(q["eid"])] = q["year"]
+
+    return year_mapping
+
 
 def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words):
     all_word_features = {}
@@ -205,7 +213,7 @@ def get_cate_features(cate_info, cate_feature_size,negative_entities, positive_e
 
 
 
-def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,is_positive):
+def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,year_mapping,is_positive):
     for identifier in feature_data:
         if is_positive:
             judgement_vector.append(1)
@@ -216,14 +224,15 @@ def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,fe
         entity = feature_data[identifier]["entity"]
         instance = feature_data[identifier]["instance"]
         words = feature_data[identifier]["word_features"]
-
+        year = year_mapping[instance] 
                 
 
         try:
             single_entity_info = {
                 "instance":instance,
                 "entity":entity,
-                "type": entity_type_mapping[instance][entity]
+                "type": entity_type_mapping[instance][entity],
+                "year": year
             }
         except KeyError:
             print "cannot find entity!"
@@ -315,6 +324,7 @@ def main():
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
+    parser.add_argument("--query_file","-qf",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/noaa.json")
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity')
 
@@ -324,7 +334,7 @@ def main():
     all_word_features = set()
     entities = set()
     entity_type_mapping = get_entity_type_mapping(args.news_entity_dir,args.required_entity_types,args.required_file_name)
-
+    year_mapping = get_year_mapping(args.query_file)
 
     negative_word_features,negative_entities,negative_features =\
             process_result_tuple(args.negative_file,args.word_feature_size,args.use_clause_words)
@@ -355,8 +365,8 @@ def main():
     feature_vector = []
     entity_info = []
 
-    add_data_to_set(negative_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,False)
-    add_data_to_set(positive_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,True)
+    add_data_to_set(negative_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,year_mapping,False)
+    add_data_to_set(positive_features,all_word_features,all_cates,judgement_vector,feature_vector,entity_info,cate_info,entity_type_mapping,year_mapping,True)
 
     output(all_word_features,all_cates,judgement_vector,feature_vector,entity_info,args.dest_dir)
 
