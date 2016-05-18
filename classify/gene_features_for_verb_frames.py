@@ -82,7 +82,7 @@ def process_result_tuple(verb_frame_file,word_feature_size):
         normalize(verb_frames)
         feature_data[identifier] = {
             "entity":entity,
-            "instance": instance
+            "instance": instance,
             "word_features":verb_frames
         }
 
