@@ -114,7 +114,7 @@ def main():
 
         run_args = [
             "python",
-            "/home/1546/code/keyword_extraction/classify/gene_features_for_verbs.py",
+            "/home/1546/code/keyword_extraction/classify/gene_features_for_verb_frames.py",
             cate_file,
             dest_dir,
             "-pf", positive_file,
@@ -124,8 +124,9 @@ def main():
         run_args += base_para
 
     #run command
-    #subprocess.call(run_args)
     print run_args
+    subprocess.call(run_args)
+    
 
 
 
