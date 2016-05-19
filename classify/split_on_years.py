@@ -68,7 +68,7 @@ def show_performance_on_entity_types(y,predicted,entity_info):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("")
+    parser.add_argument("data_dir")
     args=parser.parse_args()
 
     X,y,entity_info = load_data_set(args.data_dir)
