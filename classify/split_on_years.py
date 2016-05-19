@@ -36,6 +36,19 @@ def group_with_years(features,judgements,entity_info):
     return grouped_data
 
 
+def split_data_for_year(grouped_data,year):
+    X_test = grouped_data[year].features
+    y_test = grouped_data[year].judgements
+    X_train = []
+    y_train = []
+    for other_year in grouped_data:
+        if other_year != year:
+            X_train += grouped_data[other_year].features
+            y_train += grouped_data[other_year].judgements
+
+    return X_train, y_train, X_test, y_test
+
+
 def show_performance_on_entity_types(y,predicted,entity_info):
     Size = namedtuple('Size', ['pos', 'neg'])
     type_size = Size(pos=Counter(),neg=Counter())
