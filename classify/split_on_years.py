@@ -8,7 +8,7 @@ import sys
 import re
 import argparse
 import codecs
-from collections import namedtuple
+from collections import namedtuple, Counter
 from sklearn.metrics import classification_report
 from sklearn import svm
 
@@ -93,9 +93,10 @@ def main():
             split_data_for_year(grouped_data,year)
         clf = svm.SVC(kernel='linear', C=100).fit(X_train, y_train)
         y_true, y_pred = y_test, clf.predict(X_test)
-        show_performance_on_entity_types(y_true, y_pred, info_test)
+
         print "For year %s:" %(year)
         print classification_report(y_true, y_pred)
+        show_performance_on_entity_types(y_true, y_pred, info_test)
         print "-"*20
 
 
