@@ -19,7 +19,7 @@ def load_data_set(data_dir):
     judgements = json.load(open(os.path.join(data_dir,"judgement_vector")))
     entity_info = json.load(open(os.path.join(data_dir,"entity_info")))
 
-    return features,judgements,all_entities,entity_info
+    return features,judgements,entity_info
 
 
 
