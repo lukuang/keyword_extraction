@@ -39,14 +39,16 @@ def group_with_years(features,judgements,entity_info):
 def split_data_for_year(grouped_data,year):
     X_test = grouped_data[year].features
     y_test = grouped_data[year].judgements
+    info_test = grouped_data[year].entity_info
     X_train = []
     y_train = []
+
     for other_year in grouped_data:
         if other_year != year:
             X_train += grouped_data[other_year].features
             y_train += grouped_data[other_year].judgements
 
-    return X_train, y_train, X_test, y_test
+    return X_train, y_train, X_test, y_test, info_test
 
 
 def show_performance_on_entity_types(y,predicted,entity_info):
@@ -87,10 +89,11 @@ def main():
     X,y,entity_info = load_data_set(args.data_dir)
     grouped_data = group_with_years(X,y,entity_info)
     for year in grouped_data:
-        X_train, y_train, X_test, y_test = \
+        X_train, y_train, X_test, y_test, info_test = \
             split_data_for_year(grouped_data,year)
         clf = svm.SVC(kernel='linear', C=100).fit(X_train, y_train)
         y_true, y_pred = y_test, clf.predict(X_test)
+        show_performance_on_entity_types(y_true, y_pred, info_test)
         print "For year %s:" %(year)
         print classification_report(y_true, y_pred)
         print "-"*20
