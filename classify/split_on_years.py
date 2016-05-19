@@ -28,7 +28,7 @@ def group_with_years(features,judgements,entity_info):
     grouped_data = {}
     for i in range(len(entity_info)):
         year = entity_info[i][year]
-        if year not in grouped_data
+        if year not in grouped_data:
             grouped_data[year] = Sub_data._make([[],[],[]])
         grouped_data[year].features.append( features[i] )
         grouped_data[year].judgements.append( judgements[i] )
