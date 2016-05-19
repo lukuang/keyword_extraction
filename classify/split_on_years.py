@@ -74,7 +74,7 @@ def main():
     X,y,entity_info = load_data_set(args.data_dir)
     grouped_data = group_with_years(X,y,entity_info)
     for year in grouped_data:
-        X_train, y_train, X_test, y_test = /
+        X_train, y_train, X_test, y_test = \
             split_data_for_year(grouped_data,year)
         clf = svm.SVC(kernel='linear', C=100).fit(X_train, y_train)
         y_true, y_pred = y_test, clf.predict(X_test)
