@@ -17,10 +17,9 @@ METHOD = ['linear_svc','logistic_regression',"naive_bayes"]
 def load_data_set(data_dir):
     features = json.load(open(os.path.join(data_dir,"feature_vector")))
     judgements = json.load(open(os.path.join(data_dir,"judgement_vector")))
-    all_entities = json.load(open(os.path.join(data_dir,"all_entities")))
-    all_type_mapping = json.load(open(os.path.join(data_dir,"all_type_mapping")))
+    entity_info = json.load(open(os.path.join(data_dir,"entity_info")))
 
-    return features,judgements,all_entities,all_type_mapping
+    return features,judgements,all_entities,entity_info
 
 
 
@@ -65,12 +64,12 @@ def get_top_entities(all_entities,predicted,top_size,need_positive):
         print "\t%s: %d" %(sorted_entities[i][0],sorted_entities[i][1])
 
 
-def show_performance_on_entity_types(y,predicted,all_type_mapping):
+def show_performance_on_entity_types(y,predicted,entity_info):
     Size = namedtuple('Size', ['pos', 'neg'])
     type_size = Size(pos=Counter(),neg=Counter())
     correct_predicted = Size(pos=Counter(),neg=Counter())
-    for i in range(len(all_type_mapping)):
-        entity_type_list = all_type_mapping[i]
+    for i in range(len(entity_info)):
+        entity_type_list = entity_info[i]["type"]
         if y[i] == 1:
             type_size.pos.update(entity_type_list)
             if predicted[i] == 1:
@@ -110,7 +109,7 @@ def main():
     parser.add_argument("--need_positive","-np",action='store_true')
 
     args=parser.parse_args()
-    X,y,all_entities,all_type_mapping = load_data_set(args.data_dir)
+    X,y,entity_info = load_data_set(args.data_dir)
     clf = get_classifier(args.method)
     predicted = cross_validation.cross_val_predict(clf,X,y,cv=5)
     accuracy = metrics.accuracy_score(y,predicted)
@@ -118,7 +117,7 @@ def main():
 
     print "performance:"
     print "accuracy: %f, f1: %f" %(accuracy,f1)
-    show_performance_on_entity_types(y,predicted,all_type_mapping)
+    show_performance_on_entity_types(y,predicted,entity_info)
     #get_top_entities(all_entities,predicted,args.top_size,args.need_positive)
 
 if __name__=="__main__":
