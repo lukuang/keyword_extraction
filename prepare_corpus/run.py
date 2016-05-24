@@ -10,7 +10,7 @@ import argparse
 import subprocess
 
 
-def call_clean_html(source_dir, dest_dir, top):
+def call_clean_html(source_dir, dest_dir, top, first_only):
     args_clean_html = [
         'python',
         '/lustre/scratch/lukuang/keyphrase_extraction/src/prepare_corpus/clean_html.py',
@@ -18,8 +18,9 @@ def call_clean_html(source_dir, dest_dir, top):
         dest_dir,
         "-t",
         str(top),
-        '-o'
     ]
+    if first_only:
+        args_clean_html.append("-o")
 
     subprocess.call(args_clean_html)
 
@@ -70,6 +71,7 @@ def main():
     parser.add_argument("top_dir")
     parser.add_argument("--src_dir","-s", default="/lustre/scratch/lukuang/keyphrase_extraction/src/prepare_corpus")
     parser.add_argument("--top",'-t',type=int,default=10)
+    parser.add_argument("--first_only","-o",action='store_true',default=False)
     args=parser.parse_args()
     
     args.top_dir = os.path.abspath(args.top_dir)
@@ -83,7 +85,7 @@ def main():
         entity_dir = os.path.join(args.top_dir,"entity",args.disaster_name,instance)
         if not os.path.exists(entity_dir):
             os.mkdir(entity_dir)
-        call_clean_html(source_dir, dest_dir, args.top)
+        call_clean_html(source_dir, dest_dir, args.top, args.first_only)
 
     
         gene_entities(dest_dir,entity_dir)
