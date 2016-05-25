@@ -42,8 +42,15 @@ def read_single_file(file_path, positive,no_single_appearance):
                         else:
                             data[tag].append(m.group(1))
 
-    sub_negative = data["ORGANIZATION"] + data["LOCATION"]
-    sub_negative_no_location = data["ORGANIZATION"]
+    try:
+        sub_negative_no_location = data["ORGANIZATION"]
+    except KeyError:
+        sub_negative_no_location = []
+    try:
+        sub_negative = sub_negative_no_location + data["LOCATION"]
+    except KeyError:
+        sub_negative = sub_negative_no_location
+    
     
    
     return sub_negative, sub_negative_no_location
