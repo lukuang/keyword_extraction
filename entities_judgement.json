@@ -2,37 +2,37 @@
     {
         "query_string": "2012_oklahoma_kansas_tornado", 
         "LOCATION": ["Kansas","Oklahoma","Nebraska","Iowa","Okla","Oklahoma City","Midwest", "Wichita", "Woodward","North Platte"], 
-        "ORGANIZATION": ["Boeing","Spirit AeroSystems","McConnell Air Force Base"], 
+        "ORGANIZATION": ["Boeing","Spirit AeroSystems","McConnell Air Force Base","Greater Regional Medical Center","University of Oklahoma"], 
         "FACILITY": []
     },
     {
         "query_string": "2012_texas_tornado", 
         "LOCATION": ["Texas","Dallas", "Lancaster","Arlington","North Texas","Forney", "Dallas-Fort Worth","Kennedale","Fort Worth","Diamond Creek"], 
-        "ORGANIZATION": ["Crosby Elementary School"], 
+        "ORGANIZATION": ["Oncor","Crosby Elementary School","Trinity Mills","Green Oaks","Wisconsin-based Schneider National Trucking Co.","American Airlines","Southwest Airlines","Green Oaks Nursing and Rehabilitation Center","Delta","Forney High School","Schneider National Trucking Company","American Eagle"], 
         "FACILITY": ["Pin Oak Drive","Tower Drive"]
     },
     {
         "query_string": "2012_hurricane_isaac_tornado", 
         "LOCATION": ["Louisiana","Mississippi","New Orleans","St. Tammany Parish","LaPlace","Lake Pontchartrain","Mandeville","Slidell","Plaquemines","Pearl River","Alabama"], 
-        "ORGANIZATION": ["Entergy"], 
+        "ORGANIZATION": ["Entergy","St. John the Baptist Parish","St. John the Baptist","Entergy New Orleans","Cleco"], 
         "FACILITY": ["Lakeshore Drive","Cousin Street"]
     },
     {
         "query_string": "2012_leap_day_tornado", 
         "LOCATION": ["Harrisburg","Branson","Heartland","Stoddard","Missouri","Illinois", "Ameren"], 
-        "ORGANIZATION": [],
+        "ORGANIZATION": ["Wal-Mart"],
         "FACILITY": []
     },
     {
         "query_string": "2012_debby_tornado", 
-        "LOCATION": ["Florida","St. Petersburg","Tampa Bay","Tampa","Venus","Highland","Pasco","Florida Panhandle","Clearwater"], 
-        "ORGANIZATION": [], 
+        "LOCATION": ["Bay Boulevard","Florida","St. Petersburg","Pinellas County","Jacksonville","Alabama","Tampa Bay","Tampa","Venus","Bradenton","Pasco","Naples","Orange Beach","Gulf of Mexico","Panhandle","Florida Panhandle","Clearwater","Apalachicola","Mississippi","St. Pete Beach","Plaquemines Parish","Highland County","Georgia","Sarasota","MIAMI","Wakulla","Franklin","Highlands County","Apalachee Bay","St. George Island","New Orleans"], 
+        "ORGANIZATION": ["BP","Shell","ExxonMobil","BP Plc"], 
         "FACILITY": ["Winterwind Drive","Bayshore Boulevard","Sunshine Skyway"]
     },
     {
         "query_string": "2012_indiana_kentucky_tornado", 
         "LOCATION": ["Indiana","Kentucky","Ohio","Illinois","Alabama","Tennessee","Henryville","Marysville", "Ky","Harrisburg","Missouri","West Liberty"], 
-        "ORGANIZATION": [], 
+        "ORGANIZATION": ["University of Louisville","Limestone Correctional Facility","Georgia Power","Henryville Junior-Senior High School","Buckhorn High School","West Liberty United Methodist Church","Henryville Community Presbyterian Church"], 
         "FACILITY": []
     },
     {
