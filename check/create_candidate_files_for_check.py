@@ -15,9 +15,10 @@ def get_positive_entities(entity_judgement_file):
     data = json.load(open(entity_judgement_file))
     for instance in data:
         qid = instance["query_string"]
-        positive[qid] = {}
-        positive[qid]["LOCATION"] = instance["LOCATION"]
-        positive[qid]["ORGANIZATION"] = instance["ORGANIZATION"] + instance["FACILITY"]
+        #positive[qid] = {}
+        #positive[qid]["LOCATION"] = instance["LOCATION"]
+        #positive[qid]["ORGANIZATION"] = instance["ORGANIZATION"] + instance["FACILITY"]
+        positive[qid] = instance["ORGANIZATION"] + instance["FACILITY"]
 
     return positive
 
