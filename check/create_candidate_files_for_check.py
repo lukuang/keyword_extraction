@@ -24,30 +24,25 @@ def get_positive_entities(entity_judgement_file):
 
 def read_single_file(file_path, positive,no_single_appearance):
     # print "process file %s" %file_path
-    data = {}
-    with open(file_path,"r") as f:
-        for line in f:
-            line = line.rstrip()
-            m = re.search("^(\w+):$",line)
-            if m is not None:
-                tag = m.group(1)
-                data[tag] = []
-            else:
-                m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
-                if m is not None:
-                    if m.group(1) not in positive:
-                        if no_single_appearance:
-                            if float(m.group(2))>1:
-                                data[tag].append(m.group(1))
-                        else:
-                            data[tag].append(m.group(1))
+    data = json.load(open(file_path))
+    all_negative = {}
+    for tag in ["ORGANIZATION","LOCATION"]:
+        all_negative[tag] = {}
+        for entity in data[tag].keys():
+            if entity not in positive:
+                if no_single_appearance:
+                    if data[tag][entity]>1:
+                        all_negative[tag].append(entity)
+                else:
+                    all_negative[tag].append(entity)
+ 
 
     try:
-        sub_negative_no_location = data["ORGANIZATION"]
+        sub_negative_no_location = all_negative["ORGANIZATION"]
     except KeyError:
         sub_negative_no_location = []
     try:
-        sub_negative = sub_negative_no_location + data["LOCATION"]
+        sub_negative = sub_negative_no_location + all_negative["LOCATION"]
     except KeyError:
         sub_negative = sub_negative_no_location
     
