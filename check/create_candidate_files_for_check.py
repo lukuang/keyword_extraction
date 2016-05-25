@@ -18,7 +18,7 @@ def get_positive_entities(entity_judgement_file):
         #positive[qid] = {}
         #positive[qid]["LOCATION"] = instance["LOCATION"]
         #positive[qid]["ORGANIZATION"] = instance["ORGANIZATION"] + instance["FACILITY"]
-        positive[qid] = instance["ORGANIZATION"] + instance["FACILITY"]
+        positive[qid] = instance["LOCATION"] + instance["ORGANIZATION"] + instance["FACILITY"]
 
     return positive
 
