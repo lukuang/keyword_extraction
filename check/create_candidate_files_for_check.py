@@ -27,7 +27,7 @@ def read_single_file(file_path, positive,no_single_appearance):
     data = json.load(open(file_path))
     all_negative = {}
     for tag in ["ORGANIZATION","LOCATION"]:
-        all_negative[tag] = {}
+        all_negative[tag] = []
         for entity in data[tag].keys():
             if entity not in positive:
                 if no_single_appearance:
