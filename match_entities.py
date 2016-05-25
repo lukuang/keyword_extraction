@@ -10,7 +10,11 @@ import argparse
 reload(sys)
 sys.setdefaultencoding('UTF8')
 
-
+def contained_in_positive(positive,entity):
+    for e in positive:
+        if e.find(entity)!=-1:
+            return True
+    return False
 
 def read_single_file(file_path, required_entity_types,no_single_appearance,
     narrative_entities,original_entities):
@@ -26,17 +30,19 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
             else:
                 m = re.search("^\t(.+?):(\d+(\.\d+)?)$",line)
                 if m is not None:
+                    entity = m.group(1)
                     if no_single_appearance:
-                        if m.group(1) in narrative_entities or m.group(1) in original_entities:
-                            data[tag].append(m.group(1))
+                        
+                        if (not contained_in_positive(narrative_entities,entity) ) and (not contained_in_positive(original_entities,entity)):
+                            data[tag].append(entity)
                         elif float(m.group(2))>1:
-                            data[tag].append(m.group(1))
+                            data[tag].append(entity)
                             #print "include %s with %s" %(m.group(1),m.group(2)
                         else:
                             pass
                             #print "not include %s with %s" %(m.group(1),m.group(2))
                     else:
-                        data[tag].append(m.group(1))
+                        data[tag].append(entity)
                 else:
                     pass
                     #print "line did not match:"

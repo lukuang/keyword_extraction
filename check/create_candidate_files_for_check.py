@@ -22,6 +22,11 @@ def get_positive_entities(entity_judgement_file):
 
     return positive
 
+def contained_in_positive(positive,entity):
+    for e in positive:
+        if e.find(entity)!=-1:
+            return True
+    return False
 
 def read_single_file(file_path, positive,no_single_appearance):
     # print "process file %s" %file_path
@@ -30,7 +35,7 @@ def read_single_file(file_path, positive,no_single_appearance):
     for tag in ["ORGANIZATION","LOCATION"]:
         all_negative[tag] = []
         for entity in data[tag].keys():
-            if entity not in positive:
+            if not contained_in_positive(positive,entity):
                 if no_single_appearance:
                     if data[tag][entity]>1:
                         all_negative[tag].append(entity)
