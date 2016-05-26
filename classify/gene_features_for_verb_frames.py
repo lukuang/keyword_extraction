@@ -66,7 +66,7 @@ def process_result_tuple(verb_frame_file,word_feature_size):
     all_verb_frames = json.load(open(verb_frame_file))
 
     for identifier in all_verb_frames:
-        m = re.search('(\d+)/(.+)$', identifier)
+        m = re.search('(.+?)/(.+)$', identifier)
         if m is not None:
             instance = unicode(m.group(1))
 
