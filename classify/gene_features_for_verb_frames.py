@@ -212,18 +212,25 @@ def add_data_to_set(feature_data,all_word_features,all_cates,judgement_vector,fe
         words = feature_data[identifier]["word_features"]
         year  = year_mapping[instance]
 
-        single_entity_info = {
-            "instance":instance,
-            "entity":entity,
-            "type": entity_type_mapping[instance][entity],
-            "year":year
-        }
+        try:
+            single_entity_info = {
+                "instance":instance,
+                "entity":entity,
+                "type": entity_type_mapping[instance][entity],
+                "year":year
+            }
+        except KeyError:
+            print "cannot find entity!"
+            print "instance: %s, entity: %s" %(instance,entity)
+            print type(entity)
+            sys.exit(-1)
 
-        entity_info.append(single_entity_info)
+        else:
+            entity_info.append(single_entity_info)
 
-        single_feature_vector = get_single_feature_vector(words,entity,all_word_features,all_cates,cate_info)
+            single_feature_vector = get_single_feature_vector(words,entity,all_word_features,all_cates,cate_info)
 
-        feature_vector.append(single_feature_vector)
+            feature_vector.append(single_feature_vector)
 
 
 
