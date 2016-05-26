@@ -342,6 +342,8 @@ def main():
         for instance in entity_type_mapping:
             year_mapping[unicode(instance)] = "2012"
 
+    print year_mapping
+
     negative_word_features,negative_entities,negative_features =\
             process_result_tuple(args.negative_file,args.word_feature_size,args.use_clause_words)
 
