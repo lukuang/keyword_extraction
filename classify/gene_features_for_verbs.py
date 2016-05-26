@@ -335,7 +335,7 @@ def main():
     all_word_features = set()
     entities = set()
     entity_type_mapping = get_entity_type_mapping(args.news_entity_dir,args.required_entity_types,args.required_file_name)
-    if args.new_tornado:
+    if not args.new_tornado:
         year_mapping = get_year_mapping(args.query_file)
     else:
         year_mapping = {}
