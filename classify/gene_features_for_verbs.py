@@ -335,7 +335,7 @@ def main():
     all_word_features = set()
     entities = set()
     entity_type_mapping = get_entity_type_mapping(args.news_entity_dir,args.required_entity_types,args.required_file_name)
-    print entity_type_mapping
+    #print entity_type_mapping
     if not args.new_tornado:
         year_mapping = get_year_mapping(args.query_file)
     else:
@@ -343,7 +343,7 @@ def main():
         for instance in entity_type_mapping:
             year_mapping[unicode(instance)] = "2012"
 
-    print year_mapping
+    #print year_mapping
 
     negative_word_features,negative_entities,negative_features =\
             process_result_tuple(args.negative_file,args.word_feature_size,args.use_clause_words)
