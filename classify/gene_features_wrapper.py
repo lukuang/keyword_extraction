@@ -71,7 +71,7 @@ def main():
         feature_dir = os.path.join(args.feature_dir,"features")
         
 
-    cate_file = os.path.join(feature_dir,"cate_info.json")
+    cate_file = os.path.join(args.feature_dir,"cate_info.json")
     dest_dir = os.path.join(feature_dir,METHOD[args.method])
 
     #build running command depending on the method used
