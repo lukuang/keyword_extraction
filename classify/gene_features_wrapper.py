@@ -24,9 +24,10 @@ def main():
                 2:verbs
                 3:frames
         """)
+    parser.add_argument("--new_tornado","-new",action='store_true')
     parser.add_argument("--candidate_dir","-cd",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/candidates/all_year/new/no_single")
-    parser.add_argument("--input_dir","-ind",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/src/stanford_parser/data/")
-    parser.add_argument("--feature_dir","-fd",default="/home/1546/code/keyword_extraction/stanford_parser/data/classify")
+    parser.add_argument("--input_dir","-ind",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/src/stanford_parser/data/noaa/all_year")
+    parser.add_argument("--feature_dir","-fd",default="/home/1546/code/keyword_extraction/stanford_parser/data/noaa/all_year/classify")
 
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
@@ -39,7 +40,16 @@ def main():
     args=parser.parse_args()
 
     #configure base parameters
-    base_para = [
+    base_para = []
+    if args.new_tornado:
+        base_para.append("-new")
+        args.candidate_dir = "/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/candidiates/new_tornado/"
+        args.input_dir = "/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/stanford_parser/data/new_tornado"
+        args.feature_dir = "/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/stanford_parser/data/new_tornado/classify"
+        args.news_entity_dir = "/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/entity/new_tornado/"
+        args.query_file = "no need query file!!"
+
+    base_para += [
         "-wz", str(args.word_feature_size),
         "-cz", str(args.cate_feature_size),
         "-nd", args.news_entity_dir,

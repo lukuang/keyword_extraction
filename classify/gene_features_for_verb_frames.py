@@ -305,6 +305,7 @@ def main():
     parser.add_argument("dest_dir")
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
+    parser.add_argument("--new_tornado","-new",action='store_true')
     parser.add_argument("--query_file","-qf",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/noaa.json")
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
@@ -319,7 +320,12 @@ def main():
 
 
     entity_type_mapping = get_entity_type_mapping(args.news_entity_dir,args.required_entity_types,args.required_file_name)
-    year_mapping = get_year_mapping(args.query_file)
+    if not args.new_tornado:
+        year_mapping = get_year_mapping(args.query_file)
+    else:
+        year_mapping = {}
+        for instance in entity_type_mapping:
+            year_mapping[unicode(instance)] = "2012"
 
 
 
