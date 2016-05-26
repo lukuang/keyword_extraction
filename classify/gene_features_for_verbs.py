@@ -74,7 +74,7 @@ def process_result_tuple(result_tuple_files,word_feature_size,use_clause_words):
 
 
     for identifier in result_tuples:
-        m = re.search('(\d+)/(.+)$', identifier)
+        m = re.search('(.+?)/(.+)$', identifier)
         if m is not None:
             #entity = unicode(m.group(2) )
             instance = m.group(1)
@@ -321,6 +321,7 @@ def main():
     parser.add_argument("cate_info_file")
     parser.add_argument("dest_dir")
     parser.add_argument("--use_clause_words","-uc",action='store_true')
+    parser.add_argument("--new_tornado","-new",action='store_true')
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
     parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
@@ -334,7 +335,12 @@ def main():
     all_word_features = set()
     entities = set()
     entity_type_mapping = get_entity_type_mapping(args.news_entity_dir,args.required_entity_types,args.required_file_name)
-    year_mapping = get_year_mapping(args.query_file)
+    if args.new_tornado:
+        year_mapping = get_year_mapping(args.query_file)
+    else:
+        year_mapping = {}
+        for instance in entity_type_mapping:
+            year_mapping[unicode(instance)] = "2012"
 
     negative_word_features,negative_entities,negative_features =\
             process_result_tuple(args.negative_file,args.word_feature_size,args.use_clause_words)
