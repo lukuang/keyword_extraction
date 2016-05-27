@@ -18,12 +18,15 @@ def main():
     diff = {}
     manul = json.load(open(args.manul))
     new = json.load(open(args.new))
+    c = 0 
     for q in new:
         diff[q] = []
         for e in new[q]:
             if e not in manul:
                 if e not in diff[q]:
-                    diff[q].append(e)
+                    diff[q].append(e)  
+                    c += 1
+    print "There are %d new entities" %c
 
     with open(args.dest,'w') as f:
         f.write(json.dumps(diff))
