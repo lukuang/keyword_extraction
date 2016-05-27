@@ -83,6 +83,7 @@ def get_news_entities(news_entity_dir,required_entity_types,required_file_name,n
         entity_file = os.path.join(news_entity_dir,eid,required_file_name)
         if eid not in narrative_entities:
             print "NO NARA"
+            continue
         if eid not in original_entities:
             print "NO ORI"
         narrative_entities[eid],original_entities[eid]
