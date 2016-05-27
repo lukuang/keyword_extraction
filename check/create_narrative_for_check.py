@@ -42,7 +42,7 @@ def creat_narrative(all_narrative_entities,all_original_entities,mapping,dest_fi
         query = mapping[eid]
         if query not in data:
             data[query]={
-                "original":{}
+                "original":{},
                 "narrative":{}
             }
         for entity in all_original_entities[eid]:
