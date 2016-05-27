@@ -47,20 +47,29 @@ def get_auto_entities(all_narrative_entities,all_original_entities,all_negative_
     auto_original_entities = {}
     auto_negative = {}
     for eid in mapping:
+
         query = mapping[eid]
         if query not in auto_narrative_entities:
             auto_narrative_entities[query] = []
-        auto_narrative_entities[query] += all_narrative_entities[eid]
-
+        try:
+            auto_narrative_entities[query] += all_narrative_entities[eid]
+        except KeyError:
+            pass
 
         if query not in auto_original_entities:
             auto_original_entities[query] = []
-        auto_original_entities[query] += all_original_entities[eid]
+        try:
+            auto_original_entities[query] += all_original_entities[eid]
+        except KeyError:
+            pass
 
 
         if query not in auto_negative:
             auto_negative[query] = []
-        auto_negative[query] += all_negative_entities[eid]
+        try:
+            auto_negative[query] += all_negative_entities[eid]
+        except KeyError:
+            pass
 
 
 
