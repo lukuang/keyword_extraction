@@ -148,7 +148,7 @@ def compare(auto_narrative_entities,auto_original_entities, auto_negative,\
         single_report(auto_original_entities[query],manual_positive[query])
         print "negative:"
         single_report(auto_negative[query],manual_negative[query])
-        print "all":
+        print "all:"
         all_report(auto_narrative_entities[query],auto_original_entities[query],auto_negative[query],manual_positive[query],manual_negative[query])
         print "-"*20
 
