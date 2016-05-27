@@ -136,7 +136,7 @@ def main():
     mapping = get_manual_label(args.mapping_file)
     auto_narrative_entities,auto_original_entities, auto_negative = \
         get_auto_entities(all_narrative_entities,all_original_entities,all_negative_entities, mapping)
-    manual_positive, manual_negative = get_manual_label(args.manual_candidate_dir)
+    manual_positive, manual_negative = get_manual_entities(args.manual_candidate_dir)
     compare(auto_narrative_entities,auto_original_entities, auto_negative,\
         manual_positive, manual_negative)
 
