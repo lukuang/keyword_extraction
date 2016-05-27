@@ -125,7 +125,7 @@ def main():
     all_narrative_entities,all_original_entities = get_episode_entities(args.narrative_entity_file)
     all_negative_entities = get_negative_entities(args.negative_entity_file)
     mapping = get_manual_label(args.mapping_file)
-    auto_narrative_entities,auto_original_entities, auto_negative = 
+    auto_narrative_entities,auto_original_entities, auto_negative = \
         get_auto_entities(all_narrative_entities,all_original_entities,all_negative_entities, mapping)
     manual_positive, manual_negative = get_manual_label(args.manual_candidate_dir)
     compare(auto_narrative_entities,auto_original_entities, auto_negative,\
