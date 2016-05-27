@@ -31,7 +31,7 @@
     },
     {
         "query_string": "2012_indiana_kentucky_tornado", 
-        "LOCATION": ["Nebraska","Indiana","Kentucky","Ohio","Illinois","Alabama","Tennessee","Henryville","Marysville", "Ky","Harrisburg","Missouri","West Liberty"], 
+        "LOCATION": ["Mississippi","Gulf Coast","Clark County Indiana","Madison County","Laurel County","Nebraska","Indiana","Kentucky","Ohio","Illinois","Alabama","Tennessee","Henryville","Marysville", "Ky","Harrisburg","Missouri","West Liberty"], 
         "ORGANIZATION": ["University of Louisville","Limestone Correctional Facility","Georgia Power","Henryville Junior-Senior High School","Buckhorn High School","West Liberty United Methodist Church","Henryville Community Presbyterian Church"], 
         "FACILITY": []
     },
