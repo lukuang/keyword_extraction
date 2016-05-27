@@ -32,14 +32,15 @@ def read_single_file(file_path, required_entity_types,no_single_appearance,
                 if m is not None:
                     entity = m.group(1)
                     if no_single_appearance:
-                        
-                        if (not contained_in_positive(narrative_entities,entity) ) and (not contained_in_positive(original_entities,entity)):
+                        if entity in narrative_entities or entity in original_entities:
                             data[tag].append(entity)
-                        elif float(m.group(2))>1:
-                            data[tag].append(entity)
-                            #print "include %s with %s" %(m.group(1),m.group(2)
-                        else:
-                            pass
+                        elif (not contained_in_positive(narrative_entities,entity) ) and (not contained_in_positive(original_entities,entity)):
+                            
+                            if float(m.group(2))>1:
+                                data[tag].append(entity)
+                                #print "include %s with %s" %(m.group(1),m.group(2)
+                            else:
+                                pass
                             #print "not include %s with %s" %(m.group(1),m.group(2))
                     else:
                         data[tag].append(entity)
