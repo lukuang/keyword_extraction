@@ -101,11 +101,11 @@ def report(auto_data,manual_data):
         precision = 0
 
     if recall!=0 and precision!=0:
-        f1 = 1/(1/precision + 1/recall)
+        f1 = 2/(1/precision + 1/recall)
     else:
         f1 = 0
     print "recall: %f(%d/%d)" %(recall,count,len(manual_data))
-    print "recall: %f(%d/%d)" %(precision,count,len(auto_data))
+    print "precision: %f(%d/%d)" %(precision,count,len(auto_data))
     print "f1: %f" %(f1)
 
 
@@ -116,9 +116,9 @@ def compare(auto_narrative_entities,auto_original_entities, auto_negative,\
     print "-"*20
     for query in manual_positive:
         print "for query",query
-        report(auto_narrative_entities,manual_positive)
-        report(auto_original_entities,manual_positive)
-        report(auto_negative,manual_negative)
+        report(auto_narrative_entities[query],manual_positive[query])
+        report(auto_original_entities[query],manual_positive[query])
+        report(auto_negative[query],manual_negative[query])
         print "-"*20
 
 
