@@ -19,10 +19,10 @@ def load(data_dir):
         data[q] = []
         for e in positive[q]:
             if e not in data[q]:
-                data[q].append[e]
+                data[q].append(e)  
         for e in negative:
             if e not in data[q]:
-                data[q].append[e]
+                data[q].append(e)  
     return data
 
 def main():
