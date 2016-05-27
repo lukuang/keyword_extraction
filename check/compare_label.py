@@ -60,7 +60,7 @@ def get_auto_entities(all_narrative_entities,all_original_entities,all_negative_
 
         if query not in auto_negative:
             auto_negative[query] = []
-        auto_negative[query] += all_negative[eid]
+        auto_negative[query] += all_negative_entities[eid]
 
 
 
