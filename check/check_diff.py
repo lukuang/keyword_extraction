@@ -14,7 +14,7 @@ def load(data_dir):
     negative_f = os.path.join(data_dir,"negative_no_location")
     positive = json.load(open(positive_f))
     negative = json.load(open(negative_f))
-    data = []
+    data = {}
     for q in positive:
         data[q] = []
         for e in positive[q]:
