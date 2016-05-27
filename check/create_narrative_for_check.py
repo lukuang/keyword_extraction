@@ -50,7 +50,7 @@ def creat_narrative(all_narrative_entities,all_original_entities,mapping,dest_fi
                 data[query]["original"][entity] = 1
         for entity in all_narrative_entities[eid]:
             if entity not in data[query]["narrative"]:
-                data[query]["original"][entity] = 1
+                data[query]["narrative"][entity] = 1
     with open(dest_file,'w') as f:
         f.write(json.dumps(data))
 
