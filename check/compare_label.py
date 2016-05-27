@@ -104,9 +104,9 @@ def report(auto_data,manual_data):
         f1 = 2/(1/precision + 1/recall)
     else:
         f1 = 0
-    print "recall: %f(%d/%d)" %(recall,count,len(manual_data))
-    print "precision: %f(%d/%d)" %(precision,count,len(auto_data))
-    print "f1: %f" %(f1)
+    print "\trecall: %f(%d/%d)" %(recall,count,len(manual_data))
+    print "\tprecision: %f(%d/%d)" %(precision,count,len(auto_data))
+    print "\tf1: %f" %(f1)
 
 
 
@@ -116,8 +116,11 @@ def compare(auto_narrative_entities,auto_original_entities, auto_negative,\
     print "-"*20
     for query in manual_positive:
         print "for query",query
+        print "narrative:"
         report(auto_narrative_entities[query],manual_positive[query])
+        print "original:"
         report(auto_original_entities[query],manual_positive[query])
+        print "negative:"
         report(auto_negative[query],manual_negative[query])
         print "-"*20
 
