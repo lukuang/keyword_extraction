@@ -38,7 +38,7 @@ def main():
     for q in new:
         diff[q] = []
         for e in new[q]:
-            if e not in manual:
+            if e not in manual[q]:
                 if e not in diff[q]:
                     diff[q].append(e)  
                     c += 1
