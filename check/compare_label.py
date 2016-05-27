@@ -9,7 +9,7 @@ import sys
 import re
 import argparse
 import codecs
-
+from sklearn.metrics import classification_report
 
 def load_json(json_file):
     return json.load(open(json_file))
@@ -84,7 +84,7 @@ def get_manual_entities(manual_candidate_dir):
     return manual_positive, manual_negative
 
 
-def report(auto_data,manual_data):
+def single_report(auto_data,manual_data):
     count = 0
     for e in auto_data:
         if e in manual_data:
@@ -110,6 +110,32 @@ def report(auto_data,manual_data):
 
 
 
+def all_report(auto_narrative_entities,auto_original_entities,auto_negative,manual_positive,manual_negative):
+    y_true = []
+    y_pred = []
+
+    for e in manual_positive:
+        y_true.append(1)
+        if e in auto_narrative_entities or e in auto_original_entities:
+            y_pred.append(1)
+        elif manual_negative:
+            y_pred.append(0)
+        else:
+            y_true.append(-1)
+
+    for e in manual_negative:
+        y_true.append(0)
+        if e in auto_narrative_entities or e in auto_original_entities:
+            y_pred.append(1)
+        elif manual_negative:
+            y_pred.append(0)
+        else:
+            y_true.append(-1)
+
+
+
+
+    print classification_report(y_true, y_pred)
 
 def compare(auto_narrative_entities,auto_original_entities, auto_negative,\
         manual_positive, manual_negative):
@@ -117,11 +143,13 @@ def compare(auto_narrative_entities,auto_original_entities, auto_negative,\
     for query in manual_positive:
         print "for query",query
         print "narrative:"
-        report(auto_narrative_entities[query],manual_positive[query])
+        single_report(auto_narrative_entities[query],manual_positive[query])
         print "original:"
-        report(auto_original_entities[query],manual_positive[query])
+        single_report(auto_original_entities[query],manual_positive[query])
         print "negative:"
-        report(auto_negative[query],manual_negative[query])
+        single_report(auto_negative[query],manual_negative[query])
+        print "all":
+        all_report(auto_narrative_entities[query],auto_original_entities[query],auto_negative[query],manual_positive[query],manual_negative[query])
         print "-"*20
 
 
