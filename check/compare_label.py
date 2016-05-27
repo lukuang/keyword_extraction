@@ -121,7 +121,7 @@ def all_report(auto_narrative_entities,auto_original_entities,auto_negative,manu
         elif manual_negative:
             y_pred.append(0)
         else:
-            y_true.append(-1)
+            y_pred.append(-1)
 
     for e in manual_negative:
         y_true.append(0)
@@ -130,7 +130,7 @@ def all_report(auto_narrative_entities,auto_original_entities,auto_negative,manu
         elif manual_negative:
             y_pred.append(0)
         else:
-            y_true.append(-1)
+            y_pred.append(-1)
 
 
 
