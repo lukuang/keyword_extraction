@@ -9,7 +9,7 @@ import re
 import argparse
 import codecs
 import subprocess
-METHOD = ['words','clasue_words',"verbs","frames"]
+METHOD = ['words','clause_words',"verbs","frames"]
 
 
 
@@ -20,7 +20,7 @@ def main():
         help=
         """chose mthods from:
                 0:words
-                1:clasue words
+                1:clause words
                 2:verbs
                 3:frames
         """)
