@@ -25,7 +25,7 @@ def main():
                 3:frames
         """)
     parser.add_argument("--new_tornado","-new",action='store_true')
-    parser.add_argument("--candidate_dir","-cd",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/candidates/all_year/new/no_single")
+    parser.add_argument("--candidate_dir","-cd",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/candidates/all_year/")
     parser.add_argument("--text_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/clean_text/noaa')
     parser.add_argument("--input_dir","-ind",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/src/stanford_parser/data/noaa/all_year")
     parser.add_argument("--feature_dir","-fd",default="/home/1546/code/keyword_extraction/stanford_parser/data/noaa/all_year/classify")
