@@ -10,6 +10,11 @@ import argparse
 import codecs
 from sklearn.metrics import classification_report
 
+
+def load_json(json_file):
+    return json.load(open(json_file))
+
+    
 def get_entities(candidate_dir):
     positive = load_json(os.path.join(candidate_dir,"positive"))
     negative = load_json(os.path.join(candidate_dir,"negative_no_location"))
