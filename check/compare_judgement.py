@@ -14,7 +14,7 @@ from sklearn.metrics import classification_report
 def load_json(json_file):
     return json.load(open(json_file))
 
-    
+
 def get_entities(candidate_dir):
     positive = load_json(os.path.join(candidate_dir,"positive"))
     negative = load_json(os.path.join(candidate_dir,"negative_no_location"))
@@ -42,8 +42,9 @@ def main():
                 manual.append(0)
 
     for q in auto_negative:
-        auto.append(0)
+        
         for e in auto_negative[q]:
+            auto.append(0)
             if e in manual_positive[q]:
                 manual.append(1)
             else:
