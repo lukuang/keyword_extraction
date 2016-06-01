@@ -38,7 +38,8 @@ def main():
 
     for q in auto_negative:
         auto.append(0)
-        if e in manual_positive[q]:
+        for e in auto_negative[q]:
+            if e in manual_positive[q]:
                 manual.append(1)
             else:
                 manual.append(0)
