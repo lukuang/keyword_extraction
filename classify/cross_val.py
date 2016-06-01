@@ -8,6 +8,7 @@ import sys
 import re
 import argparse
 from sklearn import cross_validation
+from sklearn.metrics import classification_report
 from sklearn import metrics
 from collections import Counter,namedtuple
 
@@ -112,12 +113,14 @@ def main():
     X,y,entity_info = load_data_set(args.data_dir)
     clf = get_classifier(args.method)
     predicted = cross_validation.cross_val_predict(clf,X,y,cv=5)
-    accuracy = metrics.accuracy_score(y,predicted)
-    f1 = metrics.f1_score(y,predicted)
+    #accuracy = metrics.accuracy_score(y,predicted)
+    #f1 = metrics.f1_score(y,predicted)
 
-    print "performance:"
-    print "accuracy: %f, f1: %f" %(accuracy,f1)
+    #print "performance:"
+    #print "accuracy: %f, f1: %f" %(accuracy,f1)
+    
     show_performance_on_entity_types(y,predicted,entity_info)
+    print classification_report(y, predicted)
     #get_top_entities(all_entities,predicted,args.top_size,args.need_positive)
 
 if __name__=="__main__":
