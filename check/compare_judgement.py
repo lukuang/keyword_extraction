@@ -33,12 +33,17 @@ def main():
 
     auto = []
     manual = []
+    false_positive = {}
+    false_negative = {}
     for q in auto_positive:
         for e in auto_positive[q]:
             auto.append(1)
             if e in manual_positive[q]:
                 manual.append(1)
             else:
+                if q not in false_positive:
+                    false_positive[q] = []
+                false_positive[q].append(e)
                 manual.append(0)
 
     for q in auto_negative:
@@ -46,13 +51,25 @@ def main():
         for e in auto_negative[q]:
             auto.append(0)
             if e in manual_positive[q]:
+                if q not in false_negative:
+                    false_negative[q] = []
+                false_negative[q].append(e)
                 manual.append(1)
             else:
                 manual.append(0)
 
     y_true , y_pred = manual, auto
 
+    print "false positive:"
+    print false_positive
+    print "-"*20
+    print "false negative:"
+    print false_negative
+    print "-"*20
+    
+
     print classification_report(y_true, y_pred)
+    print "-"*20
 
 
 if __name__=="__main__":
