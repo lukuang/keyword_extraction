@@ -29,7 +29,7 @@ def load_data_set(data_dir):
 def get_classifier(method):
     if method == 0:
         from sklearn.svm import SVC
-        classifier = SVC(C=1)
+        classifier = SVC()
     elif method == 1:
         from sklearn import linear_model
         classifier = linear_model.LogisticRegression(C=1e5)
