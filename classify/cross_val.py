@@ -28,8 +28,8 @@ def load_data_set(data_dir):
 
 def get_classifier(method):
     if method == 0:
-        from sklearn import svm
-        classifier = svm.LinearSVC()
+        from sklearn.svm import SVC
+        classifier = SVC(C=1)
     elif method == 1:
         from sklearn import linear_model
         classifier = linear_model.LogisticRegression(C=1e5)
@@ -100,7 +100,7 @@ def main():
     parser.add_argument("--data_dir","-dr",default = "/home/1546/code/keyword_extraction/stanford_parser/no_location_features")
     parser.add_argument('--method','-m',type=int,default=0,choices=range(4),
         help=
-        """chose mthods from:
+        """chose methods from:
                 0:linear_svc
                 1:logistic regression
                 2:naive bayes
