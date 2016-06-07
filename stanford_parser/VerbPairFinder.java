@@ -535,6 +535,9 @@ class VerbPairFinder {
                 verb_label = word_label;
                 result_tuples.add(new Result_tuple(verb,verb_label));
               }
+              else{
+                System.err.println("the verb "+ verb +"is not in candidates");
+              }
             }
             
       }
