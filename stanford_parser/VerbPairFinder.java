@@ -262,6 +262,7 @@ class VerbPairFinder {
             }
             JSONObject sub_result = new JSONObject();
             Integer sentence_index = i+1;
+            System.err.println("Sentence Index "+sentence_index);
             String sentence_index_string = sentence_index.toString();
             JSONObject sub_data = (JSONObject) entity_content.get(sentence_index_string);
             String entity = (String)sub_data.get("entity");
