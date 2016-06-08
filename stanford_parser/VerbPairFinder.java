@@ -279,11 +279,12 @@ class VerbPairFinder {
             //print_clauses(clauses);
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
+            HashSet<String> candidates = new HashSet<String>();
             if(clauses.size()!=0){
               List<String> entitiy_words= get_entity_words(entity);
 
               //System.out.println("Sentence is:\n"+sentence);
-              HashSet<String> candidates = new HashSet<String>();
+              
               for(String single_word : entitiy_words){
                   candidates.addAll(find_verb_pair_in_sentence(lp, single_word, sentence));
               }
@@ -297,6 +298,7 @@ class VerbPairFinder {
             sub_result.put("instance", sub_data.get("instance"));
             sub_result.put("entity", sub_data.get("entity"));
 
+            
             for(String candidate: candidates){
               boolean has = false;
               for( Result_tuple single_tuple: result_tuples){
