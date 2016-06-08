@@ -296,6 +296,21 @@ class VerbPairFinder {
             }
             sub_result.put("instance", sub_data.get("instance"));
             sub_result.put("entity", sub_data.get("entity"));
+
+            for(String candidate: candidates){
+              boolean has = false;
+              for( Result_tuple single_tuple: result_tuples){
+                if(candidate.equals(single_tuple.get_verb())){
+                  has = true;
+                  break;
+                }
+              }
+              if (!has){
+                System.err.println("candidate "+candidate+" does not in verbs");
+              }
+            }
+
+
             JSONArray result_json_tuples = new JSONArray();
             for( Result_tuple single_tuple: result_tuples){
               JSONObject single_result_tuple = new JSONObject();
@@ -536,9 +551,7 @@ class VerbPairFinder {
                 verb_label = word_label;
                 result_tuples.add(new Result_tuple(verb,verb_label));
               }
-              else{
-                System.err.println("the verb "+ verb +"is not in candidates");
-              }
+              
             }
             
       }
