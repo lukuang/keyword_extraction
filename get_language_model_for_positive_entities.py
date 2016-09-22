@@ -182,12 +182,12 @@ def get_all_text_windows(documents,entities_judgement,window_size):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("disaster_name")
-    parser.add_argument("top_dir")
+    parser.add_argument("--top_dir",'-tp',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data')
     parser.add_argument("dest_dir")
     parser.add_argument("run_id",type=int)
     parser.add_argument("--using_text_window","-u",action='store_true')
     parser.add_argument("--window_size",'-wz',type=int,default=3)
-    parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
+    parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/new_judgement.json")
     args=parser.parse_args()
     
     data = ""

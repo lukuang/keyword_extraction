@@ -74,7 +74,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--required_file_name",'-rn',default='df_all_entity.json')
     parser.add_argument("--entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/entity/new_tornado')
-    parser.add_argument("--entity_judgement_file",'-ef',default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
+    parser.add_argument("--entity_judgement_file",'-ef',default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/new_judgement.json")
     parser.add_argument("--negative_file","-no",default="negative")
     parser.add_argument("--negative_no_location_file","-nno",default="negative_no_location")
     parser.add_argument("--positive_file","-po",default="positive")

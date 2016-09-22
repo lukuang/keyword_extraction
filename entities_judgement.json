@@ -1,7 +1,7 @@
 [
     {
         "query_string": "2012_oklahoma_kansas_tornado", 
-        "LOCATION": ["Central Plains","Dodge City","Tangier","Rush Center","Oaklawn","Salina","Sharon","Kansas","Oklahoma","Nebraska","Iowa","Okla","Oklahoma City","Midwest", "Wichita", "Woodward","North Platte"], 
+        "LOCATION": ["Central Plains","Dodge City","Tangier","Rush Center","Oaklawn","Salina","Sharon","Kansas","Oklahoma","Nebraska","Iowa","Okla","Oklahoma City","Midwest", "Wichita", "Woodward","North Platte","Norman"], 
         "ORGANIZATION": ["Boeing","Spirit AeroSystems","McConnell Air Force Base","Greater Regional Medical Center","University of Oklahoma"], 
         "FACILITY": []
     },

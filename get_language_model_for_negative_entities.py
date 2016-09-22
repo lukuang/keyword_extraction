@@ -302,7 +302,7 @@ def main():
     parser.add_argument("--window_size",'-wz',type=int,default=3)
     parser.add_argument("--small",'-s',action="store_true",
             help="if given, only get the model for entities of instances with positive entities")
-    parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/entities_judgement.json")
+    parser.add_argument("--entity_judgement_file","-e",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/src/new_judgement.json")
     args=parser.parse_args()
     
     
