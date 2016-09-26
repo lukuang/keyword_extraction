@@ -31,7 +31,7 @@ def main():
     parser.add_argument("--feature_dir","-fd",default="/home/1546/code/keyword_extraction/stanford_parser/data/noaa/all_year/classify")
 
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
-    parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
+    parser.add_argument("--cate_feature_size","-cz",type=int,default=50)
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
     parser.add_argument("--query_file","-qf",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/noaa.json")
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])

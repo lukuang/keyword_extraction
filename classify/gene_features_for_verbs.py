@@ -155,10 +155,11 @@ def get_top_word_features(all_word_features,word_feature_size):
     i = 0
     sorted_word_features =  sorted(all_word_features.items(),key = lambda x:x[1],reverse=True)
     for (word,v) in sorted_word_features:
-        i += 1
-        top_word_features.append(word)
         if i==word_feature_size:
             break
+        i += 1
+        top_word_features.append(word)
+        
     return top_word_features
 
 
@@ -191,11 +192,12 @@ def get_top_cate_for_single_entity_type(cate_info,entities,cate_feature_size):
     i = 0
     all_cates = []
     for (k,v) in sorted_cates:
-        all_cates.append(k)
-        i += 1
         if i==cate_feature_size:
             #print "break when i is",i
             break
+        all_cates.append(k)
+        i += 1
+        
     #print "return %d category features" %(len(all_cates) )
     return all_cates
 
@@ -323,7 +325,7 @@ def main():
     parser.add_argument("--use_clause_words","-uc",action='store_true')
     parser.add_argument("--new_tornado","-new",action='store_true')
     parser.add_argument("--word_feature_size","-wz",type=int,default=50)
-    parser.add_argument("--cate_feature_size","-cz",type=int,default=30)
+    parser.add_argument("--cate_feature_size","-cz",type=int,default=50)
     parser.add_argument("--news_entity_dir",'-nd',default='/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/entity/noaa')
     parser.add_argument("--query_file","-qf",default="/lustre/scratch/lukuang/Temporal_Summerization/TS-2013/data/disaster_profile/data/noaa/noaa.json")
     parser.add_argument("--required_entity_types", "-rt",nargs='+',default=["ORGANIZATION","LOCATION"])
