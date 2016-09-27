@@ -30,7 +30,7 @@ def load_data_set(data_dir):
 def get_classifier(method):
     if method == 0:
         from sklearn.svm import SVC
-        classifier = SVC(kernel="linear",C=1)
+        classifier = SVC(kernel="rbf",C=1)
     elif method == 1:
         from sklearn import linear_model
         classifier = linear_model.LogisticRegression(C=1e5)
@@ -74,10 +74,8 @@ def show_performance_on_entity_types(y,predicted,entity_info):
         print "\tThere are %d %s entities, %d are predicted correctly"\
              %(type_size.neg[k],k,correct_predicted.neg[k])
 
-def get_limit(negative_frequency,positive_frequency):
-    size1 = len(negative_frequency)
-    size2 = len(positive_frequency)
-    max_size = max(size1,size2)
+def get_limit(features):
+    max_size = len(features)
     
     mode = max_size//10
     limit = mode*10
@@ -86,8 +84,39 @@ def get_limit(negative_frequency,positive_frequency):
     
     return limit
 
+def prepare_date(feature_data,what_to_tune,size_hard_limit):
+    label = []
+    words = set()
+    categories = set()
+    for single_data in feature_data:
+        label.append(single_data["judgement"])
+        for w in single_data["word_features"]:
+            words.add(w)
+        if single_data["category"]:
+            for c in single_data["category"]:
+                categories.add(c)
 
-def prepare_data(train_data,test_data,what_to_tune):
+    ws_limit = min(get_limit(words),size_hard_limit)
+    cs_limit = min(get_limit(categories),size_hard_limit)
+
+    print len(words), len(categories)
+
+    para_set = []
+    if what_to_tune == 0:
+        for ws_input in range(10,ws_limit+10,10):
+            para_set.append([ws_input,0])
+    elif what_to_tune == 1:
+        for cs_input in range(10,cs_limit+10,10):
+            para_set.append([0,cs_input])
+
+    else:
+        for ws_input in range(10,ws_limit+10,10):
+            for cs_input in range(10,cs_limit+10,10):
+                para_set.append([ws_input,cs_input])
+
+    return label,para_set,len(words), len(categories)
+
+def prepare_sub_data(train_data,test_data):
     negative_feature_frequency = {}
     positive_feature_frequency = {}
     negative_category_frequency = {}
@@ -138,31 +167,14 @@ def prepare_data(train_data,test_data,what_to_tune):
 
 
 
-    ws_limit = get_limit(negative_feature_frequency,positive_feature_frequency)
-    cs_limit = get_limit(negative_category_frequency,positive_category_frequency)
 
     sorted_negative_feature_frequency = sorted(negative_feature_frequency.items(),key = lambda x:x[1],reverse=True)
     sorted_positive_feature_frequency = sorted(positive_feature_frequency.items(),key = lambda x:x[1],reverse=True)
     sorted_negative_category_frequency = sorted(negative_category_frequency.items(),key = lambda x:x[1],reverse=True)
     sorted_positive_category_frequency = sorted(positive_category_frequency.items(),key = lambda x:x[1],reverse=True)
 
-    print ws_limit,cs_limit
-    para_set = []
-    if what_to_tune == 0:
-        for ws_input in range(10,ws_limit,10):
-            para_set.append([ws_input,0])
-    elif what_to_tune == 1:
-        for cs_input in range(10,cs_limit,10):
-            para_set.append([0,cs_input])
 
-    else:
-        for ws_input in range(10,ws_limit,10):
-            for cs_input in range(10,cs_limit,10):
-                para_set.append([ws_input,cs_input])
-
-    #print para_set
-    return para_set,\
-           train_judgement_vector,test_judgement_vector,\
+    return train_judgement_vector,test_judgement_vector,\
            sorted_negative_feature_frequency,sorted_positive_feature_frequency,\
            sorted_negative_category_frequency,sorted_positive_category_frequency
 
@@ -223,43 +235,82 @@ def get_feature_vector(train_data,test_data,
     return train_feature_vector, test_feature_vector
 
 
-def tune(train_data,test_data,clf,what_to_tune):
-    para_set,\
+def tune(train_data,test_data,clf,ws_input,cs_input):
     train_judgement_vector,test_judgement_vector,\
     sorted_negative_feature_frequency,sorted_positive_feature_frequency,\
     sorted_negative_category_frequency,sorted_positive_category_frequency\
-        = prepare_data(train_data,test_data,what_to_tune)
+        = prepare_sub_data(train_data,test_data)
 
-    max_para = MaxPara._make([0,0,0,0,0,[]])
-    for ws_input, cs_input in para_set:
-        top_context_feature = get_top_common_feature(sorted_negative_feature_frequency,sorted_positive_feature_frequency,ws_input)
-        top_category_feature = get_top_common_feature(sorted_negative_category_frequency,sorted_positive_category_frequency,cs_input)
-        ws_real = len(top_context_feature)
-        cs_real = len(top_category_feature)
+    top_context_feature = get_top_common_feature(sorted_negative_feature_frequency,sorted_positive_feature_frequency,ws_input)
+    top_category_feature = get_top_common_feature(sorted_negative_category_frequency,sorted_positive_category_frequency,cs_input)
+    #print top_context_feature
+    #print top_category_feature
+    ws_real = len(top_context_feature)
+    cs_real = len(top_category_feature)
 
-        train_feature_vector, test_feature_vector =\
-            get_feature_vector(train_data,test_data,
-                               top_context_feature,top_category_feature)
+    train_feature_vector, test_feature_vector =\
+        get_feature_vector(train_data,test_data,
+                           top_context_feature,top_category_feature)
 
-    
-        clf.fit(np.array(train_feature_vector), np.array(train_judgement_vector)) 
-        temp_predicted_y = clf.predict(test_feature_vector)
 
-        new_f1 = sklearn.metrics.f1_score(test_judgement_vector,temp_predicted_y,average='binary')
-        #print "f1 now %f" %new_f1
-        if new_f1 > max_para.max_f1:
-            max_para = MaxPara._make([ws_input,cs_input,ws_real,cs_real,new_f1,temp_predicted_y])
+    clf.fit(np.array(train_feature_vector), np.array(train_judgement_vector)) 
+    temp_predicted_y = clf.predict(test_feature_vector)
+
+    new_f1 = sklearn.metrics.f1_score(test_judgement_vector,temp_predicted_y,average='binary')
+    #print "f1 now %f" %new_f1
+    max_para = MaxPara._make([ws_input,cs_input,ws_real,cs_real,new_f1,temp_predicted_y])
 
 
     return max_para
 
         
+def check_stop(ws_real,cs_real,w_count,c_count,what_to_tune):
+    if what_to_tune == 0:
+        if ws_real == w_count:
+            return True
+    elif what_to_tune == 1:
+        if cs_real == c_count:
+            return True
+
+    else:
+        if ws_real == w_count and  cs_real == c_count:
+            return True
+    return False
+
+def compute_f1(y,predicted):
+    true_positive = 0
+    false_positive = 0
+    false_negative = 0
+    for i in range(len(y)):
+        if y[i] == 1:
+            if predicted[i] == 1:
+                true_positive += 1
+            else:
+                false_negative += 1
+        else:
+            if predicted[i] == 1:
+                false_positive += 1
+    try:
+        precision = true_positive*1.0/(false_positive+true_positive)
+    except ZeroDivisionError:
+        precision = 0.0
+    try:
+        recall = true_positive*1.0/(true_positive+false_negative)
+    except ZeroDivisionError:
+        recall = 0.0
+    if recall == 0 or precision == 0:
+        return 0
+    else:
+        return 2/(1.0/precision + 1.0/recall)
+
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data_dir","-dr",default = "/home/1546/code/keyword_extraction/stanford_parser/no_location_features")
-    parser.add_argument('--method','-m',type=int,default=0,choices=range(4),
+    parser.add_argument("data_dir")
+    parser.add_argument("dest_file")
+    parser.add_argument("--size_hard_limit","-sl",type=int,default=500)
+    parser.add_argument('--method','-m',type=int,default=1,choices=range(4),
         help=
         """choose methods from:
                 0:linear_svc
@@ -278,41 +329,69 @@ def main():
     args=parser.parse_args()
 
     feature_data = load_data_set(args.data_dir)
+    label,para_set,w_count,c_count = prepare_date(feature_data,args.what_to_tune,args.size_hard_limit)
+
     clf = get_classifier(args.method)
-    label = []
-    for single_data in feature_data:
-        label.append(single_data["judgement"])
+    
 
     skf = cross_validation.StratifiedKFold(label,5)
 
     predicted = [0]*len(label)
 
-    run_index = 0
+
+    splited_data = []
+
     for train_index, test_index in skf:
-        run_index += 1
-        print "Start run %d" % run_index
-        #split the data
         train_index = train_index.tolist()
         test_index = test_index.tolist()
-        print "%d training data and %d test data" %(len(train_index),len(test_index))
-        train_data = []
-        test_data = []
+        splited_data.append((train_index,test_index))
 
-        for i in train_index:
-            train_data.append(feature_data[ i ])
 
-        for i in test_index:
-            test_data.append(feature_data[ i ])
+    max_para = MaxPara._make([0,0,0,0,0,[]])
 
-        sub_max_para = tune(train_data,test_data,clf,args.what_to_tune)
 
-        print "ws_input:%d, cs_input:%d, ws_real:%d, cs_real:%d"\
-            %(sub_max_para.ws_input, sub_max_para.cs_input, 
-              sub_max_para.ws_real, sub_max_para.cs_real)
+    performance_records = []
+    for ws_input,cs_input in para_set:
+        predicted = [0]*len(label)
+        run_index = 0
+        ws_real = 0
+        cs_real = 0
+        for train_index, test_index in splited_data:
+            run_index += 1
+            #print "Start run %d" % run_index
+            #print "%d training data and %d test data" %(len(train_index),len(test_index))
+            train_data = []
+            test_data = []
 
-        for i in range(len(test_index)):
-            predicted[ test_index[i] ] = sub_max_para.sub_predicted_y[i]
+            for i in train_index:
+                train_data.append(feature_data[ i ])
 
+            for i in test_index:
+                test_data.append(feature_data[ i ])
+
+            sub_max_para = tune(train_data,test_data,clf,ws_input,cs_input)
+
+            
+
+            ws_real = sub_max_para.ws_real
+            cs_real = sub_max_para.cs_real
+
+            for i in range(len(test_index)):
+                predicted[ test_index[i] ] = sub_max_para.sub_predicted_y[i]
+        #temp = list(predicted)
+        new_f1 = sklearn.metrics.f1_score(label,predicted)
+        #print compute_f1(label,predicted)
+        print "ws_input:%d, cs_input:%d, ws_real:%d, cs_real:%d, f1:%f"\
+                %(ws_input, cs_input, 
+                  ws_real, cs_real,new_f1)
+
+        performance_records.append([ws_input,cs_input,new_f1])
+        if new_f1 > max_para.max_f1:
+            print "CHANGE"
+            max_para = MaxPara._make([ws_input,cs_input,ws_real,cs_real,new_f1,list(predicted)])
+
+        # if check_stop(ws_real,cs_real,w_count,c_count,args.what_to_tune):
+        #     break
 
 
     #accuracy = metrics.accuracy_score(y,predicted)
@@ -320,10 +399,13 @@ def main():
 
     #print "performance:"
     #print "accuracy: %f, f1: %f" %(accuracy,f1)
-    
+    with open(args.dest_file,"w") as f:
+        f.write(json.dumps(performance_records,indent=2))
     y = label
-    show_performance_on_entity_types(y,predicted,feature_data)
-    print classification_report(y, predicted)
+    show_performance_on_entity_types(y,max_para.sub_predicted_y,feature_data)
+    print max_para
+    #print compute_f1(y,max_para.sub_predicted_y)
+    print classification_report(y, max_para.sub_predicted_y)
     #get_top_entities(all_entities,predicted,args.top_size,args.need_positive)
 
 if __name__=="__main__":
