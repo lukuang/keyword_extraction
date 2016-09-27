@@ -109,10 +109,12 @@ def prepare_date(feature_data,what_to_tune,size_hard_limit):
         for cs_input in range(10,cs_limit+10,10):
             para_set.append([0,cs_input])
 
-    else:
+    elif what_to_tune == 2:
         for ws_input in range(10,ws_limit+10,10):
             for cs_input in range(10,cs_limit+10,10):
                 para_set.append([ws_input,cs_input])
+    else:
+        para_set = [[0,0]]
 
     return label,para_set,len(words), len(categories)
 
@@ -294,9 +296,11 @@ def check_stop(ws_real,cs_real,w_count,c_count,what_to_tune):
         if cs_real == c_count:
             return True
 
-    else:
+    elif what_to_tune == 2:
         if ws_real == w_count and  cs_real == c_count:
             return True
+    else:
+        return False
     return False
 
 def compute_f1(y,predicted):
@@ -340,12 +344,13 @@ def main():
                 2:naive bayes
                 3:decision  tree
         """)
-    parser.add_argument("--what_to_tune","-w",type=int,default=0,choices=range(3),
+    parser.add_argument("--what_to_tune","-w",type=int,default=0,choices=range(4),
         help=
         """choose what to tune:
                 0: context only 
                 1: category only
                 2: both
+                3: none
         """)
     parser.add_argument("--use_stanford_type","-us",action='store_true',
         help = 
@@ -427,8 +432,13 @@ def main():
 
     #print "performance:"
     #print "accuracy: %f, f1: %f" %(accuracy,f1)
+    best = [max_para.ws_input,max_para.cs_input,max_para.sub_predicted_y,max_para.max_f1]
+    all_records = {
+        "performance_records": performance_records,
+        "best": best
+    }
     with open(args.dest_file,"w") as f:
-        f.write(json.dumps(performance_records,indent=2))
+        f.write(json.dumps(all_records,indent=2))
     y = label
     show_performance_on_entity_types(y,max_para.sub_predicted_y,feature_data)
     print max_para
