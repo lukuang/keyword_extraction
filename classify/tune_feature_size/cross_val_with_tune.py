@@ -197,16 +197,20 @@ def get_top_common_feature(sorted_positive_feature, sorted_negative_feature,feat
 
     return list(set(top_features))
 
-def get_sub_feature_vector(sub_feature_date,top_context_feature,top_category_feature):
+def get_sub_feature_vector(sub_feature_date,top_context_feature,
+                           top_category_feature,use_stanford_type):
     sub_feature_vector = []
     for single_data in sub_feature_date:
         single_feature_vector = []
+
+        # add context features
         for w in top_context_feature:
             if w in single_data["word_features"]:
                 single_feature_vector.append(single_data["word_features"][w])
             else:
                 single_feature_vector.append(0)
 
+        # add category features
         if not single_data["category"]:
                 single_feature_vector += [0]*len(top_category_feature)
         else:
@@ -215,9 +219,24 @@ def get_sub_feature_vector(sub_feature_date,top_context_feature,top_category_fea
                     single_feature_vector.append(1)
                 else:
                     single_feature_vector.append(0)
+        
+        # add Stanford type features if specified
+
+        if use_stanford_type:
+            if "ORGANIZATION" in single_data["type"]:
+                single_feature_vector.append(1)
+            else:
+                single_feature_vector.append(0)
+            if "LOCATION" in single_data["type"]:
+                single_feature_vector.append(1)
+            else:
+                single_feature_vector.append(0)
+
+
         # if len(single_feature_vector)==1:
         #     print single_data
         #     print single_feature_vector
+
         sub_feature_vector.append(single_feature_vector)
 
     return sub_feature_vector
@@ -225,17 +244,20 @@ def get_sub_feature_vector(sub_feature_date,top_context_feature,top_category_fea
 
 
 def get_feature_vector(train_data,test_data,
-                       top_context_feature,top_category_feature):
+                       top_context_feature,top_category_feature,
+                       use_stanford_type):
     train_feature_vector =\
-        get_sub_feature_vector(train_data,top_context_feature,top_category_feature)
+        get_sub_feature_vector(train_data,top_context_feature,top_category_feature,
+                               use_stanford_type)
     
     test_feature_vector =\
-        get_sub_feature_vector(test_data,top_context_feature,top_category_feature)
+        get_sub_feature_vector(test_data,top_context_feature,top_category_feature,
+                               use_stanford_type)
     
     return train_feature_vector, test_feature_vector
 
 
-def tune(train_data,test_data,clf,ws_input,cs_input):
+def tune(train_data,test_data,clf,ws_input,cs_input,use_stanford_type):
     train_judgement_vector,test_judgement_vector,\
     sorted_negative_feature_frequency,sorted_positive_feature_frequency,\
     sorted_negative_category_frequency,sorted_positive_category_frequency\
@@ -250,7 +272,7 @@ def tune(train_data,test_data,clf,ws_input,cs_input):
 
     train_feature_vector, test_feature_vector =\
         get_feature_vector(train_data,test_data,
-                           top_context_feature,top_category_feature)
+                           top_context_feature,top_category_feature,use_stanford_type)
 
 
     clf.fit(np.array(train_feature_vector), np.array(train_judgement_vector)) 
@@ -325,6 +347,12 @@ def main():
                 1: category only
                 2: both
         """)
+    parser.add_argument("--use_stanford_type","-us",action='store_true',
+        help = 
+        """When specified, the type information of Stanford NER
+        is used as features
+        """
+        )
 
     args=parser.parse_args()
 
@@ -369,7 +397,7 @@ def main():
             for i in test_index:
                 test_data.append(feature_data[ i ])
 
-            sub_max_para = tune(train_data,test_data,clf,ws_input,cs_input)
+            sub_max_para = tune(train_data,test_data,clf,ws_input,cs_input,args.use_stanford_type)
 
             
 
