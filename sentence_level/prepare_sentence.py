@@ -61,7 +61,8 @@ def get_sentence_window(entity_map,sentence,windows):
                 windows[w] = []
             
             windows[w].append(re.sub("\n"," ",sentence))
-
+    for w in windows:
+        windows[w] = list( set(windows[w]) )
 
 
 def get_nochange_map(words):
