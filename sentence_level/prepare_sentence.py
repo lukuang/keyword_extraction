@@ -134,13 +134,14 @@ def clean_entity_sentences(entity_sentences):
                     entity_map[small_entity].append(big_entity)
 
     for entity in  entity_sentences:
-        new_entity_sentences[entity] = []
+        
         # if it is not a "small entity" keep the sentence output
         if entity not in entity_map:
             new_entity_sentences[entity] = entity_sentences[entity]
 
         else:
-            for sentence in entity_sentences:
+            new_entity_sentences[entity] = []
+            for sentence in entity_sentences[entity]:
                 already_in_big_entities = False
                 for big_entity in entity_map[entity]:
                     if sentence in entity_sentences[big_entity]:
