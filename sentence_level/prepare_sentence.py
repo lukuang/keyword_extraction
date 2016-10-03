@@ -105,6 +105,52 @@ def get_all_sentence_windows(documents,candidates):
     return windows
 
 
+def clean_entity_sentences(entity_sentences):
+    #clean entity sentences pair that the sentence is already exists for entities that
+    # is a string contains the entity
+    # example:
+    # Jefferson County:
+    # Phone lines were down and cell reception was spotty, Sedam said, so they contacted the Jefferson County Sheriff's Department 
+    # to put a message out on the radio about the students who were at the Chelsea General Store. 
+    #
+    # VS.
+    # Jefferson County Sheriff's Department:
+    # Phone lines were down and cell reception was spotty, Sedam said, so they contacted the Jefferson County Sheriff's Department 
+    # to put a message out on the radio about the students who were at the Chelsea General Store. 
+    
+
+
+    new_entity_sentences = {}
+    entities =  entity_sentences.keys()
+
+    # store : { small_entity:[big_entities]} mapping
+    entity_map = {}
+    for small_entity in entities:
+        for  big_entity in entities:
+            if small_entity != big_entity:
+                if small_entity in big_entity:
+                    if small_entity not in entity_map:
+                        entity_map[small_entity] = []
+                    entity_map[small_entity].append(big_entity)
+
+    for entity in  entity_sentences:
+        new_entity_sentences[entity] = []
+        # if it is not a "small entity" keep the sentence output
+        if entity not in entity_map:
+            new_entity_sentences[entity] = entity_sentences[entity]
+
+        else:
+            for sentence in entity_sentences:
+                already_in_big_entities = False
+                for big_entity in entity_map[entity]:
+                    if sentence in entity_sentences[big_entity]:
+                        already_in_big_entities = True
+                        break
+                if not already_in_big_entities:
+                    new_entity_sentences[entity].append(sentence)
+
+
+    return new_entity_sentences
 
 
 def main():
@@ -132,8 +178,10 @@ def main():
         # with codecs.open(args.sentence_output,'w','utf-8') as f:
         row = 0
         col = 0
-        for w in windows[instance]:
-            for sentence in windows[instance][w]:
+
+        sub_entities_sentences = clean_entity_sentences(windows[instance])
+        for w in sub_entities_sentences:
+            for sentence in sub_entities_sentences[w]:
                 # f.write("%s,'%s','%s'\n" %(instance,w,sentence))
                 worksheet.write(row, col,     instance)
                 worksheet.write(row, col + 1, w)
