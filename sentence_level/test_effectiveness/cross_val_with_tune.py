@@ -12,6 +12,7 @@ import sklearn.metrics
 from sklearn.metrics import classification_report
 from sklearn import metrics
 from collections import Counter,namedtuple
+import cPickle
 import numpy as np
 
 METHOD = ['linear_svc','logistic_regression',"naive_bayes"]
@@ -33,7 +34,7 @@ def get_classifier(method):
         classifier = SVC(kernel="rbf",C=1)
     elif method == 1:
         from sklearn import linear_model
-        classifier = linear_model.LogisticRegression(C=1e4)
+        classifier = linear_model.LogisticRegression(C=1e5)
     elif method == 2:
         from sklearn.naive_bayes import GaussianNB
         classifier = GaussianNB()
@@ -118,13 +119,14 @@ def prepare_date(feature_data,what_to_tune,size_hard_limit):
 
     return label,para_set,len(words), len(categories)
 
-def prepare_sub_data(train_data,test_data):
+
+
+def get_training_data(train_data):
     negative_feature_frequency = {}
     positive_feature_frequency = {}
     negative_category_frequency = {}
     positive_category_frequency = {}
     train_judgement_vector = []
-    test_judgement_vector = []
 
 
 
@@ -160,6 +162,20 @@ def prepare_sub_data(train_data,test_data):
                     positive_category_frequency[c] = 0
                 positive_category_frequency[c] += 1
 
+    sorted_negative_feature_frequency = sorted(negative_feature_frequency.items(),key = lambda x:x[1],reverse=True)
+    sorted_positive_feature_frequency = sorted(positive_feature_frequency.items(),key = lambda x:x[1],reverse=True)
+    sorted_negative_category_frequency = sorted(negative_category_frequency.items(),key = lambda x:x[1],reverse=True)
+    sorted_positive_category_frequency = sorted(positive_category_frequency.items(),key = lambda x:x[1],reverse=True)
+
+    return train_judgement_vector,\
+           sorted_negative_feature_frequency,\
+           sorted_positive_feature_frequency,\
+           sorted_negative_category_frequency,\
+           sorted_positive_category_frequency
+
+
+def get_test_judgement(test_data):
+    test_judgement_vector = []
 
     for single_data in test_data:
         if single_data["judgement"] == 0:
@@ -168,17 +184,27 @@ def prepare_sub_data(train_data,test_data):
             test_judgement_vector.append(1)
 
 
+    return test_judgement_vector
 
 
-    sorted_negative_feature_frequency = sorted(negative_feature_frequency.items(),key = lambda x:x[1],reverse=True)
-    sorted_positive_feature_frequency = sorted(positive_feature_frequency.items(),key = lambda x:x[1],reverse=True)
-    sorted_negative_category_frequency = sorted(negative_category_frequency.items(),key = lambda x:x[1],reverse=True)
-    sorted_positive_category_frequency = sorted(positive_category_frequency.items(),key = lambda x:x[1],reverse=True)
+def prepare_sub_data(train_data,test_data):
+
+
+
+    train_judgement_vector,\
+    sorted_negative_feature_frequency,sorted_positive_feature_frequency,\
+    sorted_negative_category_frequency,sorted_positive_category_frequency\
+        = get_training_data(train_data)
+
+    test_judgement_vector = get_test_judgement(test_data)
+
 
 
     return train_judgement_vector,test_judgement_vector,\
            sorted_negative_feature_frequency,sorted_positive_feature_frequency,\
            sorted_negative_category_frequency,sorted_positive_category_frequency
+
+
 
 
 def get_top_features(sorted_features,feature_size):
@@ -331,11 +357,69 @@ def compute_f1(y,predicted):
 
 
 
+def output_tuning_result(performance_records,max_para,feature_data,\
+                         use_stanford_type,clf,dest_dir):
+    best = [max_para.ws_input,max_para.cs_input,max_para.sub_predicted_y,max_para.max_f1]
+
+    all_records = {
+        "performance_records": performance_records,
+        "best": best
+    }
+
+    train_judgement_vector,test_judgement_vector,\
+    sorted_negative_feature_frequency,sorted_positive_feature_frequency,\
+    sorted_negative_category_frequency,sorted_positive_category_frequency\
+        = prepare_sub_data(feature_data,[])
+
+    ws_input = max_para.ws_input
+    cs_input = max_para.cs_input
+
+    top_context_feature = get_top_common_feature(sorted_negative_feature_frequency,sorted_positive_feature_frequency,ws_input)
+    top_category_feature = get_top_common_feature(sorted_negative_category_frequency,sorted_positive_category_frequency,cs_input)
+    #print top_context_feature
+    #print top_category_feature
+    ws_real = len(top_context_feature)
+    cs_real = len(top_category_feature)
+
+    train_feature_vector, test_feature_vector =\
+        get_feature_vector(feature_data,[],
+                           top_context_feature,top_category_feature,use_stanford_type)
+
+
+    clf.fit(np.array(train_feature_vector), np.array(train_judgement_vector)) 
+
+
+
+    record_file = os.path.join(dest_dir,"record")  
+    with open(record_file,"w") as f:
+        f.write(json.dumps(all_records,indent=2))
+
+    clf_file = os.path.join(dest_dir,"clf")  
+    with open(clf_file,"wb") as f:
+        cPickle.dump(clf, f)
+
+    word_feature_file = os.path.join(dest_dir,"word_feature")  
+    with open(word_feature_file,"w") as f:
+        f.write(json.dumps(top_context_feature))
+
+    if use_stanford_type:
+        top_category_feature.append("USE_STANFORD_TYPE")
+
+    word_feature_file = os.path.join(dest_dir,"word_feature")  
+    with open(word_feature_file,"w") as f:
+        f.write(json.dumps(top_context_feature))
+
+    cat_feature_file = os.path.join(dest_dir,"cat_feature")  
+    with open(cat_feature_file,"w") as f:
+        f.write(json.dumps(top_category_feature))
+
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("feature_data_file")
-    parser.add_argument("dest_file")
-    parser.add_argument("--size_hard_limit","-sl",type=int,default=500)
+    parser.add_argument("dest_dir")
+    parser.add_argument("--size_hard_limit","-sl",type=int,default=1000)
     parser.add_argument('--method','-m',type=int,default=1,choices=range(4),
         help=
         """choose methods from:
@@ -427,19 +511,15 @@ def main():
         #     break
 
 
-    #accuracy = metrics.accuracy_score(y,predicted)
-    #f1 = metrics.f1_score(y,predicted)
 
-    #print "performance:"
-    #print "accuracy: %f, f1: %f" %(accuracy,f1)
-    best = [max_para.ws_input,max_para.cs_input,max_para.sub_predicted_y,max_para.max_f1]
-    all_records = {
-        "performance_records": performance_records,
-        "best": best
-    }
-    with open(args.dest_file,"w") as f:
-        f.write(json.dumps(all_records,indent=2))
+    output_tuning_result(performance_records,max_para,
+                         feature_data,args.use_stanford_type,clf,args.dest_dir)
+    
+
+
+
     y = label
+
     show_performance_on_entity_types(y,max_para.sub_predicted_y,feature_data)
     print max_para
     #print compute_f1(y,max_para.sub_predicted_y)
