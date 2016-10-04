@@ -19,11 +19,25 @@ METHOD = ['linear_svc','logistic_regression',"naive_bayes"]
 
 MaxPara = namedtuple('MaxPara', ['ws_input', 'cs_input', 'ws_real', 'cs_real', 'max_f1',"sub_predicted_y"])
 
-def load_data_set(feature_data_file):
+def load_data_set(feature_data_file,split_data):
     feature_data = json.load(open(feature_data_file))
+    if split_data == 0:
+        return feature_data
+    elif split_data == 1:
+        location_only = []
+        for single_data in feature_data:
+            if "LOCATION" in single_data["type"]:
+                location_only.append(single_data)
+        return location_only
+    elif split_data == 2:
+        organization_only = []
+        for single_data in feature_data:
+            if "ORGANIZATION" in single_data["type"]:
+                organization_only.append(single_data)
+        return organization_only
 
-    return feature_data
-
+    else:
+        raise NotImplementedError("no split method %d is implemented" %(split_data))
 
 
 
@@ -442,10 +456,16 @@ def main():
         is used as features
         """
         )
-
+    parser.add_argument("--split_data","-sd",type=int,default=0,choices=range(3),
+        help=
+        """choose to split data on stanford types or not:
+                0: no split 
+                1: LOCATION only
+                2: ORGANIZATION only
+        """)
     args=parser.parse_args()
 
-    feature_data = load_data_set(args.feature_data_file)
+    feature_data = load_data_set(args.feature_data_file,args.split_data)
     label,para_set,w_count,c_count = prepare_date(feature_data,args.what_to_tune,args.size_hard_limit)
 
     clf = get_classifier(args.method)
