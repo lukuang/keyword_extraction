@@ -11,7 +11,7 @@ from myUtility.corpus import Sentence, Document, Model
 
 
 def get_all_verbs(result_tuples):
-    verb_model = Model(False,need_stem=True)
+    verb_model = Model(False,need_stem=False)
 
     for single_tuple in result_tuples:
         word = single_tuple['verb']
@@ -32,10 +32,10 @@ def get_all_verbs(result_tuples):
 
 def get_all_words(result_tuples):
     
-    word_model = Model(False,need_stem=True)
+    word_model = Model(False,need_stem=False)
 
     for single_tuple in result_tuples:
-        word_model += Sentence(single_tuple['sentence'],remove_stopwords=False).stemmed_model
+        word_model += Sentence(single_tuple['sentence'],remove_stopwords=False).raw_model
 
     word_model.to_dirichlet()
 

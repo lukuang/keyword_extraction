@@ -16,7 +16,7 @@ def get_word_features(judged_data_file):
     feature_data = []
     for single_data in judged_data:
         sentence = single_data["sentence"]
-        sentence_model = Sentence(re.sub("\n"," ",sentence),remove_stopwords=False).stemmed_model
+        sentence_model = Sentence(re.sub("\n"," ",sentence),remove_stopwords=False).raw_model
         sentence_model.to_dirichlet()
 
         single_data.pop("sentence",None)
