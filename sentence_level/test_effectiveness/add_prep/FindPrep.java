@@ -241,11 +241,7 @@ class FindPrep {
             // }
             List< List<Tree> > clauses = find_clauses_in_sentence(lp, entity, sentence);
             
-            List< String > old_clauses = new ArrayList<String>();
-            for (Object single_o: original_tuples){
-              JSONObject single_original_tuple = (JSONObject)single_o;
-              old_clauses.add((String)single_original_tuple.get("sentence"));
-            }
+
             //print_clauses(clauses);
 
             List<Result_tuple> result_tuples = new ArrayList<Result_tuple>();
@@ -258,12 +254,12 @@ class FindPrep {
                 candidates.addAll(find_prep_in_sentence(lp, single_word, sentence));
             }
             
-            // System.err.println("candidates are:");
+            // System.err.println("for "+entity+" candidates are:");
             // for(String candidate_verb: candidates){
-            //   System.err.println(candidate_verb);
+            //    System.err.println(candidate_verb);
             // }
             result_tuples = find_result_tuple_in_clauses(clauses, entitiy_words,candidates);
-
+            // System.err.println("There are "+result_tuples.size()+" tuples");
             
             for(String candidate: candidates){
               boolean has = false;
@@ -278,19 +274,31 @@ class FindPrep {
               }
             }
 
-
             JSONArray result_json_tuples = new JSONArray();
-            for( Result_tuple single_tuple: result_tuples){
-              for (String single_old_clause: old_clauses){
-                String now_clause = single_tuple.get_sentence();
-                if(single_old_clause.equals(now_clause)){
-                  JSONObject single_result_tuple = new JSONObject();
-                  single_result_tuple.put("sentence",now_clause);
-                  single_result_tuple.put("prep", single_tuple.get_prep());
-                  result_json_tuples.add(single_result_tuple);
-                }
-              }
+            if (result_tuples.isEmpty()){
+              result_json_tuples = original_tuples;
             }
+            else{
+              for( Result_tuple single_tuple: result_tuples){
+                  String now_clause = single_tuple.get_sentence();
+                  String now_prep = single_tuple.get_prep();
+                for (Object single_old_o: original_tuples ){
+                  JSONObject single_old_tuple = (JSONObject)single_old_o;
+                  String single_old_clause = (String) single_old_tuple.get("sentence"); 
+                  if(single_old_clause.equals(now_clause)){
+                    JSONObject single_result_tuple = new JSONObject();
+                    single_result_tuple.put("sentence",now_clause);
+                    single_result_tuple.put("prep", now_prep);
+                    single_result_tuple.put("verb",(String)single_old_tuple.get("verb"));
+                    result_json_tuples.add(single_result_tuple);
+                  }
+                }
+              }    
+
+            }
+            
+            
+
             sub_result.put("result_tuples",result_json_tuples);
             result.add(sub_result);
 
@@ -501,6 +509,7 @@ class FindPrep {
     String sentence_string = "";
     String prep = "";
     List< Result_tuple > result_tuples = new ArrayList<Result_tuple> ();
+    HashMap<String,Integer> prep_map =  new HashMap<String,Integer>();
     for(int l=0;l<single_clause.size();l++){
             Tree node = single_clause.get(l);
 
@@ -513,8 +522,8 @@ class FindPrep {
               for(int k =1; k<words.size();k++){
                 word_text += " "+words.get(k).word();
               }
-              System.err.println("the word is: "+word_text);
             }
+            // System.err.println("the word is: "+word_text);
             String word_label = node.label().value();
             if(l==0){
                 sentence_string = word_text;
@@ -524,8 +533,10 @@ class FindPrep {
             }
             if(word_label.equals("IN") || word_label.equals("TO") ){
               prep = word_text; 
-              if( candidates.contains(prep) ){
+              if( candidates.contains(prep) && prep_map.get(prep)==null){
+                // System.err.println("add prep: "+word_text);
                 result_tuples.add(new Result_tuple(prep));
+                prep_map.put(prep,1);
               }
               
             }
