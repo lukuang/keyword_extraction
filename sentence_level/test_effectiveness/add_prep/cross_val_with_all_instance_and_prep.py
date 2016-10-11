@@ -540,7 +540,7 @@ def main():
             for i in test_index:
                 test_data.append(feature_data[ i ])
 
-            sub_max_para = tune(train_data,test_data,clf,ws_input,cs_input,args.use_stanford_type,what_to_tune)
+            sub_max_para = tune(train_data,test_data,clf,ws_input,cs_input,args.use_stanford_type,args.what_to_tune)
 
             
 
