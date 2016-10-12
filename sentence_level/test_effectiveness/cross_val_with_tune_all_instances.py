@@ -62,9 +62,12 @@ def get_classifier(method):
     elif method == 2:
         from sklearn.naive_bayes import GaussianNB
         classifier = GaussianNB()
-    else: 
+    elif method == 3: 
         from sklearn import tree
         classifier = tree.DecisionTreeClassifier()
+    else:
+        from sklearn.ensemble import RandomForestClassifier
+        classifier = RandomForestClassifier()
 
     return classifier
 
