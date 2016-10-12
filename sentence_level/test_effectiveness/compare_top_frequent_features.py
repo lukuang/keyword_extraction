@@ -1,5 +1,6 @@
 """
-compare top features accross instance
+compare top features accross instance in terms
+of term frequency
 """
 
 import os
@@ -78,7 +79,7 @@ def get_top_features(feature_data,feature_size):
     return single_top_features
 
 
-def get_all_top_feature_for_sall_data(all_data,feature_size):
+def get_all_top_features_for_all_data(all_data,feature_size):
     top_features = {}
     for instance in all_data:
         top_features[instance] = get_top_features(all_data[instance],feature_size)
@@ -133,7 +134,7 @@ def main():
 
     all_data = load_data_set(args.feature_data_dir)
 
-    top_features = get_all_top_feature_for_sall_data(all_data,args.feature_size)
+    top_features = get_all_top_features_for_all_data(all_data,args.feature_size)
 
     show_unique_top_features(top_features)
 
