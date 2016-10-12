@@ -417,7 +417,7 @@ def output_tuning_result(performance_records,max_para,feature_data,\
         f.write(json.dumps(top_context_feature))
 
     if use_stanford_type:
-        top_category_feature.append("USE_STANFORD_TYPE")
+        top_category_feature += ["ORGANIZATION","LOCATION"]
 
     word_feature_file = os.path.join(dest_dir,"word_feature")  
     with open(word_feature_file,"w") as f:

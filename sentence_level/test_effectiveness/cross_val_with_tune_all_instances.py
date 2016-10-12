@@ -430,7 +430,7 @@ def output_tuning_result(performance_records,max_para,feature_data,\
         f.write(json.dumps(top_context_feature))
 
     if use_stanford_type:
-        top_category_feature.append("USE_STANFORD_TYPE")
+        top_category_feature += ["ORGANIZATION","LOCATION"]
 
     word_feature_file = os.path.join(dest_dir,"word_feature")  
     with open(word_feature_file,"w") as f:
@@ -447,13 +447,14 @@ def main():
     parser.add_argument("feature_data_dir")
     parser.add_argument("dest_dir")
     parser.add_argument("--size_hard_limit","-sl",type=int,default=1000)
-    parser.add_argument('--method','-m',type=int,default=1,choices=range(4),
+    parser.add_argument('--method','-m',type=int,default=1,choices=range(5),
         help=
         """choose methods from:
                 0:linear_svc
                 1:logistic regression
                 2:naive bayes
                 3:decision  tree
+                4:random forest
         """)
     parser.add_argument("--what_to_tune","-w",type=int,default=0,choices=range(4),
         help=
