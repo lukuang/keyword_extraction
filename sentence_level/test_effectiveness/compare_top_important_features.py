@@ -9,23 +9,24 @@ import re
 import argparse
 import codecs
 import cPickle
+from collections import Counter
 
 def load_top_features(feature_data_dir,dir_name,feature_size):
     top_features = {}
     for instance in os.walk(feature_data_dir).next()[1]:
-        instance_feature_data_dir = os.path(feature_data_dir,instance,dir_name)
+        instance_feature_data_dir = os.path.join(feature_data_dir,instance,dir_name)
         word_feature_file = os.path.join(instance_feature_data_dir,"word_feature")
         classifier_file = os.path.join(instance_feature_data_dir,"clf")
         
         word_features = json.load(open(word_feature_file))
-        clf = cPickle.load(classifier_file)
-        coeff = map(abs,clf._coef[0])
+        clf = cPickle.load(open(classifier_file))
+        coeff = map(abs,clf.coef_[0])
 
         lst = zip(word_features,coeff)
         sorted_features = sorted(lst, key = lambda x:x[1])
         top_features[instance] = []
-        for i in range(feature_size):
-            top_features.append(sorted_features[i][0])
+        for i in range( min(feature_size,len(sorted_features)) ):
+            top_features[instance].append(sorted_features[i][0])
 
     return top_features
 
@@ -58,15 +59,16 @@ def show_unique_top_features(top_features):
     print "Strict features:"
     for instance in strict_unique:
         print "%s:" %(instance)
-        for w in strict_unique[instance]:
-            print " %s" %(w)
+        feature_string = " ".join(strict_unique[instance])
+        print "\t%s" %(feature_string)
     
     print '-'*20
     print "Unstrict features:"
     for instance in unstrict_unique:
         print "%s:" %(instance)
-        for w in unstrict_unique[instance]:
-            print " %s" %(w)
+        feature_string = " ".join(unstrict_unique[instance])
+        print "\t%s" %(feature_string)
+        
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -76,7 +78,7 @@ def main():
     args=parser.parse_args()
 
 
-    top_features = load_top_features(args.feature_data_dir,args.dir_name
+    top_features = load_top_features(args.feature_data_dir,args.dir_name,
                                      args.feature_size)
 
     show_unique_top_features(top_features)

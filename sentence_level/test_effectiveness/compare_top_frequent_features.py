@@ -114,15 +114,15 @@ def show_unique_top_features(top_features):
     print "Strict features:"
     for instance in strict_unique:
         print "%s:" %(instance)
-        for w in strict_unique[instance]:
-            print " %s" %(w)
+        feature_string = " ".join(strict_unique[instance])
+        print "\t%s" %(feature_string)
     
     print '-'*20
     print "Unstrict features:"
     for instance in unstrict_unique:
         print "%s:" %(instance)
-        for w in unstrict_unique[instance]:
-            print " %s" %(w)
+        feature_string = " ".join(unstrict_unique[instance])
+        print "\t%s" %(feature_string)
 
 
 
