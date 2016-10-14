@@ -430,6 +430,7 @@ def show_performance_on_one_instance(instance_test_data,
             "judgement" : single_data["judgement"],
             "instance" : single_data["instance"],
             "entity" : single_data["entity"],
+            "word_features": single_data["word_features"]
         }
         if single_data["judgement"] == 1:
             y.append(1)
