@@ -31,9 +31,10 @@ def load_top_features(feature_data_dir,dir_name,feature_size):
     return top_features
 
 
-def show_unique_top_features(top_features):
+def show_top_features(top_features):
     strict_unique = {}
     unstrict_unique = {}
+    common = []
     feature_counter = Counter()
     feature_instance_map = {}
     for instance in top_features:
@@ -55,6 +56,8 @@ def show_unique_top_features(top_features):
             else:
                 for instance_name in feature_instance_map[w]:
                     unstrict_unique[instance_name].append(w)
+        else:
+            common.append(w)
 
     print "Strict features:"
     for instance in strict_unique:
@@ -68,6 +71,11 @@ def show_unique_top_features(top_features):
         print "%s:" %(instance)
         feature_string = " ".join(unstrict_unique[instance])
         print "\t%s" %(feature_string)
+
+    print "-"*20
+    print "Common features:"
+    feature_string = " ".join(common)
+    print "\t%s" %(feature_string)
         
 
 def main():
@@ -81,7 +89,7 @@ def main():
     top_features = load_top_features(args.feature_data_dir,args.dir_name,
                                      args.feature_size)
 
-    show_unique_top_features(top_features)
+    show_top_features(top_features)
 
 if __name__=="__main__":
     main()
