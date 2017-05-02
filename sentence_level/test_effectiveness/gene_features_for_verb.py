@@ -10,7 +10,7 @@ import codecs
 from myUtility.corpus import Sentence, Document, Model
 
 
-def get_all_verbs(result_tuples):
+def get_all_verbs(result_tuples,normalize):
     verb_model = Model(False,need_stem=False)
 
     for single_tuple in result_tuples:
@@ -25,24 +25,26 @@ def get_all_verbs(result_tuples):
             print type(word)
             print single_tuple
             sys.exit(0)
-    verb_model.to_dirichlet()
+    if normalize:
+        verb_model.to_dirichlet()
 
     return verb_model
 
 
-def get_all_words(result_tuples):
+def get_all_words(result_tuples,normalize):
     
     word_model = Model(False,need_stem=False)
 
     for single_tuple in result_tuples:
         word_model += Sentence(single_tuple['sentence'],remove_stopwords=False).raw_model
 
-    word_model.to_dirichlet()
+    if normalize:
+        word_model.to_dirichlet()
 
     return word_model
 
 
-def get_features(feature_data_file,use_clause_words):
+def get_features(feature_data_file,use_clause_words,normalize):
     original_data = json.load(open(feature_data_file))
     feature_data = []
     for single_data in original_data:
@@ -53,9 +55,9 @@ def get_features(feature_data_file,use_clause_words):
 
         else:
             if use_clause_words:
-                word_feature_model = get_all_words(result_tuples)
+                word_feature_model = get_all_words(result_tuples,normalize)
             else:
-                word_feature_model = get_all_verbs(result_tuples)
+                word_feature_model = get_all_verbs(result_tuples,normalize)
 
             single_data.pop("sentence",None)
             single_data["word_features"] = word_feature_model.model
@@ -69,9 +71,10 @@ def main():
     parser.add_argument("feature_data_file")
     parser.add_argument("dest_file")
     parser.add_argument("--use_clause_words","-uc",action="store_true")
+    parser.add_argument("--normalize","-n",action="store_true")
     args=parser.parse_args()
 
-    feature_data = get_features(args.feature_data_file,args.use_clause_words)
+    feature_data = get_features(args.feature_data_file,args.use_clause_words,args.normalize)
     with open(args.dest_file,"w") as f:
         f.write(json.dumps(feature_data))
 

@@ -11,7 +11,7 @@ import codecs
 from myUtility.corpus import Sentence, Document, Model
 
 
-def get_word_features(judged_data_file):
+def get_word_features(judged_data_file,normalize):
     judged_data = json.load(open(judged_data_file))
     feature_data = []
     for single_data in judged_data:
@@ -23,7 +23,8 @@ def get_word_features(judged_data_file):
             if single_data["result_tuples"]:
                 sentence = single_data["sentence"]
                 sentence_model = Sentence(re.sub("\n"," ",sentence),remove_stopwords=False).raw_model
-                sentence_model.to_dirichlet()
+                if normalize:
+                    sentence_model.to_dirichlet()
 
                 single_data.pop("sentence",None)
                 single_data["word_features"] = sentence_model.model
@@ -36,9 +37,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("judged_data_file")
     parser.add_argument("feature_data_file")
+    parser.add_argument("--normalize","-n",action="store_true")
     args=parser.parse_args()
 
-    feature_data = get_word_features(args.judged_data_file)
+    feature_data = get_word_features(args.judged_data_file,args.normalize)
     with open(args.feature_data_file,"w") as f:
         f.write(json.dumps(feature_data))
 
