@@ -112,7 +112,7 @@ def get_limit(features):
     
     return limit
 
-def prepare_date(feature_data,what_to_tune,size_hard_limit):
+def prepare_date(feature_data):
     label = []
     words = set()
     categories = set()
@@ -127,24 +127,9 @@ def prepare_date(feature_data,what_to_tune,size_hard_limit):
     ws_limit = min(get_limit(words),size_hard_limit)
     cs_limit = min(get_limit(categories),size_hard_limit)
 
-    print len(words), len(categories)
+    
 
-    para_set = []
-    if what_to_tune == 0:
-        for ws_input in range(10,ws_limit+10,10):
-            para_set.append([ws_input,0])
-    elif what_to_tune == 1:
-        for cs_input in range(10,cs_limit+10,10):
-            para_set.append([0,cs_input])
-
-    elif what_to_tune == 2:
-        for ws_input in range(10,ws_limit+10,10):
-            for cs_input in range(10,cs_limit+10,10):
-                para_set.append([ws_input,cs_input])
-    else:
-        para_set = [[0,0]]
-
-    return label,para_set,len(words), len(categories)
+    return label,para_set,words, categories
 
 
 
@@ -480,7 +465,7 @@ def main():
     args=parser.parse_args()
 
     feature_data = load_data_set(args.feature_data_dir,args.split_data)
-    label,para_set,w_count,c_count = prepare_date(feature_data,args.what_to_tune,args.size_hard_limit)
+    label,para_set,words, categories = prepare_date(feature_data)
 
     clf = get_classifier(args.method)
     
